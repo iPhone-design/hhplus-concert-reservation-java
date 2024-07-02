@@ -1,5 +1,8 @@
 # 콘서트 예약 서비스
 
+## 문서
+### [Milestone](https://github.com/users/iPhone-design/projects/2)
+
 ## Description
 
 - **`콘서트 예약 서비스`** 를 구현해 봅니다.
