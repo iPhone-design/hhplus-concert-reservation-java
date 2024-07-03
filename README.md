@@ -3,6 +3,7 @@
 ## 문서
 > ### [Milestone](https://github.com/users/iPhone-design/projects/2)
 > ### [SequenceDiagram](https://sequencediagram.org/index.html?presentationMode=readOnly&shrinkToFit=true#initialData=C4S2BsFMAJA15wcQcB1L1AQY4X1GBQGD03qALFwBwXpAcHsEg66QeB7pAAZsAY6wF9HpBHlsF0OjQAnHAACYFoA+QDtDgEqHAOosAuAsXLRAKWOBamYzCR-bgBEAQhMAu44EqxwAnj0QKprgD3HZCtev5Lt+o6cCK44FemxaJ4quNgyeiATocAUy9AC0E4uynxEGhJE0FyApeNmGBGWgqJRxHHBzkr89AyRtIzQgCmzgAA1CbkaVqkFTKWZoe5ppBQhOHiAMROAuIOomNxV4tBdPQnZ4YT50d7yiePJ1pJ29dmNC97+gUuufBWaNdCAOEPwiwAUgC-LgIOdAJQYO-0SuQdHIaNd+UOAgwOAOwvQgEg10IADPYBemrM0GOgBDxoKABh7AKgT11ec2qH2+fyBmVBEOgMOuox290KgFqBwA4E+VGJUUgMHkTNmFuBIhhiYfU2tBAA01hM4vHJEjZIy2SSaUwUSTuqwcWVcK0mpnWQWeWzZ+R50wVCIGPLlyhWgBTxwCGo9BAAG9gEcJjbrDX8dD5dAJC2qiRWs18eF07pfX4A4HyUHoOGdMnzJFu1FOL1obF82ZNQAznYAZjoSwq5Cxj1JW6scQA)
+> ### [ERD](https://dbdiagram.io/d/consert-seat-reservation-service-6685389e9939893daeef5d44)
 
 ## Description
 
