@@ -19,6 +19,8 @@ public class Reservation {
     private Long reservationId;
     @Column(name = "seat_id")
     private Integer seatId;
+    @Column(name = "concert_id")
+    private Integer concertId;
     @Column(name = "user_id")
     private Long userId;
     @Column(name = "reservation_dt")

@@ -15,7 +15,7 @@ import java.sql.Timestamp;
 public class ConcertOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "concert_option")
+    @Column(name = "concert_option_id")
     private Long concertOptionId;
     @Column(name = "concert_id")
     private Long concertId;
