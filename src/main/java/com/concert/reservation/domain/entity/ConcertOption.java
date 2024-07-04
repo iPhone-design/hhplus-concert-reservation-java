@@ -8,23 +8,21 @@ import lombok.Setter;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "PAYMENT")
+@Table(name = "CONCERT_OPTION")
 @Getter
 @Setter
 @NoArgsConstructor
-public class Payment {
+public class ConcertOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "payment_id")
-    private Long paymentId;
-    @Column(name = "user_id")
-    private Long userId;
+    @Column(name = "concert_option")
+    private Long concertOptionId;
     @Column(name = "concert_id")
     private Long concertId;
-    @Column(name = "amount")
-    private Long amount;
-    @Column(name = "status")
-    private String status;
-    @Column(name = "payment_dt")
-    private Timestamp paymentDt;
+    @Column(name = "concert_name")
+    private String concertName;
+    @Column(name = "location")
+    private String location;
+    @Column(name = "open_dt")
+    private Timestamp openDt;
 }

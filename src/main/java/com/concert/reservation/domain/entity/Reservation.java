@@ -17,12 +17,10 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "reservation_id")
     private Long reservationId;
-    @Column(name = "user_id")
-    private Long userId;
     @Column(name = "seat_id")
     private Integer seatId;
-    @Column(name = "create_dt")
-    private Timestamp createDt;
-    @Column(name = "update_dt")
-    private Timestamp updateDt;
+    @Column(name = "user_id")
+    private Long userId;
+    @Column(name = "reservation_dt")
+    private Timestamp reservationDt;
 }
