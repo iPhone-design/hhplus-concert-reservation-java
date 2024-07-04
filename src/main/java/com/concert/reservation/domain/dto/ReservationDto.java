@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 @Setter
 public class ReservationDto {
     private Long reservationId;
-    private Long concertId;
     private Integer seatId;
     private Long userId;
     private Timestamp reservationDt;
