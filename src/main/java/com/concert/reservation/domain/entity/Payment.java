@@ -1,30 +1,28 @@
 package com.concert.reservation.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.sql.Timestamp;
 
 @Entity
 @Table(name = "PAYMENT")
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "payment_id")
     private Long paymentId;
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "concert_id")
-    private Long concertId;
+    @Column(name = "reservation_id")
+    private Long reservationId;
     @Column(name = "amount")
     private Long amount;
-    @Column(name = "status")
-    private String status;
     @Column(name = "payment_dt")
     private Timestamp paymentDt;
 }

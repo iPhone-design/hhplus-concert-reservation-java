@@ -1,22 +1,24 @@
 package com.concert.reservation.domain.entity;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
-@Table(name = "USERS")
+@Table(name = "CUSTOMER")
 @Getter
-@Setter
+@Builder
 @NoArgsConstructor
-public class Users {
+@AllArgsConstructor
+public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "user_id")
-    private Long userId;
-    @Column(name = "user_name")
-    private String userName;
+    @Column(name = "customer_id")
+    private Long customerId;
+    @Column(name = "customer_name")
+    private String customerName;
     @Column(name = "amount")
     private Long amount;
 }
