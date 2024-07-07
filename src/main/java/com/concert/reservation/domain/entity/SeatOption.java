@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 public class SeatOption {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "seat_option_id")
     private Long seatOptionId;
     @Column(name = "seat_id")
     private Long seatId;

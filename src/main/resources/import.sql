@@ -58,12 +58,12 @@ INSERT INTO concert (concert_id) VALUES (3);
 -- 콘서트 옵션 데이터
 INSERT INTO concert_option (concert_id, concert_name, location, open_dt) VALUES (1, '신촌 콘서트', '신촌', '2024-07-10 10:00:00.000');
 INSERT INTO concert_option (concert_id, concert_name, location, open_dt) VALUES (2, '홍대 콘서트', '홍대', '2024-07-15 13:30:00.000');
-INSERT INTO concert_option (concert_id, concert_name, location, open_dt) VALUES (1, '잠실 콘서트', '잠실', '2024-07-30 17:00:00.000');
+INSERT INTO concert_option (concert_id, concert_name, location, open_dt) VALUES (3, '잠실 콘서트', '잠실', '2024-07-30 17:00:00.000');
 
 -- 좌석 옵션 데이터
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (1, 1, 100000, 'AVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (2, 1, 100000, 'AVAILABLE');
-INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (3, 1, 100000, 'AVAILABLE');
+INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (3, 1, 100000, 'UNAVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (4, 1, 100000, 'AVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (5, 1, 100000, 'AVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (6, 1, 100000, 'AVAILABLE');
