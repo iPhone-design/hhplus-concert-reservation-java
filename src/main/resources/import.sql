@@ -91,7 +91,7 @@ INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (27, 
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (28, 1, 50000, 'AVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (29, 1, 50000, 'AVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (30, 1, 50000, 'AVAILABLE');
-INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (31, 1 30000, 'UNAVAILABLE');
+INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (31, 1, 30000, 'UNAVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (32, 1, 30000, 'UNAVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (33, 1, 30000, 'UNAVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (34, 1, 30000, 'UNAVAILABLE');
