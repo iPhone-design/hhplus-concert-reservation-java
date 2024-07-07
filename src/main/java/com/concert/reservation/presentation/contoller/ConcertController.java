@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/concert")
-public class ConsertController {
+public class ConcertController {
     /**
      * 예약 가능 날짜 조회 API
      *
