@@ -21,8 +21,6 @@ public class Reservation {
     private Long reservationId;
     @Column(name = "seat_option_id")
     private Long seatOptionId;
-    @Column(name = "concert_option_id")
-    private Integer concertOptionId;
     @Column(name = "customer_id")
     private Long customerId;
     @Column(name = "status")
