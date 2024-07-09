@@ -1,4 +1,4 @@
-package com.concert.reservation.infrastructure.token.entity;
+package com.concert.reservation.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -9,20 +9,22 @@ import lombok.NoArgsConstructor;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "TOKEN")
+@Table(name = "RESERVATION")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Token {
+public class Reservation {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "token_id")
-    private Long tokenId;
+    @Column(name = "reservation_id")
+    private Long reservationId;
+    @Column(name = "seat_option_id")
+    private Long seatOptionId;
     @Column(name = "customer_id")
     private Long customerId;
     @Column(name = "status")
     private String status;
-    @Column(name = "expire_dt")
-    private Timestamp expireDt;
+    @Column(name = "reservation_dt")
+    private Timestamp reservationDt;
 }

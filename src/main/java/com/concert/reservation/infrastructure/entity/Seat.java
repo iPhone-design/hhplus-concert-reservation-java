@@ -1,4 +1,4 @@
-package com.concert.reservation.infrastructure.reservation.entity;
+package com.concert.reservation.infrastructure.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
