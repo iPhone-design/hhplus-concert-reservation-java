@@ -3,7 +3,7 @@
 ## 문서
 > ### [Milestone](https://github.com/users/iPhone-design/projects/2)
 > ### [SequenceDiagram](https://sequencediagram.org/index.html?presentationMode=readOnly&shrinkToFit=true#initialData=C4S2BsFMAJA15wcQcB1L1AQY4X1GBQGD03oG1ACxcAcF6QHB7BIOukHge6QAGbAGOsBfR6QR5bBdDoF0NACccAAJgLQA+QDtDgEqHAOosAuaCXJVAKWOBamYziJw-jMAu44EqxwAnj0QKprgD3Hoy3oNGTt+o6cCK44Fem1ZIEa+NgyeiATocAUy9Ai0E4u6kIkMnKUNPTMbOxmKiTCapGk0bSMLBzBzmop1rKkgIMDgDsL0IAtM4A2C9AAFGKAAPOAIJOAN+0AlKFu4cRp0IAznYAzHYH9Q+b5QppF8rlYuASAMROAuIOoaNz8BdLQSyuJnd293ubJVpty3iH57gem-sMXrvuxLIA4Q-B2dYAvy4CDnR3HqU-QV4zcZLGTbMrQQBINdBAAM9gF6axJ1QAh40FAAw9gFQJjpLDZg5YQ6Hw3LItGYvboGToXboHE7e5hCJTfGwhHKOpZaCAF1XADgTv2INLkTMJTjZcW5HXGk22KOgGJmODw+EADTVctaWf7K3bjBlnUxHPkna7A1xXKbeW5BOnCZUyDXmZU0jWWk2AFPHAIaj0EAAb2ARwnhrdLUJyTtBSylHVKYARMYGHWpBqD5QJCOFtQjUb2oK2ePjzMRybQWMWNPBWaFjjDeb22pKxZDdUGvP5Vah2aTdb2k0djiAA)
-> ### [ERD](https://dbdiagram.io/d/consert-seat-reservation-service-6689f6429939893dae3a4592)
+> ### [ERD](https://dbdiagram.io/d/consert-seat-reservation-service-668d2bd19939893dae72bf91)
 > ### [API 명세서](https://documenter.getpostman.com/view/15679108/2sA3dyhWDj)
 
 ## Description
