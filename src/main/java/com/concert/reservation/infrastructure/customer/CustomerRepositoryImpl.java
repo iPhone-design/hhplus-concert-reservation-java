@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class CustomerRepositroyImpl implements CustomerRepository {
+public class CustomerRepositoryImpl implements CustomerRepository {
 
     private final CustomerJpaRepository customerJpaRepository;
 
