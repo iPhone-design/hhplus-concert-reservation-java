@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -24,6 +25,7 @@ public class Token {
     @Column(name = "status")
     private String status;
     @Column(name = "waiting_start_dt")
+    @CreationTimestamp
     private Timestamp waitingStartDt;
     @Column(name = "entry_dt")
     private Timestamp entryDt;
