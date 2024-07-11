@@ -22,7 +22,7 @@ public class SeatOption {
     @Column(name = "concert_option_id")
     private Long concertOptionId;
     @Column(name = "price")
-    private Integer price;
+    private Long price;
     @Column(name = "status")
     private String status;
 }
