@@ -16,6 +16,11 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
 
     private final SeatOptionJpaRepository seatOptionJpaRepository;
 
+    @Override
+    public SeatOptionDomain findSeat(Long seatOptionId, Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt) {
+        return SeatOptionCommand.toDomain(seatOptionJpaRepository.findSeat(seatOptionId, concertOptionId, startDt, endDt));
+    }
+
     /**
      * 예약 가능 콘서트 좌석 조회
      *
@@ -31,5 +36,17 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
         return seatOptionJpaRepository.findAllAvailableSeatForReservation(concertOptionId, startDt, endDt).stream()
                                                                                                           .map(SeatOptionCommand::toDomain)
                                                                                                           .collect(Collectors.toList());
+    }
+
+    /**
+     * 좌석 상태 값 수정
+     *
+     * @author  양종문
+     * @since   2024-07-11
+     * @param   seatOptionDomain - 좌석 옵션 도메인
+     */
+    @Override
+    public void modifyStatus(SeatOptionDomain seatOptionDomain) {
+        seatOptionJpaRepository.updateStatus(seatOptionDomain.getSeatOptionId(), seatOptionDomain.getConcertOptionId(), seatOptionDomain.getStatus());
     }
 }

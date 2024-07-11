@@ -1,6 +1,8 @@
 package com.concert.reservation.application.concert;
 
 import com.concert.reservation.application.seat.SeatOptionService;
+import com.concert.reservation.domain.Concert.ConcertOptionCommand;
+import com.concert.reservation.domain.seat.SeatOptionCommand;
 import com.concert.reservation.presentation.concert.ConcertOptionResponse;
 import com.concert.reservation.presentation.concert.SeatOptionResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +26,7 @@ public class ConcertFacade {
      * @return  List<ConcertOptionResponse>
      */
     public List<ConcertOptionResponse> findAllAvailableConcertForReservation() {
-        return concertOptionService.findAllAvailableConcertForReservation();
+        return ConcertOptionCommand.toResponse(concertOptionService.findAllAvailableConcertForReservation());
     }
 
     /**
@@ -37,6 +39,6 @@ public class ConcertFacade {
      * @return  List<SeatOptionResponse>
      */
     public List<SeatOptionResponse> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
-        return seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
+        return SeatOptionCommand.toResponse(seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId));
     }
 }

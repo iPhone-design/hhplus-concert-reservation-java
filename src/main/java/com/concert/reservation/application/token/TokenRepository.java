@@ -10,8 +10,10 @@ import java.util.List;
 public interface TokenRepository {
     TokenDomain findByCustomerId(Long customerId);
     TokenDomain findFirstWaiting();
+    Integer countActive();
     Integer countWaiting();
     List<TokenDomain> findAllExpireTargetByCheckTime(LocalDateTime checkTime);
     TokenDomain save(TokenDomain tokenDomain);
+    void modifyStatus(TokenDomain tokenDomain);
     void deleteById(Long tokenId);
 }

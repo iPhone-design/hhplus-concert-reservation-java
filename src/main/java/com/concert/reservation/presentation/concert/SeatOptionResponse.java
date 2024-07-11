@@ -13,7 +13,7 @@ public class SeatOptionResponse {
     private Long seatOptionId;
     private Long seatId;
     private Long concertOptionId;
-    private Integer price;
+    private Long price;
     private String status;
 }
 

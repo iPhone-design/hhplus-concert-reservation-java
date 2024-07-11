@@ -8,5 +8,7 @@ import java.util.List;
 
 @Component
 public interface SeatOptionRepository {
+    SeatOptionDomain findSeat(Long seatOptionId, Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt);
     List<SeatOptionDomain> findAllAvailableSeatForReservation(Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt);
+    void modifyStatus(SeatOptionDomain seatOptionDomain);
 }

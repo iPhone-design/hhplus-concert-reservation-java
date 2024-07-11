@@ -19,7 +19,6 @@ public class CustomerService {
      * @param   customerId - 고객 ID
      * @return  customerDomain
      */
-    @Transactional
     public CustomerDomain findById(Long customerId) {
         return customerRepository.findById(customerId);
     }
@@ -35,5 +34,18 @@ public class CustomerService {
     @Transactional
     public CustomerDomain save(CustomerDomain customerDomain) {
         return customerRepository.save(customerDomain);
+    }
+
+    /**
+     * 잔액 수정
+     *
+     * @author  양종문
+     * @since   2024-07-11
+     * @param   customerId - 고객 ID
+     * @param   amount - 금액
+     */
+    @Transactional
+    public void updateAmount(Long customerId, Long amount) {
+        customerRepository.updateAmount(customerId, amount);
     }
 }

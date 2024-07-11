@@ -42,6 +42,18 @@ public class TokenRepositoryImpl implements TokenRepository {
     }
 
     /**
+     * 활성화 토큰 수 조회
+     *
+     * @author  양종문
+     * @since   2024-07-11
+     * @return  Integer
+     */
+    @Override
+    public Integer countActive() {
+        return tokenJpaRepository.countActive();
+    }
+
+    /**
      * 대기중 토큰 수 조회
      *
      * @author  양종문
@@ -79,6 +91,18 @@ public class TokenRepositoryImpl implements TokenRepository {
     @Override
     public TokenDomain save(TokenDomain tokenDomain) {
         return TokenCommand.toDomain(tokenJpaRepository.save(TokenCommand.toEntity(tokenDomain)));
+    }
+
+    /**
+     * 고객 토큰 상태 수정
+     *
+     * @author  양종문
+     * @since   2024-07-11
+     * @param   tokenDomain - 토큰 도메인
+     */
+    @Override
+    public void modifyStatus(TokenDomain tokenDomain) {
+        tokenJpaRepository.updateStatus(tokenDomain.getTokenId(), tokenDomain.getStatus(), tokenDomain.getEntryDt());
     }
 
     /**

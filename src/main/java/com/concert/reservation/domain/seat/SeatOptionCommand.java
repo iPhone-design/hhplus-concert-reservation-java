@@ -8,13 +8,18 @@ import java.util.stream.Collectors;
 
 public class SeatOptionCommand {
     public static SeatOptionDomain toDomain (SeatOption seatOption) {
-        return SeatOptionDomain.builder()
-                .seatOptionId(seatOption.getSeatOptionId())
-                .seatId(seatOption.getSeatId())
-                .concertOptionId(seatOption.getConcertOptionId())
-                .price(seatOption.getPrice())
-                .status(seatOption.getStatus())
-                .build();
+        if (seatOption != null) {
+            return SeatOptionDomain.builder()
+                    .seatOptionId(seatOption.getSeatOptionId())
+                    .seatId(seatOption.getSeatId())
+                    .concertOptionId(seatOption.getConcertOptionId())
+                    .price(seatOption.getPrice())
+                    .status(seatOption.getStatus())
+                    .build();
+        }
+        else {
+            return null;
+        }
     }
 
     public static SeatOption toEntity (SeatOptionDomain seatOptionDomain) {

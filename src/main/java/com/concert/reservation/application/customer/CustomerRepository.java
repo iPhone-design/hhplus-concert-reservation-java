@@ -7,4 +7,5 @@ import org.springframework.stereotype.Component;
 public interface CustomerRepository {
     CustomerDomain findById(Long customerId);
     CustomerDomain save(CustomerDomain customerDomain);
+    void updateAmount(Long customerId, Long amount);
 }

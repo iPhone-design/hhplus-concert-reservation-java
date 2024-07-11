@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.sql.Timestamp;
 
@@ -25,6 +26,7 @@ public class Reservation {
     private Long customerId;
     @Column(name = "status")
     private String status;
+    @CreationTimestamp
     @Column(name = "reservation_dt")
     private Timestamp reservationDt;
 }

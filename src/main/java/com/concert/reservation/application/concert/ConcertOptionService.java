@@ -1,8 +1,6 @@
 package com.concert.reservation.application.concert;
 
-import com.concert.reservation.domain.Concert.ConcertOptionCommand;
-import com.concert.reservation.presentation.concert.ConcertOptionResponse;
-import jakarta.transaction.Transactional;
+import com.concert.reservation.domain.Concert.ConcertOptionDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,11 +20,10 @@ public class ConcertOptionService {
      * @since   2024-07-10
      * @return  List<ConcertOptionResponse>
      */
-    @Transactional
-    public List<ConcertOptionResponse> findAllAvailableConcertForReservation() {
+    public List<ConcertOptionDomain> findAllAvailableConcertForReservation() {
         // 현재일시
         LocalDateTime currentDt = LocalDateTime.now();
 
-        return ConcertOptionCommand.toResponse(concertOptionRepository.findAllAvailableConcertForReservation(currentDt));
+        return concertOptionRepository.findAllAvailableConcertForReservation(currentDt);
     }
 }

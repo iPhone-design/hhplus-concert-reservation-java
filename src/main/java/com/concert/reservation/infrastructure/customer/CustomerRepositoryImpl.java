@@ -37,4 +37,17 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public CustomerDomain save(CustomerDomain customerDomain) {
         return CustomerCommand.toDomain(customerJpaRepository.save(CustomerCommand.toEntity(customerDomain)));
     }
+
+    /**
+     * 잔액 수정
+     *
+     * @author  양종문
+     * @since   2024-07-11
+     * @param   customerId - 고객 ID
+     * @param   amount - 금액
+     */
+    @Override
+    public void updateAmount(Long customerId, Long amount) {
+        customerJpaRepository.updateAmount(customerId, amount);
+    }
 }
