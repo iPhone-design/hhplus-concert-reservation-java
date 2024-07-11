@@ -66,7 +66,7 @@ public class PaymentFacade {
      * @since   2024-07-11
      * @param   tokenDomain - 고객 도메인
      */
-    public void validateToken(TokenDomain tokenDomain) {
+    private void validateToken(TokenDomain tokenDomain) {
         // 유효성 체크
         if (tokenDomain == null) throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
         if (!"ACTIVE".equals(tokenDomain.getStatus())) throw new IllegalArgumentException("토큰이 만료되었습니다.");

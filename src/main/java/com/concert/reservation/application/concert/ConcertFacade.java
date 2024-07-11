@@ -1,10 +1,8 @@
 package com.concert.reservation.application.concert;
 
 import com.concert.reservation.application.seat.SeatOptionService;
-import com.concert.reservation.domain.Concert.ConcertOptionCommand;
-import com.concert.reservation.domain.seat.SeatOptionCommand;
-import com.concert.reservation.presentation.concert.ConcertOptionResponse;
-import com.concert.reservation.presentation.concert.SeatOptionResponse;
+import com.concert.reservation.domain.Concert.ConcertOptionDomain;
+import com.concert.reservation.domain.seat.SeatOptionDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -23,10 +21,10 @@ public class ConcertFacade {
      *
      * @author  양종문
      * @since   2024-07-10
-     * @return  List<ConcertOptionResponse>
+     * @return  List<ConcertOptionDomain>
      */
-    public List<ConcertOptionResponse> findAllAvailableConcertForReservation() {
-        return ConcertOptionCommand.toResponse(concertOptionService.findAllAvailableConcertForReservation());
+    public List<ConcertOptionDomain> findAllAvailableConcertForReservation() {
+        return concertOptionService.findAllAvailableConcertForReservation();
     }
 
     /**
@@ -36,9 +34,9 @@ public class ConcertFacade {
      * @since   2024-07-10
      * @param   startDate - 시작일
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @return  List<SeatOptionResponse>
+     * @return  List<SeatOptionDomain>
      */
-    public List<SeatOptionResponse> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
-        return SeatOptionCommand.toResponse(seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId));
+    public List<SeatOptionDomain> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
+        return seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
     }
 }
