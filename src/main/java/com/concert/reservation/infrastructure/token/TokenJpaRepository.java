@@ -7,25 +7,25 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface TokenJpaRepository extends JpaRepository<Token, Long> {
-    Token findByCustomerId(Long customerId);
-    @Query("SELECT t FROM Token t WHERE t.status = 'WAITING' AND t.entryDt IS NULL ORDER BY t.tokenId LIMIT 1")
-    Token findFirstWaiting();
-    @Query("SELECT COUNT(*) FROM Token t WHERE t.status = 'ACTIVE' AND t.entryDt IS NOT NULL")
-    Integer countActive();
-    @Query("SELECT COUNT(*) FROM Token t WHERE t.status = 'WAITING' AND t.entryDt IS NULL")
-    Integer countWaiting();
-    @Query("SELECT t FROM Token t WHERE t.status = 'ACTIVE' AND t.entryDt < :checkTime")
-    List<Token> findAllExpireTargetByCheckTime(@Param("checkTime") LocalDateTime checkTime);
+    // 토큰 상세조회
+    Optional<Token> findByCustomerId(Long customerId);
+
+    // 활성화 토큰 조회
+    @Query("SELECT t FROM Token t WHERE t.status = 'ACTIVE' AND t.entryDt IS NOT NULL")
+    Optional<Token> findActive();
+
+    // 토큰 상태 값 일괄 변경 (활성화 → 대기)
     @Modifying
     @Query(value = "UPDATE token" +
-                   "   SET status = :status" +
-                   "     , entry_dt = :entry_dt" +
-                   " WHERE token_id = :token_id", nativeQuery = true)
-    void updateStatus(@Param("token_id") Long tokenId, @Param("status") String status, @Param("entry_dt") Timestamp entryDt);
+                   "   SET status = 'WAITING'" +
+                   "     , waiting_start_dt = :currentDt" +
+                   "     , entry_dt = null" +
+                   " WHERE status = 'ACTIVE'" +
+                   "   AND entry_dt > :expireDt", nativeQuery = true)
+    Integer bulkStatusToWaiting(@Param("currentDt") LocalDateTime currentDt, @Param("expireDt") LocalDateTime expireDt);
 }

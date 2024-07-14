@@ -20,16 +20,6 @@ public class TokenFacade {
      * @return  tokenDomain
      */
     public TokenDomain issueToken(Long customerId) {
-        // 고객 토큰 조회
-        TokenDomain tokenDomain = tokenService.findByCustomerId(customerId);
-        
-        // 고객 토큰이 존재할 경우
-        if (tokenDomain != null) {
-            // 고객 토큰 삭제
-            tokenService.deleteById(tokenDomain.getTokenId());
-        }
-        
-        // 고객 토큰 저장
-        return tokenService.save(TokenDomain.builder().customerId(customerId).status("WAITING").build());
+        return tokenService.issueToken(customerId);
     }
 }

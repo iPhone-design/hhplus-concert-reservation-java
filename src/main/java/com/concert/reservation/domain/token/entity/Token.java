@@ -1,10 +1,12 @@
 package com.concert.reservation.domain.token.entity;
 
+import com.concert.reservation.domain.token.TokenDomain;
+import com.concert.reservation.domain.token.TokenStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "TOKEN")
@@ -20,11 +22,32 @@ public class Token {
     private Long tokenId;
     @Column(name = "customer_id")
     private Long customerId;
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private TokenStatus status;
     @Column(name = "waiting_start_dt")
     @CreationTimestamp
-    private Timestamp waitingStartDt;
+    private LocalDateTime waitingStartDt;
     @Column(name = "entry_dt")
-    private Timestamp entryDt;
+    private LocalDateTime entryDt;
+
+    public TokenDomain toDomain() {
+        return TokenDomain.builder()
+                .tokenId(this.tokenId)
+                .customerId(this.customerId)
+                .status(this.status)
+                .waitingStartDt(this.waitingStartDt)
+                .entryDt(this.entryDt)
+                .build();
+    }
+
+    public static Token toEntity(TokenDomain tokenDomain) {
+        return Token.builder()
+                .tokenId(tokenDomain.getTokenId())
+                .customerId(tokenDomain.getCustomerId())
+                .status(tokenDomain.getStatus())
+                .waitingStartDt(tokenDomain.getWaitingStartDt())
+                .entryDt(tokenDomain.getEntryDt())
+                .build();
+    }
 }
