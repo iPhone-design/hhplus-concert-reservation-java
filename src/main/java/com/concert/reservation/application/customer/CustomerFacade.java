@@ -19,8 +19,8 @@ public class CustomerFacade {
      * @param   customerId - 고객 ID
      * @return  customerDomain
      */
-    public CustomerDomain detailAmount(Long customerId) {
-        return customerService.findById(customerId);
+    public CustomerDomain getUserInfo(Long customerId) {
+        return customerService.getUserInfo(customerId);
     }
 
     /**
@@ -28,17 +28,11 @@ public class CustomerFacade {
      *
      * @author  양종문
      * @since   2024-07-07
-     * @param   customerDomain - 고객 도메인
+     * @param   customerId - 고객 ID
+     * @param   addAmount - 충전 금액
      * @return  customerDomain
      */
-    public CustomerDomain chargeAmount(CustomerDomain customerDomain) {
-        // 잔액 조회
-        CustomerDomain detailCustomer = customerService.findById(customerDomain.getCustomerId());
-
-        // 조회된 고객 정보의 잔액에 파라미터로 넘어온 금액을 더해준다.
-        detailCustomer.setAmount(detailCustomer.getAmount() + customerDomain.getAmount());
-        
-        // 잔액 충전
-        return customerService.save(detailCustomer);
+    public CustomerDomain chargeAmount(Long customerId, Long addAmount) {
+        return customerService.save(customerId, addAmount);
     }
 }

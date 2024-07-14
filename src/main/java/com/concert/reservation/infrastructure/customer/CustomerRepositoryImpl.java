@@ -1,10 +1,12 @@
 package com.concert.reservation.infrastructure.customer;
 
 import com.concert.reservation.domain.customer.CustomerRepository;
-import com.concert.reservation.domain.customer.CustomerCommand;
 import com.concert.reservation.domain.customer.CustomerDomain;
+import com.concert.reservation.domain.customer.entity.Customer;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -21,8 +23,8 @@ public class CustomerRepositoryImpl implements CustomerRepository {
      * @return  customerDomain
      */
     @Override
-    public CustomerDomain findById(Long customerId) {
-        return CustomerCommand.toDomain(customerJpaRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("고객 정보가 존재하지 않습니다.")));
+    public Optional<CustomerDomain> findById(Long customerId) {
+        return customerJpaRepository.findById(customerId).map(Customer::toDomain);
     }
 
     /**
@@ -35,19 +37,6 @@ public class CustomerRepositoryImpl implements CustomerRepository {
      */
     @Override
     public CustomerDomain save(CustomerDomain customerDomain) {
-        return CustomerCommand.toDomain(customerJpaRepository.save(CustomerCommand.toEntity(customerDomain)));
-    }
-
-    /**
-     * 잔액 수정
-     *
-     * @author  양종문
-     * @since   2024-07-11
-     * @param   customerId - 고객 ID
-     * @param   amount - 금액
-     */
-    @Override
-    public void updateAmount(Long customerId, Long amount) {
-        customerJpaRepository.updateAmount(customerId, amount);
+        return customerJpaRepository.save(Customer.toEntity(customerDomain)).toDomain();
     }
 }

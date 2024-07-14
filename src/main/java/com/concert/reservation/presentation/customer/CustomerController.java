@@ -1,7 +1,6 @@
 package com.concert.reservation.presentation.customer;
 
 import com.concert.reservation.application.customer.CustomerFacade;
-import com.concert.reservation.domain.customer.CustomerCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,9 +19,9 @@ public class CustomerController {
      * @param   customerId - 고객 ID
      * @return  customerResponse
      */
-    @GetMapping("/{customer-id}/amount")
-    public CustomerResponse detailAmount(@PathVariable(name = "customer-id") Long customerId) {
-        return CustomerCommand.toResponse(customerFacade.detailAmount(customerId));
+    @GetMapping("/information/{customer-id}")
+    public CustomerResponse getUserInfo(@PathVariable(name = "customer-id") Long customerId) {
+        return CustomerResponse.toResponse(customerFacade.getUserInfo(customerId));
     }
 
     /**
@@ -30,11 +29,12 @@ public class CustomerController {
      *
      * @author  양종문
      * @since   2024-07-05
-     * @param   customerRequest - 고객 요청
+     * @param   customerId - 고객 ID
+     *
      * @return  customerResponse
      */
-    @PatchMapping("/charge")
-    public CustomerResponse chargeAmount(@RequestBody CustomerRequest customerRequest) {
-        return CustomerCommand.toResponse(customerFacade.chargeAmount(CustomerCommand.toDomain(customerRequest)));
+    @PatchMapping("/charge/{customer-id}")
+    public CustomerResponse chargeAmount(@PathVariable(name = "customer-id") Long customerId, @RequestBody CustomerRequest customerRequest) {
+        return CustomerResponse.toResponse(customerFacade.chargeAmount(customerId, customerRequest.getAmount()));
     }
 }
