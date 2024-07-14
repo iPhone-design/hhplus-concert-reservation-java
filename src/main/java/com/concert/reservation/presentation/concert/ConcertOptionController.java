@@ -1,7 +1,7 @@
 package com.concert.reservation.presentation.concert;
 
 import com.concert.reservation.application.concert.ConcertFacade;
-import com.concert.reservation.domain.Concert.ConcertOptionCommand;
+import com.concert.reservation.domain.concert.ConcertOptionCommand;
 import com.concert.reservation.domain.seat.SeatOptionCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

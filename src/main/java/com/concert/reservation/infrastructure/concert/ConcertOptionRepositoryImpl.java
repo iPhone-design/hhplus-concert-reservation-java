@@ -1,8 +1,8 @@
 package com.concert.reservation.infrastructure.concert;
 
 import com.concert.reservation.application.concert.ConcertOptionRepository;
-import com.concert.reservation.domain.Concert.ConcertOptionCommand;
-import com.concert.reservation.domain.Concert.ConcertOptionDomain;
+import com.concert.reservation.domain.concert.ConcertOptionCommand;
+import com.concert.reservation.domain.concert.ConcertOptionDomain;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

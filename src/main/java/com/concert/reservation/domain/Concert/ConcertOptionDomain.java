@@ -1,4 +1,4 @@
-package com.concert.reservation.domain.Concert;
+package com.concert.reservation.domain.concert;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
