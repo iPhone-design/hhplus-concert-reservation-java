@@ -1,6 +1,6 @@
 package com.concert.reservation.domain.reservation;
 
-import com.concert.reservation.infrastructure.entity.Reservation;
+import com.concert.reservation.domain.reservation.entity.Reservation;
 import com.concert.reservation.presentation.reservation.ReservationRequest;
 import com.concert.reservation.presentation.reservation.ReservationResponse;
 

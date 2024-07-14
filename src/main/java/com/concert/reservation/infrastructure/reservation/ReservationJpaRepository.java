@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.reservation;
 
-import com.concert.reservation.infrastructure.entity.Reservation;
+import com.concert.reservation.domain.reservation.entity.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

@@ -1,6 +1,5 @@
-package com.concert.reservation.application.token;
+package com.concert.reservation.domain.token;
 
-import com.concert.reservation.domain.token.TokenDomain;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

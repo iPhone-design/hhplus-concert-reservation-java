@@ -1,12 +1,13 @@
 package com.concert.reservation.application.reservation;
 
-import com.concert.reservation.application.customer.CustomerService;
-import com.concert.reservation.application.payment.PaymentService;
-import com.concert.reservation.application.seat.SeatOptionService;
-import com.concert.reservation.application.token.TokenService;
+import com.concert.reservation.domain.customer.CustomerService;
+import com.concert.reservation.domain.payment.PaymentService;
+import com.concert.reservation.domain.seat.SeatOptionService;
+import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.customer.CustomerDomain;
 import com.concert.reservation.domain.payment.PaymentDomain;
 import com.concert.reservation.domain.reservation.ReservationDomain;
+import com.concert.reservation.domain.reservation.ReservationService;
 import com.concert.reservation.domain.seat.SeatOptionDomain;
 import com.concert.reservation.domain.token.TokenDomain;
 import lombok.RequiredArgsConstructor;

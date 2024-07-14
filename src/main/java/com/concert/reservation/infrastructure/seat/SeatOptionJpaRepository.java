@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.seat;
 
-import com.concert.reservation.infrastructure.entity.SeatOption;
+import com.concert.reservation.domain.seat.entity.SeatOption;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

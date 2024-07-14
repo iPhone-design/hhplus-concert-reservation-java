@@ -1,6 +1,6 @@
 package com.concert.reservation.domain.customer;
 
-import com.concert.reservation.infrastructure.entity.Customer;
+import com.concert.reservation.domain.customer.entity.Customer;
 import com.concert.reservation.presentation.customer.CustomerRequest;
 import com.concert.reservation.presentation.customer.CustomerResponse;
 

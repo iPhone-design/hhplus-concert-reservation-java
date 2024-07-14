@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.reservation;
 
-import com.concert.reservation.application.reservation.ReservationRepository;
+import com.concert.reservation.domain.reservation.ReservationRepository;
 import com.concert.reservation.domain.reservation.ReservationCommand;
 import com.concert.reservation.domain.reservation.ReservationDomain;
 import lombok.RequiredArgsConstructor;

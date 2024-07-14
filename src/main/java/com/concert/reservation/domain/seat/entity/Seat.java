@@ -1,4 +1,4 @@
-package com.concert.reservation.infrastructure.entity;
+package com.concert.reservation.domain.seat.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,14 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "CONCERT")
+@Table(name = "SEAT")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Concert {
+public class Seat {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "concert_id")
-    private Long concertId;
+    @Column(name = "seat_id")
+    private Long seatId;
 }

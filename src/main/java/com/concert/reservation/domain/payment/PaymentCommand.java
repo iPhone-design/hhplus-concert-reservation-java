@@ -1,6 +1,6 @@
 package com.concert.reservation.domain.payment;
 
-import com.concert.reservation.infrastructure.entity.Payment;
+import com.concert.reservation.domain.payment.entity.Payment;
 import com.concert.reservation.presentation.payment.PaymentResponse;
 
 public class PaymentCommand {

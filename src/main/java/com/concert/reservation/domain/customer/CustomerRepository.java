@@ -1,6 +1,5 @@
-package com.concert.reservation.application.customer;
+package com.concert.reservation.domain.customer;
 
-import com.concert.reservation.domain.customer.CustomerDomain;
 import org.springframework.stereotype.Component;
 
 @Component

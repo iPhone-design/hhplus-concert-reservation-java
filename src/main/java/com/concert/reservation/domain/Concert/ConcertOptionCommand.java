@@ -1,6 +1,6 @@
 package com.concert.reservation.domain.concert;
 
-import com.concert.reservation.infrastructure.entity.ConcertOption;
+import com.concert.reservation.domain.concert.entity.ConcertOption;
 import com.concert.reservation.presentation.concert.ConcertOptionResponse;
 
 import java.util.List;

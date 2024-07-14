@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.seat;
 
-import com.concert.reservation.application.seat.SeatOptionRepository;
+import com.concert.reservation.domain.seat.SeatOptionRepository;
 import com.concert.reservation.domain.seat.SeatOptionCommand;
 import com.concert.reservation.domain.seat.SeatOptionDomain;
 import lombok.RequiredArgsConstructor;

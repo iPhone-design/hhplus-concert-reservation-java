@@ -1,6 +1,5 @@
-package com.concert.reservation.application.concert;
+package com.concert.reservation.domain.concert;
 
-import com.concert.reservation.domain.concert.ConcertOptionDomain;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

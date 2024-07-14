@@ -1,6 +1,7 @@
 package com.concert.reservation.application.customer;
 
 import com.concert.reservation.domain.customer.CustomerDomain;
+import com.concert.reservation.domain.customer.CustomerService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

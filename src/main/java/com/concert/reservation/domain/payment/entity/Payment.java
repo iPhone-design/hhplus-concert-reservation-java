@@ -1,4 +1,4 @@
-package com.concert.reservation.infrastructure.entity;
+package com.concert.reservation.domain.payment.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -10,23 +10,21 @@ import org.hibernate.annotations.CreationTimestamp;
 import java.sql.Timestamp;
 
 @Entity
-@Table(name = "RESERVATION")
+@Table(name = "PAYMENT")
 @Getter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Reservation {
+public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "payment_id")
+    private Long paymentId;
     @Column(name = "reservation_id")
     private Long reservationId;
-    @Column(name = "seat_option_id")
-    private Long seatOptionId;
-    @Column(name = "customer_id")
-    private Long customerId;
-    @Column(name = "status")
-    private String status;
+    @Column(name = "amount")
+    private Long amount;
     @CreationTimestamp
-    @Column(name = "reservation_dt")
-    private Timestamp reservationDt;
+    @Column(name = "payment_dt")
+    private Timestamp paymentDt;
 }

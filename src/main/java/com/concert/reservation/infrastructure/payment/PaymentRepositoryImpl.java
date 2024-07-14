@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.payment;
 
-import com.concert.reservation.application.payment.PaymentRepository;
+import com.concert.reservation.domain.payment.PaymentRepository;
 import com.concert.reservation.domain.payment.PaymentCommand;
 import com.concert.reservation.domain.payment.PaymentDomain;
 import lombok.RequiredArgsConstructor;

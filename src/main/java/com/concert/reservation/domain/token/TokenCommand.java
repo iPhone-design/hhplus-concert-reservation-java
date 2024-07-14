@@ -1,6 +1,6 @@
 package com.concert.reservation.domain.token;
 
-import com.concert.reservation.infrastructure.entity.Token;
+import com.concert.reservation.domain.token.entity.Token;
 import com.concert.reservation.presentation.token.TokenRequest;
 import com.concert.reservation.presentation.token.TokenResponse;
 

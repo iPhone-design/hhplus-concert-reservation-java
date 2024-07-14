@@ -1,6 +1,7 @@
 package com.concert.reservation.application.token;
 
 import com.concert.reservation.domain.token.TokenDomain;
+import com.concert.reservation.domain.token.TokenService;
 import jdk.jfr.Description;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

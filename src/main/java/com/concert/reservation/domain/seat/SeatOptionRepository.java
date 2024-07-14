@@ -1,6 +1,5 @@
-package com.concert.reservation.application.seat;
+package com.concert.reservation.domain.seat;
 
-import com.concert.reservation.domain.seat.SeatOptionDomain;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;

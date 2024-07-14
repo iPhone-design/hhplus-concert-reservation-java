@@ -1,6 +1,7 @@
 package com.concert.reservation.application.token;
 
 import com.concert.reservation.domain.token.TokenDomain;
+import com.concert.reservation.domain.token.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

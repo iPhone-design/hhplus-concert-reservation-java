@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.token;
 
-import com.concert.reservation.application.token.TokenRepository;
+import com.concert.reservation.domain.token.TokenRepository;
 import com.concert.reservation.domain.token.TokenCommand;
 import com.concert.reservation.domain.token.TokenDomain;
 import lombok.RequiredArgsConstructor;

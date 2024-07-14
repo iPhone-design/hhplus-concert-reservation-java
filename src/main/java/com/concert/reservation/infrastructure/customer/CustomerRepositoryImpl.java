@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.customer;
 
-import com.concert.reservation.application.customer.CustomerRepository;
+import com.concert.reservation.domain.customer.CustomerRepository;
 import com.concert.reservation.domain.customer.CustomerCommand;
 import com.concert.reservation.domain.customer.CustomerDomain;
 import lombok.RequiredArgsConstructor;

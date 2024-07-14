@@ -1,6 +1,6 @@
 package com.concert.reservation.infrastructure.token;
 
-import com.concert.reservation.infrastructure.entity.Token;
+import com.concert.reservation.domain.token.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

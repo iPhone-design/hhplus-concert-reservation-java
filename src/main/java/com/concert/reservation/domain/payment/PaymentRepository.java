@@ -1,6 +1,5 @@
-package com.concert.reservation.application.payment;
+package com.concert.reservation.domain.payment;
 
-import com.concert.reservation.domain.payment.PaymentDomain;
 import org.springframework.stereotype.Component;
 
 @Component
