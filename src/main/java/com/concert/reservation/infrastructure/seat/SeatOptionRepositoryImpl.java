@@ -1,13 +1,14 @@
 package com.concert.reservation.infrastructure.seat;
 
-import com.concert.reservation.domain.seat.SeatOptionRepository;
-import com.concert.reservation.domain.seat.SeatOptionCommand;
 import com.concert.reservation.domain.seat.SeatOptionDomain;
+import com.concert.reservation.domain.seat.SeatOptionRepository;
+import com.concert.reservation.domain.seat.entity.SeatOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -16,13 +17,23 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
 
     private final SeatOptionJpaRepository seatOptionJpaRepository;
 
+    /**
+     * 좌석 상세조회
+     *
+     * @author  양종문
+     * @since   2024-07-10
+     * @param   concertOptionId - 콘서트 옵션 ID
+     * @param   startDt - 시작일시
+     * @param   endDt - 끝일시
+     * @return  List<SeatOptionDomain>
+     */
     @Override
-    public SeatOptionDomain findSeat(Long seatOptionId, Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt) {
-        return SeatOptionCommand.toDomain(seatOptionJpaRepository.findSeat(seatOptionId, concertOptionId, startDt, endDt));
+    public Optional<SeatOptionDomain> findSeat(Long seatOptionId, Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt) {
+        return Optional.of(seatOptionJpaRepository.findSeat(seatOptionId, concertOptionId, startDt, endDt).toDomain());
     }
 
     /**
-     * 예약 가능 콘서트 좌석 조회
+     * 예약 가능 좌석 조회
      *
      * @author  양종문
      * @since   2024-07-10
@@ -34,19 +45,20 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
     @Override
     public List<SeatOptionDomain> findAllAvailableSeatForReservation(Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt) {
         return seatOptionJpaRepository.findAllAvailableSeatForReservation(concertOptionId, startDt, endDt).stream()
-                                                                                                          .map(SeatOptionCommand::toDomain)
+                                                                                                          .map(SeatOption::toDomain)
                                                                                                           .collect(Collectors.toList());
     }
-
+    
     /**
-     * 좌석 상태 값 수정
+     * 좌석 저장
      *
      * @author  양종문
-     * @since   2024-07-11
+     * @since   2024-07-16
      * @param   seatOptionDomain - 좌석 옵션 도메인
+     * @return  SeatOptionDomain
      */
     @Override
-    public void modifyStatus(SeatOptionDomain seatOptionDomain) {
-        seatOptionJpaRepository.updateStatus(seatOptionDomain.getSeatOptionId(), seatOptionDomain.getConcertOptionId(), seatOptionDomain.getStatus());
+    public SeatOptionDomain save(SeatOptionDomain seatOptionDomain) {
+        return seatOptionJpaRepository.save(SeatOption.toEntity(seatOptionDomain)).toDomain();
     }
 }

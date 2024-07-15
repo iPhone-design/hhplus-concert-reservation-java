@@ -14,5 +14,13 @@ public class SeatOptionDomain {
     private Long seatId;
     private Long concertOptionId;
     private Long price;
-    private String status;
+    private SeatOptionStatus status;
+
+    public void changeStatusToAvailable() {
+        this.status = SeatOptionStatus.AVAILABLE;
+    }
+
+    public void changeStatusToUnavailable() {
+        this.status = SeatOptionStatus.UNAVAILABLE;
+    }
 }

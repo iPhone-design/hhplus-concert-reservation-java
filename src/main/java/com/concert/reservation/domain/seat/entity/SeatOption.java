@@ -1,5 +1,7 @@
 package com.concert.reservation.domain.seat.entity;
 
+import com.concert.reservation.domain.seat.SeatOptionDomain;
+import com.concert.reservation.domain.seat.SeatOptionStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +25,27 @@ public class SeatOption {
     private Long concertOptionId;
     @Column(name = "price")
     private Long price;
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
-    private String status;
+    private SeatOptionStatus status;
+
+    public SeatOptionDomain toDomain() {
+        return SeatOptionDomain.builder()
+                               .seatOptionId(this.seatOptionId)
+                               .seatId(this.seatId)
+                               .concertOptionId(this.concertOptionId)
+                               .price(this.price)
+                               .status(status)
+                               .build();
+    }
+
+    public static SeatOption toEntity(SeatOptionDomain seatOptionDomain) {
+        return SeatOption.builder()
+                         .seatOptionId(seatOptionDomain.getSeatOptionId())
+                         .seatId(seatOptionDomain.getSeatId())
+                         .concertOptionId(seatOptionDomain.getConcertOptionId())
+                         .price(seatOptionDomain.getPrice())
+                         .status(seatOptionDomain.getStatus())
+                         .build();
+    }
 }
