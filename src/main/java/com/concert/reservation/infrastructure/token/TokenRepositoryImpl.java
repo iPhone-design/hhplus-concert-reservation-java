@@ -38,10 +38,10 @@ public class TokenRepositoryImpl implements TokenRepository {
      * @return  List<TokenDomain>
      */
     @Override
-    public Optional<List<TokenDomain>> findActive() {
-        return Optional.of(tokenJpaRepository.findActive().stream()
-                                                          .map(Token::toDomain)
-                                                          .collect(Collectors.toList()));
+    public List<TokenDomain> findActive() {
+        return tokenJpaRepository.findActive().stream()
+                                              .map(Token::toDomain)
+                                              .collect(Collectors.toList());
     }
 
     /**

@@ -27,17 +27,17 @@ public class TokenService {
     }
 
     /**
-     * 대기열 인원 수 체크
-     * ※ 최대 활성화 상태 인원수 100명까지 허용
+     * 활성화 토큰 수 체크
+     * ※ 최대 활성화 토큰 100명까지 허용
      *
      * @author  양종문
      * @since   2024-07-09
      */
-    public void checkQueueCustomers() {
+    public void checkActiveCustomers() {
         // 활성화 토큰 조회
-        Optional<List<TokenDomain>> tokenDomain = tokenRepository.findActive();
+        List<TokenDomain> tokenDomain = tokenRepository.findActive();
 
-        if (tokenDomain.isPresent() && tokenDomain.get().size() > 100) {
+        if (tokenDomain.size() > 100) {
             throw new IllegalArgumentException("대기열 인원 수 초과");
         }
     }

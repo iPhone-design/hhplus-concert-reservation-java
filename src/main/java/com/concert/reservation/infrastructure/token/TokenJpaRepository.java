@@ -8,6 +8,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -17,7 +18,7 @@ public interface TokenJpaRepository extends JpaRepository<Token, Long> {
 
     // 활성화 토큰 조회
     @Query("SELECT t FROM Token t WHERE t.status = 'ACTIVE' AND t.entryDt IS NOT NULL")
-    Optional<Token> findActive();
+    List<Token> findActive();
 
     // 토큰 상태 값 일괄 변경 (활성화 → 대기)
     @Modifying

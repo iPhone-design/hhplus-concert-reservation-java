@@ -9,7 +9,7 @@ import java.util.Optional;
 @Component
 public interface TokenRepository {
     Optional<TokenDomain> findByCustomerId(Long customerId);
-    Optional<List<TokenDomain>> findActive();
+    List<TokenDomain> findActive();
     Integer bulkStatusToWaiting(LocalDateTime currentDt, LocalDateTime expireDt);
     TokenDomain save(TokenDomain tokenDomain);
 }
