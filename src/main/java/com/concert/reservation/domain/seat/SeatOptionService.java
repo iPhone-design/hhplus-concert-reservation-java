@@ -21,17 +21,11 @@ public class SeatOptionService {
      * @since   2024-07-11
      * @param   seatOptionId - 좌석 옵션 ID
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @param   date - 날짜
      * @return  SeatOptionDomain
      */
-    public SeatOptionDomain findSeat(Long seatOptionId, Long concertOptionId, LocalDate date) {
-        // 시작일시
-        LocalDateTime startDt = date.atStartOfDay();
-        // 끝일시 (시작일에 1일을 더 해준다. 하루 범위로 검색하기 위함)
-        LocalDateTime endDt = date.plusDays(1).atStartOfDay();
-
+    public SeatOptionDomain findSeat(Long seatOptionId, Long concertOptionId) {
         // 좌석 조회
-        return seatOptionRepository.findSeat(seatOptionId, concertOptionId, startDt, endDt).orElseThrow(() -> new IllegalArgumentException("좌석 상세조회 정보가 없습니다."));
+        return seatOptionRepository.findSeat(seatOptionId, concertOptionId).orElseThrow(() -> new IllegalArgumentException("좌석 상세조회 정보가 없습니다."));
     }
 
     /**
@@ -43,7 +37,6 @@ public class SeatOptionService {
      * @param   concertOptionId - 콘서트 옵션 ID
      * @return  List<SeatOptionDomain>
      */
-    @Transactional
     public List<SeatOptionDomain> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
         // 시작일시
         LocalDateTime startDt = startDate.atStartOfDay();
@@ -55,44 +48,45 @@ public class SeatOptionService {
     }
 
     /**
-     * 좌석 가능 처리
+     * 좌석 상태 값 변경
      *
      * @author  양종문
      * @since   2024-07-11
      * @param   seatOptionId - 좌석 옵션 ID
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @param   date - 날짜
      */
     @Transactional
-    public void changeStatusToAvailable(Long seatOptionId, Long concertOptionId, LocalDate date) {
+    public void changeStatusToAvailable(Long seatOptionId, Long concertOptionId, SeatOptionStatus status) {
         // 좌석 조회
-        SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId, date);
-
-        // 자석 상태값 변경 (불가능 → 가능)
-        seatOptionDomain.changeStatusToAvailable();
+        SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
         
+        // 가능
+        if (SeatOptionStatus.AVAILABLE.equals(status)) {
+            seatOptionDomain.changeStatusToAvailable();
+        }
+        // 불가능
+        else if (SeatOptionStatus.UNAVAILABLE.equals(status)) {
+            seatOptionDomain.changeStatusToUnavailable();
+        }
+
         // 저장
         seatOptionRepository.save(seatOptionDomain);
     }
 
     /**
-     * 좌석 불가능 처리
+     * 좌석 가능 상태 체크
      *
      * @author  양종문
-     * @since   2024-07-11
+     * @since   2024-07-16
      * @param   seatOptionId - 좌석 옵션 ID
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @param   date - 날짜
      */
-    @Transactional
-    public void changeStatusToUnavailable(Long seatOptionId, Long concertOptionId, LocalDate date) {
+    public void checkAvailableStatus(Long seatOptionId, Long concertOptionId) {
         // 좌석 조회
-        SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId, date);
+        SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
 
-        // 자석 상태값 변경 (가능 → 불가능)
-        seatOptionDomain.changeStatusToUnavailable();
-
-        // 저장
-        seatOptionRepository.save(seatOptionDomain);
+        if (!SeatOptionStatus.AVAILABLE.equals(seatOptionDomain.getStatus())) {
+            throw new RuntimeException("불가능 상태의 좌석입니다.");
+        }
     }
 }

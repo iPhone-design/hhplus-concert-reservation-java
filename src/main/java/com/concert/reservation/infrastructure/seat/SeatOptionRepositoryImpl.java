@@ -28,8 +28,8 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
      * @return  List<SeatOptionDomain>
      */
     @Override
-    public Optional<SeatOptionDomain> findSeat(Long seatOptionId, Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt) {
-        return Optional.of(seatOptionJpaRepository.findSeat(seatOptionId, concertOptionId, startDt, endDt).toDomain());
+    public Optional<SeatOptionDomain> findSeat(Long seatOptionId, Long concertOptionId) {
+        return Optional.of(seatOptionJpaRepository.findSeat(seatOptionId, concertOptionId).toDomain());
     }
 
     /**

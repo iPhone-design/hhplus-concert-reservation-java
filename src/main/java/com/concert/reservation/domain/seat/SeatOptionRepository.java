@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Component
 public interface SeatOptionRepository {
-    Optional<SeatOptionDomain> findSeat(Long seatOptionId, Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt);
+    Optional<SeatOptionDomain> findSeat(Long seatOptionId, Long concertOptionId);
     List<SeatOptionDomain> findAllAvailableSeatForReservation(Long concertOptionId, LocalDateTime startDt, LocalDateTime endDt);
     SeatOptionDomain save(SeatOptionDomain seatOptionDomain);
 }
