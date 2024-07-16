@@ -1,8 +1,6 @@
 package com.concert.reservation.presentation.concert;
 
 import com.concert.reservation.application.concert.ConcertFacade;
-import com.concert.reservation.domain.concert.ConcertOptionCommand;
-import com.concert.reservation.domain.seat.SeatOptionCommand;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,7 +26,7 @@ public class ConcertOptionController {
      */
     @GetMapping("/dates")
     public List<ConcertOptionResponse> findAllAvailableConcertForReservation() {
-        return ConcertOptionCommand.toResponse(concertFacade.findAllAvailableConcertForReservation());
+        return ConcertOptionResponse.toResponse(concertFacade.findAllAvailableConcertForReservation());
     }
 
     /**
@@ -42,6 +40,6 @@ public class ConcertOptionController {
      */
     @GetMapping("/{date}/{concert-option-id}/seats")
     public List<SeatOptionResponse> findAllAvailableSeatForReservation(@PathVariable("date") LocalDate startDate, @PathVariable("concert-option-id") Long concertOptionId) {
-        return SeatOptionCommand.toResponse(concertFacade.findAllAvailableSeatForReservation(startDate, concertOptionId));
+        return SeatOptionResponse.toResponse(concertFacade.findAllAvailableSeatForReservation(startDate, concertOptionId));
     }
 }

@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,5 +16,5 @@ public class ConcertOptionDomain {
     private Long concertId;
     private String concertName;
     private String location;
-    private Timestamp openDt;
+    private LocalDateTime openDt;
 }

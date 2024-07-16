@@ -1,8 +1,8 @@
 package com.concert.reservation.infrastructure.concert;
 
-import com.concert.reservation.domain.concert.ConcertOptionRepository;
-import com.concert.reservation.domain.concert.ConcertOptionCommand;
 import com.concert.reservation.domain.concert.ConcertOptionDomain;
+import com.concert.reservation.domain.concert.ConcertOptionRepository;
+import com.concert.reservation.domain.concert.entity.ConcertOption;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -27,7 +27,7 @@ public class ConcertOptionRepositoryImpl implements ConcertOptionRepository {
     @Override
     public List<ConcertOptionDomain> findAllAvailableConcertForReservation(LocalDateTime currentDt) {
         return concertOptionJpaRepository.findAllAvailableConcertForReservation(currentDt).stream()
-                                                                                          .map(ConcertOptionCommand::toDomain)
+                                                                                          .map(ConcertOption::toDomain)
                                                                                           .collect(Collectors.toList());
     }
 }

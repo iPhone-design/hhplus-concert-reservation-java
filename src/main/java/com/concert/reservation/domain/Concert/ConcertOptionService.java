@@ -23,6 +23,7 @@ public class ConcertOptionService {
         // 현재일시
         LocalDateTime currentDt = LocalDateTime.now();
 
+        // 예약 가능 콘서트 조회
         return concertOptionRepository.findAllAvailableConcertForReservation(currentDt);
     }
 }
