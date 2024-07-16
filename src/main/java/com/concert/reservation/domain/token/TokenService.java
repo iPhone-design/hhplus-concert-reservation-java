@@ -77,25 +77,25 @@ public class TokenService {
      * @since   2024-07-15
      */
     @Transactional
-    public TokenDomain changeStatus(Long customerId, String status) {
+    public void changeStatus(Long customerId, TokenStatus status) {
         // 토큰 조회
         Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
 
         // 대기
-        if (TokenStatus.WAITING.name().equals(status)) {
+        if (TokenStatus.WAITING.equals(status)) {
             tokenDomain.get().changeStatusToWaiting();
         }
         // 활성화
-        else if (TokenStatus.ACTIVE.name().equals(status)) {
+        else if (TokenStatus.ACTIVE.equals(status)) {
             tokenDomain.get().changeStatusToActive();
         }
         // 만료
-        else if (TokenStatus.EXPIRE.name().equals(status)) {
+        else if (TokenStatus.EXPIRE.equals(status)) {
             tokenDomain.get().changeStatusToExpire();
         }
 
         // 저장
-        return tokenRepository.save(tokenDomain.get());
+        tokenRepository.save(tokenDomain.get());
     }
 
     /**
@@ -116,7 +116,6 @@ public class TokenService {
      * @since   2024-07-16
      * @param   customerId - 고객 ID
      */
-    @Transactional
     public void checkActiveStatus(Long customerId) {
         // 토큰 조회
         Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
