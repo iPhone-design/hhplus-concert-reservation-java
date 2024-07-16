@@ -33,7 +33,7 @@ public class TokenService {
      * @author  양종문
      * @since   2024-07-09
      */
-    public void checkActiveCustomers() {
+    public void checkActiveStatusCount() {
         // 활성화 토큰 조회
         List<TokenDomain> tokenDomain = tokenRepository.findActive();
 
@@ -71,44 +71,30 @@ public class TokenService {
     }
 
     /**
-     * 토큰 활성화 처리
+     * 토큰 상태 값 변경
      *
      * @author  양종문
      * @since   2024-07-15
      */
     @Transactional
-    public TokenDomain changeStatusToActive(Long customerId) {
+    public TokenDomain changeStatus(Long customerId, String status) {
         // 토큰 조회
-        Optional<TokenDomain> tokenDomain = this.findByCustomerId(customerId);
-        if (tokenDomain.isEmpty()) {
-            throw new IllegalArgumentException("토큰 상세 정보가 없습니다.");
+        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
+
+        // 대기
+        if (TokenStatus.WAITING.name().equals(status)) {
+            tokenDomain.get().changeStatusToWaiting();
+        }
+        // 활성화
+        else if (TokenStatus.ACTIVE.name().equals(status)) {
+            tokenDomain.get().changeStatusToActive();
+        }
+        // 만료
+        else if (TokenStatus.EXPIRE.name().equals(status)) {
+            tokenDomain.get().changeStatusToExpire();
         }
 
-        // 토큰 상태 값 변경 (대기 → 활성화)
-        tokenDomain.get().changeStatusToActive();
-
-        // 토큰 상태 값 변경
-        return tokenRepository.save(tokenDomain.get());
-    }
-
-    /**
-     * 토큰 대기 처리
-     *
-     * @author  양종문
-     * @since   2024-07-15
-     */
-    @Transactional
-    public TokenDomain changeStatusToWaiting(Long customerId) {
-        // 토큰 조회
-        Optional<TokenDomain> tokenDomain = this.findByCustomerId(customerId);
-        if (tokenDomain.isEmpty()) {
-            throw new IllegalArgumentException("토큰 상세 정보가 없습니다.");
-        }
-
-        // 토큰 상태 값 변경 (활성화 → 대기)
-        tokenDomain.get().changeStatusToWaiting();
-
-        // 토큰 상태 값 변경
+        // 저장
         return tokenRepository.save(tokenDomain.get());
     }
 
@@ -121,5 +107,23 @@ public class TokenService {
     @Transactional
     public Integer bulkStatusToWaiting() {
         return tokenRepository.bulkStatusToWaiting(LocalDateTime.now(), LocalDateTime.now().plusMinutes(4));
+    }
+
+    /**
+     * 토큰 활성화 상태 체크
+     *
+     * @author  양종문
+     * @since   2024-07-16
+     * @param   customerId - 고객 ID
+     */
+    @Transactional
+    public void checkActiveStatus(Long customerId) {
+        // 토큰 조회
+        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
+        
+        // 토큰 활성화 상태 체크
+        if (TokenStatus.ACTIVE.equals(tokenDomain.get().getStatus())) {
+            throw new RuntimeException("토큰이 활성화 상태가 아닙니다.");
+        }
     }
 }

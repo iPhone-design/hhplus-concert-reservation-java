@@ -19,14 +19,20 @@ public class TokenDomain {
     private LocalDateTime entryDt;
 
     public void changeStatusToWaiting() {
-        this.status =  TokenStatus.WAITING;
+        this.status = TokenStatus.WAITING;
         this.waitingStartDt = LocalDateTime.now();
         this.entryDt = null;
     }
 
     public void changeStatusToActive() {
-        this.status =  TokenStatus.ACTIVE;
+        this.status = TokenStatus.ACTIVE;
         this.entryDt = LocalDateTime.now();
+    }
+
+    public void changeStatusToExpire() {
+        this.status = TokenStatus.EXPIRE;
+        this.waitingStartDt = null;
+        this.entryDt = null;
     }
 
     public static TokenDomain createToken(Long customerId) {
