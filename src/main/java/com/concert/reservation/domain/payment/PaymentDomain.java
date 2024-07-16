@@ -5,8 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -16,10 +15,10 @@ public class PaymentDomain {
     private Long paymentId;
     private Long reservationId;
     private Long amount;
-    private Timestamp paymentDt;
+    private PaymentStatus status;
+    private LocalDateTime paymentDt;
 
     private Long customerId;
-    private Long seatOptionId;
     private Long concertOptionId;
-    private LocalDate date;
+    private Long seatOptionId;
 }

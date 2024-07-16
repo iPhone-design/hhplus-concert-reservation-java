@@ -1,8 +1,8 @@
 package com.concert.reservation.infrastructure.payment;
 
-import com.concert.reservation.domain.payment.PaymentRepository;
-import com.concert.reservation.domain.payment.PaymentCommand;
 import com.concert.reservation.domain.payment.PaymentDomain;
+import com.concert.reservation.domain.payment.PaymentRepository;
+import com.concert.reservation.domain.payment.entity.Payment;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -22,6 +22,6 @@ public class PaymentRepositoryImpl implements PaymentRepository {
      */
     @Override
     public PaymentDomain save(PaymentDomain paymentDomain) {
-        return PaymentCommand.toDomain(paymentJpaRepository.save(PaymentCommand.toEntity(paymentDomain)));
+        return paymentJpaRepository.save(Payment.toEntity(paymentDomain)).toDomain();
     }
 }
