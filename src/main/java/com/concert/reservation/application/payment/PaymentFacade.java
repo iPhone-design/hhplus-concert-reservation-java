@@ -1,18 +1,17 @@
 package com.concert.reservation.application.payment;
 
 import com.concert.reservation.domain.customer.CustomerService;
-import com.concert.reservation.domain.reservation.ReservationService;
-import com.concert.reservation.domain.seat.SeatOptionService;
-import com.concert.reservation.domain.token.TokenService;
-import com.concert.reservation.domain.customer.CustomerDomain;
 import com.concert.reservation.domain.payment.PaymentDomain;
 import com.concert.reservation.domain.payment.PaymentService;
-import com.concert.reservation.domain.seat.SeatOptionDomain;
-import com.concert.reservation.domain.token.TokenDomain;
+import com.concert.reservation.domain.payment.PaymentStatus;
+import com.concert.reservation.domain.reservation.ReservationDomain;
+import com.concert.reservation.domain.reservation.ReservationService;
+import com.concert.reservation.domain.reservation.ReservationStatus;
+import com.concert.reservation.domain.seat.SeatOptionService;
+import com.concert.reservation.domain.token.TokenService;
+import com.concert.reservation.domain.token.TokenStatus;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDate;
 
 @Component
 @RequiredArgsConstructor
@@ -29,59 +28,37 @@ public class PaymentFacade {
      *
      * @author  양종문
      * @since   2024-07-11
-     * @param   seatOptionId - 좌석 옵션 ID
      * @param   customerId - 고객 ID
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @param   date - 날짜
+     * @param   seatOptionId - 좌석 옵션 ID
+     * @param   amount - 결제 금액
+     * @return  paymentDomain
      */
-    public PaymentDomain payment(Long seatOptionId, Long customerId, Long concertOptionId, LocalDate date) {
-        // 고객 토큰 유효성 체크
-        this.validateToken(tokenService.findByCustomerId(customerId));
+    public PaymentDomain payment(Long customerId, Long concertOptionId, Long seatOptionId, Long amount) {
+        // 토큰 유효성 체크
+        tokenService.checkActiveStatus(customerId);
 
         // 좌석 유효성 체크
-        SeatOptionDomain seatOptionDomain = seatOptionService.findSeat(seatOptionId, concertOptionId, date);
-        this.validateSeat(seatOptionDomain);
+        seatOptionService.checkAvailableStatus(seatOptionId, concertOptionId);
 
-        // 고객이 소지한 금액이 좌석 금액보다 적을 경우 오류
-        CustomerDomain customerDomain = customerService.findById(customerId);
-        if (customerDomain.getAmount() < seatOptionDomain.getPrice()) throw new IllegalArgumentException("금액이 부족합니다.");
+        // 잔액 유효성 체크
+        customerService.checkAmount(customerId, amount);
+
+        // 예약 조회
+        ReservationDomain reservationDomain = reservationService.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId);
 
         // 결제
-        PaymentDomain paymentDomain = paymentService.save(PaymentDomain.builder().reservationId(seatOptionId).amount(seatOptionDomain.getPrice()).build());
-        // 고객 금액 수정 (고객 금액 - 좌석 값)
-        customerService.updateAmount(customerId, customerDomain.getAmount() - seatOptionDomain.getPrice());
+        PaymentDomain paymentDomain = paymentService.save(PaymentDomain.builder().reservationId(reservationDomain.getReservationId()).amount(amount).status(PaymentStatus.COMPLETE).build());
+
+        // 이용자 금액 사용
+        customerService.useAmount(customerId, amount);
 
         // 예약 상태 값 변경 (미완료 → 완료)
-        reservationService.modifyStatus(reservationService.findBySeatOptionIdAndCustomerId(seatOptionId, customerId).getReservationId(), "COMPLETE");
+        reservationService.changeStatus(concertOptionId, seatOptionId, customerId, ReservationStatus.COMPLETE);
 
         // 토큰 상태 값 변경 (활성화 → 만료)
-        tokenService.modifyStatus(tokenService.findByCustomerId(customerId), "EXPIRED");
+        tokenService.changeStatus(customerId, TokenStatus.EXPIRE);
 
         return paymentDomain;
-    }
-
-    /**
-     * 고객 토큰 유효성 체크
-     *
-     * @author  양종문
-     * @since   2024-07-11
-     * @param   tokenDomain - 고객 도메인
-     */
-    private void validateToken(TokenDomain tokenDomain) {
-        // 유효성 체크
-        if (tokenDomain == null) throw new IllegalArgumentException("토큰이 유효하지 않습니다.");
-        if (!"ACTIVE".equals(tokenDomain.getStatus())) throw new IllegalArgumentException("토큰이 만료되었습니다.");
-    }
-
-    /**
-     * 좌석 유효성 체크
-     *
-     * @author  양종문
-     * @since   2024-07-11
-     * @param   seatOptionDomain - 좌석 옵션 도메인
-     */
-    private void validateSeat(SeatOptionDomain seatOptionDomain) {
-        if (seatOptionDomain == null) throw new IllegalArgumentException("좌석 정보가 존재하지 않습니다.");
-        if (!"UNAVAILABLE".equals(seatOptionDomain.getStatus())) throw new IllegalArgumentException("좌석 상태를 확인해 주세요.");
     }
 }
