@@ -11,14 +11,14 @@ public class CustomerService {
     private final CustomerRepository customerRepository;
 
     /**
-     * 잔액 조회
+     * 고객 상세조회
      *
      * @author  양종문
      * @since   2024-07-07
      * @param   customerId - 고객 ID
      * @return  customerDomain
      */
-    public CustomerDomain getUserInfo(Long customerId) {
+    public CustomerDomain findById(Long customerId) {
         return customerRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("고객 정보가 존재하지 않습니다."));
     }
 
@@ -28,18 +28,57 @@ public class CustomerService {
      * @author  양종문
      * @since   2024-07-07
      * @param   customerId - 고객 ID
-     * @param   addAmount - 충전 금액
+     * @param   amount - 충전 금액
      * @return  customerDomain
      */
     @Transactional
-    public CustomerDomain save(Long customerId, Long addAmount) {
-        // 잔액 조회
-        CustomerDomain customerDomain = this.getUserInfo(customerId);
+    public CustomerDomain chargeAmount(Long customerId, Long amount) {
+        // 고객 상세조회
+        CustomerDomain customerDomain = this.findById(customerId);
 
         // 잔액 추가
-        customerDomain.plusAmount(addAmount);
+        customerDomain.plusAmount(amount);
         
         // 저장
         return customerRepository.save(customerDomain);
+    }
+
+    /**
+     * 잔액 사용
+     *
+     * @author  양종문
+     * @since   2024-07-17
+     * @param   customerId - 고객 ID
+     * @param   amount - 결제 금액
+     * @return  customerDomain
+     */
+    @Transactional
+    public CustomerDomain useAmount(Long customerId, Long amount) {
+        // 고객 상세조회
+        CustomerDomain customerDomain = this.findById(customerId);
+
+        // 잔액 사용
+        customerDomain.minusAmount(amount);
+
+        // 저장
+        return customerRepository.save(customerDomain);
+    }
+
+    /**
+     * 잔액 체크
+     *
+     * @author  양종문
+     * @since   2024-07-17
+     * @param   customerId - 고객 ID
+     * @param   amount - 결제 금액
+     */
+    public void checkAmount(Long customerId, Long amount) {
+        // 고객 상세조회
+        CustomerDomain customerDomain = this.findById(customerId);
+        
+        // 결제 금액과 잔액 비교
+        if (customerDomain.getAmount() < amount) {
+            throw new RuntimeException("잔액이 부족합니다.");
+        }
     }
 }

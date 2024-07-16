@@ -12,15 +12,15 @@ public class CustomerFacade {
     private final CustomerService customerService;
 
     /**
-     * 잔액 조회
+     * 고객 상세조회
      *
      * @author  양종문
      * @since   2024-07-07
      * @param   customerId - 고객 ID
      * @return  customerDomain
      */
-    public CustomerDomain getUserInfo(Long customerId) {
-        return customerService.getUserInfo(customerId);
+    public CustomerDomain findById(Long customerId) {
+        return customerService.findById(customerId);
     }
 
     /**
@@ -29,10 +29,10 @@ public class CustomerFacade {
      * @author  양종문
      * @since   2024-07-07
      * @param   customerId - 고객 ID
-     * @param   addAmount - 충전 금액
+     * @param   amount - 충전 금액
      * @return  customerDomain
      */
-    public CustomerDomain chargeAmount(Long customerId, Long addAmount) {
-        return customerService.save(customerId, addAmount);
+    public CustomerDomain chargeAmount(Long customerId, Long amount) {
+        return customerService.chargeAmount(customerId, amount);
     }
 }

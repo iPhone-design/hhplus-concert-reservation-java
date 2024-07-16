@@ -12,7 +12,7 @@ public class CustomerController {
     private final CustomerFacade customerFacade;
 
     /**
-     * 잔액 조회 API
+     * 고객 상세조회 API
      *
      * @author  양종문
      * @since   2024-07-05
@@ -20,8 +20,8 @@ public class CustomerController {
      * @return  customerResponse
      */
     @GetMapping("/information/{customer-id}")
-    public CustomerResponse getUserInfo(@PathVariable(name = "customer-id") Long customerId) {
-        return CustomerResponse.toResponse(customerFacade.getUserInfo(customerId));
+    public CustomerResponse findById(@PathVariable(name = "customer-id") Long customerId) {
+        return CustomerResponse.toResponse(customerFacade.findById(customerId));
     }
 
     /**
@@ -30,7 +30,6 @@ public class CustomerController {
      * @author  양종문
      * @since   2024-07-05
      * @param   customerId - 고객 ID
-     *
      * @return  customerResponse
      */
     @PatchMapping("/charge/{customer-id}")
