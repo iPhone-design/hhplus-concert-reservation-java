@@ -1,6 +1,5 @@
 package com.concert.reservation.domain.seat;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -55,8 +54,7 @@ public class SeatOptionService {
      * @param   seatOptionId - 좌석 옵션 ID
      * @param   concertOptionId - 콘서트 옵션 ID
      */
-    @Transactional
-    public void changeStatusToAvailable(Long seatOptionId, Long concertOptionId, SeatOptionStatus status) {
+    public void changeStatus(Long seatOptionId, Long concertOptionId, SeatOptionStatus status) {
         // 좌석 조회
         SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
         

@@ -52,7 +52,6 @@ public class CustomerService {
      * @param   amount - 결제 금액
      * @return  customerDomain
      */
-    @Transactional
     public CustomerDomain useAmount(Long customerId, Long amount) {
         // 고객 상세조회
         CustomerDomain customerDomain = this.findById(customerId);

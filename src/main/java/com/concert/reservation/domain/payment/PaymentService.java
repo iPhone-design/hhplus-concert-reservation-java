@@ -1,6 +1,5 @@
 package com.concert.reservation.domain.payment;
 
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -18,7 +17,6 @@ public class PaymentService {
      * @param   paymentDomain - 결제 도메인
      * @return  paymentDomain
      */
-    @Transactional
     public PaymentDomain save(PaymentDomain paymentDomain) {
         return paymentRepository.save(paymentDomain);
     }

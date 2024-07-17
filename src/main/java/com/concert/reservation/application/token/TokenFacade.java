@@ -20,6 +20,7 @@ public class TokenFacade {
      * @return  tokenDomain
      */
     public TokenDomain issueToken(Long customerId) {
+        // 토큰 발급
         return tokenService.issueToken(customerId);
     }
 }

@@ -76,7 +76,6 @@ public class TokenService {
      * @author  양종문
      * @since   2024-07-15
      */
-    @Transactional
     public void changeStatus(Long customerId, TokenStatus status) {
         // 토큰 조회
         Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
@@ -119,9 +118,9 @@ public class TokenService {
     public void checkActiveStatus(Long customerId) {
         // 토큰 조회
         Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
-        
+
         // 토큰 활성화 상태 체크
-        if (TokenStatus.ACTIVE.equals(tokenDomain.get().getStatus())) {
+        if (!TokenStatus.ACTIVE.equals(tokenDomain.get().getStatus())) {
             throw new RuntimeException("토큰이 활성화 상태가 아닙니다.");
         }
     }
