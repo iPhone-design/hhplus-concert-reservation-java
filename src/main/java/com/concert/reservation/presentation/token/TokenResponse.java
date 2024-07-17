@@ -19,6 +19,7 @@ public class TokenResponse {
     private TokenStatus status;
     private LocalDateTime waitingStartDt;
     private LocalDateTime entryDt;
+    private Integer rank;
 
     public static TokenResponse toResponse(TokenDomain tokenDomain) {
         return TokenResponse.builder()
@@ -27,6 +28,7 @@ public class TokenResponse {
                 .status(tokenDomain.getStatus())
                 .waitingStartDt(tokenDomain.getWaitingStartDt())
                 .entryDt(tokenDomain.getEntryDt())
+                .rank(tokenDomain.getRank())
                 .build();
     }
 }

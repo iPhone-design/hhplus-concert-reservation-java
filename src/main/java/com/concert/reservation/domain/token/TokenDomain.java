@@ -17,6 +17,7 @@ public class TokenDomain {
     private TokenStatus status;
     private LocalDateTime waitingStartDt;
     private LocalDateTime entryDt;
+    private Integer rank;
 
     public void changeStatusToWaiting() {
         this.status = TokenStatus.WAITING;
