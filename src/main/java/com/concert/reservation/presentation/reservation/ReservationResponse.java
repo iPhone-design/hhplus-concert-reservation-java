@@ -1,11 +1,13 @@
 package com.concert.reservation.presentation.reservation;
 
+import com.concert.reservation.domain.reservation.ReservationDomain;
+import com.concert.reservation.domain.reservation.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -13,9 +15,21 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 public class ReservationResponse {
     private Long reservationId;
+    private Long concertOptionId;
     private Long seatOptionId;
     private Long customerId;
-    private String status;
-    private Timestamp reservationDt;
+    private ReservationStatus status;
+    private LocalDateTime reservationDt;
+
+    public static ReservationResponse toResponse(ReservationDomain reservationDomain) {
+        return ReservationResponse.builder()
+                                  .reservationId(reservationDomain.getReservationId())
+                                  .concertOptionId(reservationDomain.getConcertOptionId())
+                                  .seatOptionId(reservationDomain.getSeatOptionId())
+                                  .customerId(reservationDomain.getCustomerId())
+                                  .status(reservationDomain.getStatus())
+                                  .reservationDt(reservationDomain.getReservationDt())
+                                  .build();
+    }
 }
 

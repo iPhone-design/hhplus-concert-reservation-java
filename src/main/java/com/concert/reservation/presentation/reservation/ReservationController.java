@@ -1,7 +1,6 @@
 package com.concert.reservation.presentation.reservation;
 
 import com.concert.reservation.application.reservation.ReservationFacade;
-import com.concert.reservation.domain.reservation.ReservationCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +25,6 @@ public class ReservationController {
      */
     @PostMapping("/reservation")
     public ReservationResponse reservationConcert(@Valid @RequestBody ReservationRequest reservationRequest) {
-        return ReservationCommand.toResponse(reservationFacade.reservationConcert(ReservationCommand.toDomain(reservationRequest)));
+       return ReservationResponse.toResponse(reservationFacade.reservationConcert(reservationRequest.getCustomerId(), reservationRequest.getConcertOptionId(), reservationRequest.getSeatOptionId()));
     }
 }

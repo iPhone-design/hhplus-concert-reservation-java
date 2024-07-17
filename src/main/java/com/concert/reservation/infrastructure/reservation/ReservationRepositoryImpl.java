@@ -1,8 +1,8 @@
 package com.concert.reservation.infrastructure.reservation;
 
-import com.concert.reservation.domain.reservation.ReservationRepository;
-import com.concert.reservation.domain.reservation.ReservationCommand;
 import com.concert.reservation.domain.reservation.ReservationDomain;
+import com.concert.reservation.domain.reservation.ReservationRepository;
+import com.concert.reservation.domain.reservation.entity.Reservation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,16 +17,18 @@ public class ReservationRepositoryImpl implements ReservationRepository {
      *
      * @author  양종문
      * @since   2024-07-11
-     * @param   reservationId - 예약 ID
+     * @param   concertOptionId - 예약 옵션 ID
+     * @param   seatOptionId - 좌석 옵션 ID
+     * @param   customerId - 고객 ID
      * @return  reservationDomain
      */
     @Override
-    public ReservationDomain findBySeatOptionIdAndCustomerId(Long seatOptionId, Long customerId) {
-        return ReservationCommand.toDomain(reservationJpaRepository.findBySeatOptionIdAndCustomerId(seatOptionId, customerId).orElseThrow(() -> new IllegalArgumentException("예약 상세정보가 없습니다.")));
+    public ReservationDomain findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId) {
+        return reservationJpaRepository.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId).orElseThrow(() -> new IllegalArgumentException("예약 상세정보가 없습니다.")).toDomain();
     }
 
     /**
-     * 예약
+     * 예약 저장
      *
      * @author  양종문
      * @since   2024-07-11
@@ -35,19 +37,6 @@ public class ReservationRepositoryImpl implements ReservationRepository {
      */
     @Override
     public ReservationDomain save(ReservationDomain reservationDomain) {
-        return ReservationCommand.toDomain(reservationJpaRepository.save(ReservationCommand.toEntity(reservationDomain)));
-    }
-
-    /**
-     * 예약 상태 값 수정
-     *
-     * @author  양종문
-     * @since   2024-07-11
-     * @param   reservationId - 예약 ID
-     * @param   status - 상태
-     */
-    @Override
-    public void modifyStatus(Long reservationId, String status) {
-        reservationJpaRepository.updateStatus(reservationId, status);
+        return reservationJpaRepository.save(Reservation.toEntity(reservationDomain)).toDomain();
     }
 }
