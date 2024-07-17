@@ -18,17 +18,15 @@ public class TokenRepositoryImpl implements TokenRepository {
     private final TokenJpaRepository tokenJpaRepository;
 
     /**
-     * 대기 상태 토큰 조회
+     * 첫 번째 대기열 고객 상세조회
      *
      * @author  양종문
      * @since   2024-07-18
-     * @return  List<TokenDomain>
+     * @return  TokenDomain
      */
     @Override
-    public List<TokenDomain> findAllWaitingStatus() {
-        return tokenJpaRepository.findAllWaitingStatus().stream()
-                                                        .map(Token::toDomain)
-                                                        .collect(Collectors.toList());
+    public TokenDomain findFirstWaiting() {
+        return tokenJpaRepository.findFirstWaiting().toDomain();
     }
 
     /**

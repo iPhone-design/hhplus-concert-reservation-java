@@ -15,30 +15,14 @@ public class TokenService {
     private final TokenRepository tokenRepository;
 
     /**
-     * 대기 순번을 포함한 토큰 상세조회
+     * 첫 번째 대기열 고객 상세조회
      *
      * @author  양종문
      * @since   2024-07-18
      * @return  TokenDomain
      */
-    public TokenDomain findByCustomerIdWithWaitingRank(Long customerId) {
-        // 대기 상태 토큰 조회
-        List<TokenDomain> listTokenDomain = tokenRepository.findAllWaitingStatus();
-
-        // 루프를 돌면서 대기 순번을 획득
-        for (int idx = 0; idx < listTokenDomain.size(); idx++) {
-            if (listTokenDomain.get(idx).getCustomerId().equals(customerId)) {
-                return TokenDomain.builder()
-                        .tokenId(listTokenDomain.get(idx).getTokenId())
-                        .customerId(listTokenDomain.get(idx).getCustomerId())
-                        .status(listTokenDomain.get(idx).getStatus())
-                        .waitingStartDt(listTokenDomain.get(idx).getWaitingStartDt())
-                        .rank(idx + 1)
-                        .build();
-            }
-        }
-
-        throw new RuntimeException("대가 상태 토큰 정보가 없습니다.");
+    public TokenDomain findFirstWaiting() {
+        return tokenRepository.findFirstWaiting();
     }
 
     /**

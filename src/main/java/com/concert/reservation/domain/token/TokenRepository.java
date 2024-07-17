@@ -8,7 +8,7 @@ import java.util.Optional;
 
 @Component
 public interface TokenRepository {
-    List<TokenDomain> findAllWaitingStatus();
+    TokenDomain findFirstWaiting();
     Optional<TokenDomain> findByCustomerId(Long customerId);
     List<TokenDomain> findActive();
     Integer bulkStatusToWaiting(LocalDateTime currentDt, LocalDateTime expireDt);

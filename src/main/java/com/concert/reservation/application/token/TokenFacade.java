@@ -39,11 +39,11 @@ public class TokenFacade {
         // 활성화 토큰 수 체크 (최대 활성화 토큰 100명까지 허용)
         tokenService.checkActiveStatusCount();
 
-        // 대기 순번을 포함한 토큰 상세조회
-        TokenDomain tokenDomain = tokenService.findByCustomerIdWithWaitingRank(customerId);
+        // 첫 번째 대기열 고객 상세조회
+        TokenDomain tokenDomain = tokenService.findFirstWaiting();
         
         // 본인 순번이면 토큰 활성화 처리
-        if (tokenDomain.getRank() == 1) {
+        if (tokenDomain.getCustomerId().equals(customerId)) {
             // 토큰 상태 값 변경 (대기 → 활성)
             tokenService.changeStatus(customerId, TokenStatus.ACTIVE);
 
@@ -51,7 +51,7 @@ public class TokenFacade {
             return tokenService.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다."));
         }
         else {
-            // 대기 순번이 포함된 객체 리턴
+            // TODO 등수를 포함하게 보완할 것
             return tokenDomain;
         }
     }

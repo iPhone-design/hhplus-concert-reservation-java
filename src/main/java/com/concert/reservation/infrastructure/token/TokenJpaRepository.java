@@ -13,18 +13,26 @@ import java.util.Optional;
 
 @Repository
 public interface TokenJpaRepository extends JpaRepository<Token, Long> {
-    // 대기 상태의 토큰 목록 조회
+    // 첫 번째 대기열 고객 상세조회
     @Query(value = """
-             SELECT token_id
-                  , customer_id
-                  , status
-                  , waiting_start_dt
-                  , entry_dt
-               FROM token
-              WHERE status = 'WAITING'
-             ORDER BY waiting_start_dt
+             SELECT a.token_id
+                  , a.customer_id
+                  , a.status
+                  , a.waiting_start_dt
+                  , a.entry_dt
+               FROM (
+                         SELECT token_id
+                              , customer_id
+                              , status
+                              , waiting_start_dt
+                              , entry_dt
+                              , ROW_NUMBER() OVER (ORDER BY waiting_start_dt) AS rank
+                           FROM token
+                          WHERE status = 'WAITING'
+                    ) a
+             WHERE a.rank = 1
              """, nativeQuery = true)
-    List<Token> findAllWaitingStatus();
+    Token findFirstWaiting();
 
     // 토큰 상세조회
     Optional<Token> findByCustomerId(Long customerId);
