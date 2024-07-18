@@ -36,9 +36,6 @@ public class PaymentFacade {
      */
     @Transactional
     public PaymentDomain payment(Long customerId, Long concertOptionId, Long seatOptionId, Long amount) {
-        // 토큰 유효성 체크
-        tokenService.checkActiveStatus(customerId);
-
         // 잔액 유효성 체크
         customerService.checkAmount(customerId, amount);
 

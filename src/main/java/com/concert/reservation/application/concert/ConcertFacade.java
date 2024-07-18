@@ -28,9 +28,6 @@ public class ConcertFacade {
      * @return  List<ConcertOptionDomain>
      */
     public List<ConcertOptionDomain> findAllAvailableConcertForReservation(Long customerId) {
-        // 토큰 유효성 체크
-        tokenService.checkActiveStatus(customerId);
-
         // 예약 가능 콘서트 조회
         return concertOptionService.findAllAvailableConcertForReservation();
     }
@@ -46,9 +43,6 @@ public class ConcertFacade {
      * @return  List<SeatOptionDomain>
      */
     public List<SeatOptionDomain> findAllAvailableSeatForReservation(Long customerId, LocalDate startDate, Long concertOptionId) {
-        // 토큰 유효성 체크
-        tokenService.checkActiveStatus(customerId);
-
         // 예약 가능 콘서트 좌석 조회
         return seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
     }

@@ -30,9 +30,6 @@ public class ReservationFacade {
      */
     @Transactional
     public ReservationDomain reservationConcert(Long customerId, Long concertOptionId, Long seatOptionId) {
-        // 토큰 유효성 체크
-        tokenService.checkActiveStatus(customerId);
-        
         // 좌석 유효성 체크
         seatOptionService.checkAvailableStatus(seatOptionId, concertOptionId);
 
