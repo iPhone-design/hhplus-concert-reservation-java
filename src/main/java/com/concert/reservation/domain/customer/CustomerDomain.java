@@ -1,9 +1,11 @@
 package com.concert.reservation.domain.customer;
 
+import com.concert.reservation.domain.exception.CustomException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 @Data
 @Builder
@@ -22,7 +24,7 @@ public class CustomerDomain {
     // 잔액 차감
     public void minusAmount(Long amount) {
         if (this.amount < amount) {
-            throw new IllegalArgumentException("금액이 부족합니다.");
+            throw new CustomException(HttpStatus.ACCEPTED, "금액이 부족합니다.");
         }
 
         this.amount -= amount;

@@ -1,10 +1,12 @@
 package com.concert.reservation.application.token;
 
+import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.token.TokenDomain;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.TokenStatus;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -49,7 +51,7 @@ public class TokenFacade {
     @Transactional
     public TokenDomain findByCustomerIdAndThenChangeStatusToActive(Long customerId) {
         // 토큰 조회
-        tokenService.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다."));
+        tokenService.findByCustomerId(customerId).orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "토큰 상세 정보가 없습니다."));
 
         // 활성화 토큰 수 체크 (최대 활성화 토큰 100명까지 허용)
         tokenService.checkActiveStatusCount();
@@ -63,7 +65,7 @@ public class TokenFacade {
             tokenService.changeStatus(customerId, TokenStatus.ACTIVE);
 
             // 토큰 상세조회
-            return tokenService.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다."));
+            return tokenService.findByCustomerId(customerId).orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "토큰 상세 정보가 없습니다."));
         }
         else {
             // 대기열 등수를 포함한 고객 상세조회

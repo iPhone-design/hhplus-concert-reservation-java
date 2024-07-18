@@ -1,6 +1,8 @@
 package com.concert.reservation.domain.seat;
 
+import com.concert.reservation.domain.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -24,7 +26,7 @@ public class SeatOptionService {
      */
     public SeatOptionDomain findSeat(Long seatOptionId, Long concertOptionId) {
         // 좌석 조회
-        return seatOptionRepository.findSeat(seatOptionId, concertOptionId).orElseThrow(() -> new IllegalArgumentException("좌석 상세조회 정보가 없습니다."));
+        return seatOptionRepository.findSeat(seatOptionId, concertOptionId).orElseThrow(() -> new CustomException(HttpStatus.ACCEPTED, "좌석 상세조회 정보가 없습니다."));
     }
 
     /**
@@ -84,7 +86,7 @@ public class SeatOptionService {
         SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
 
         if (!SeatOptionStatus.AVAILABLE.equals(seatOptionDomain.getStatus())) {
-            throw new RuntimeException("불가능 상태의 좌석입니다.");
+            throw new CustomException(HttpStatus.ACCEPTED, "불가능 상태의 좌석입니다.");
         }
     }
 }

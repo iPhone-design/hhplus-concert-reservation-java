@@ -1,9 +1,11 @@
 package com.concert.reservation.infrastructure.reservation;
 
+import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.reservation.ReservationDomain;
 import com.concert.reservation.domain.reservation.ReservationRepository;
 import com.concert.reservation.domain.reservation.entity.Reservation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
@@ -28,7 +30,7 @@ public class ReservationRepositoryImpl implements ReservationRepository {
      */
     @Override
     public ReservationDomain findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId) {
-        return reservationJpaRepository.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId).orElseThrow(() -> new IllegalArgumentException("예약 상세정보가 없습니다.")).toDomain();
+        return reservationJpaRepository.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId).orElseThrow(() -> new CustomException(HttpStatus.ACCEPTED, "예약 상세정보가 없습니다.")).toDomain();
     }
 
     /**

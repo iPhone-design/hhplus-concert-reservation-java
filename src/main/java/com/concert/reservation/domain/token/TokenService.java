@@ -1,7 +1,9 @@
 package com.concert.reservation.domain.token;
 
+import com.concert.reservation.domain.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -35,7 +37,7 @@ public class TokenService {
      */
     public TokenDomain findByCustomerIdWithRank(Long customerId) {
         // 토큰 조회
-        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
+        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "토큰 상세 정보가 없습니다.")));
         // 대기열 등수 조회
         tokenDomain.get().setRank(tokenRepository.findRankByCustomerId(customerId));
 
@@ -77,7 +79,7 @@ public class TokenService {
         List<TokenDomain> tokenDomain = tokenRepository.findActive();
 
         if (tokenDomain.size() > 100) {
-            throw new IllegalArgumentException("대기열 인원 수 초과");
+            throw new CustomException(HttpStatus.ACCEPTED, "대기열 인원 수 초과");
         }
     }
 
@@ -117,7 +119,7 @@ public class TokenService {
      */
     public void changeStatus(Long customerId, TokenStatus status) {
         // 토큰 조회
-        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
+        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "토큰 상세 정보가 없습니다.")));
 
         // 대기
         if (TokenStatus.WAITING.equals(status)) {
@@ -145,11 +147,11 @@ public class TokenService {
      */
     public void checkActiveStatus(Long customerId) {
         // 토큰 조회
-        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
+        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "토큰 상세 정보가 없습니다.")));
 
         // 토큰 활성화 상태 체크
         if (!TokenStatus.ACTIVE.equals(tokenDomain.get().getStatus())) {
-            throw new RuntimeException("토큰이 활성화 상태가 아닙니다.");
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "토큰이 활성화 상태가 아닙니다.");
         }
     }
 }
