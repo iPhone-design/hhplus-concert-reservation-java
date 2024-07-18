@@ -1,7 +1,9 @@
 package com.concert.reservation.domain.customer;
 
+import com.concert.reservation.domain.exception.CustomException;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +21,7 @@ public class CustomerService {
      * @return  customerDomain
      */
     public CustomerDomain findById(Long customerId) {
-        return customerRepository.findById(customerId).orElseThrow(() -> new IllegalArgumentException("고객 정보가 존재하지 않습니다."));
+        return customerRepository.findById(customerId).orElseThrow(() -> new CustomException(HttpStatus.ACCEPTED, "고객 정보가 존재하지 않습니다."));
     }
 
     /**
@@ -77,7 +79,7 @@ public class CustomerService {
         
         // 결제 금액과 잔액 비교
         if (customerDomain.getAmount() < amount) {
-            throw new RuntimeException("잔액이 부족합니다.");
+            throw new CustomException(HttpStatus.ACCEPTED, "잔액이 부족합니다.");
         }
     }
 }

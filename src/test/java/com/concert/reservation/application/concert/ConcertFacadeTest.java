@@ -43,8 +43,8 @@ class ConcertFacadeTest {
 
     @BeforeEach
     void setUp() {
-        concert1 =  ConcertOptionDomain.builder().concertId(1L).concertName("잠실 공연").location("잠실").openDt(Timestamp.valueOf(LocalDate.now().minusDays(2).atStartOfDay())).build();
-        concert2 =  ConcertOptionDomain.builder().concertId(1L).concertName("신촌 공연").location("신촌").openDt(Timestamp.valueOf(LocalDate.now().plusDays(5).atStartOfDay())).build();
+        concert1 =  ConcertOptionDomain.builder().concertId(1L).concertName("잠실 공연").location("잠실").openDt(LocalDate.now().minusDays(2).atStartOfDay()).build();
+        concert2 =  ConcertOptionDomain.builder().concertId(1L).concertName("신촌 공연").location("신촌").openDt(LocalDate.now().plusDays(5).atStartOfDay()).build();
 
         listConcertOption1 = new ArrayList<>();
         listConcertOption1.add(concert1);
