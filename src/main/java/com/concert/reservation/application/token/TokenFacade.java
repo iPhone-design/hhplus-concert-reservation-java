@@ -27,7 +27,7 @@ public class TokenFacade {
     }
 
     /**
-     * 고객 토큰 조회
+     * 고객 토큰 조회 및 본인 순번이면 토큰 활성화 처리
      *
      * @author  양종문
      * @since   2024-07-09
@@ -35,7 +35,10 @@ public class TokenFacade {
      * @return  tokenDomain
      */
     @Transactional
-    public TokenDomain findByCustomerId(Long customerId) {
+    public TokenDomain findByCustomerIdAndThenChangeStatusToActive(Long customerId) {
+        // 토큰 조회
+        tokenService.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다."));
+
         // 활성화 토큰 수 체크 (최대 활성화 토큰 100명까지 허용)
         tokenService.checkActiveStatusCount();
 

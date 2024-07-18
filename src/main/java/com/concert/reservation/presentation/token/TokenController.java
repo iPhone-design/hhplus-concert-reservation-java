@@ -35,6 +35,6 @@ public class TokenController {
      */
     @GetMapping("/{customer-id}")
     public TokenResponse findByCustomerId(@PathVariable(name = "customer-id") Long customerId) {
-        return TokenResponse.toResponse(tokenFacade.findByCustomerId(customerId));
+        return TokenResponse.toResponse(tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId));
     }
 }
