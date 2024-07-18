@@ -28,6 +28,7 @@ public class Reservation {
     private Long seatOptionId;
     @Column(name = "customer_id")
     private Long customerId;
+    @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private ReservationStatus status;
     @CreationTimestamp

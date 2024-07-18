@@ -2,7 +2,6 @@ package com.concert.reservation.infrastructure.token;
 
 import com.concert.reservation.domain.token.entity.Token;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -51,17 +50,20 @@ public interface TokenJpaRepository extends JpaRepository<Token, Long> {
     // 토큰 상세조회
     Optional<Token> findByCustomerId(Long customerId);
 
+    // 토큰 조회 (활성화가 된 지 4분이 지난 대상)
+    @Query(value = """
+                    SELECT token_id
+                         , customer_id
+                         , status
+                         , waiting_start_dt
+                         , entry_dt
+                      FROM token
+                     WHERE status = 'ACTIVE'
+                       AND entry_dt < :expire_dt
+                    """, nativeQuery = true)
+    List<Token> findAllActiveTokensOlderThanFourMinutes(@Param("expire_dt") LocalDateTime expireDt);
+
     // 활성화 토큰 조회
     @Query("SELECT t FROM Token t WHERE t.status = 'ACTIVE' AND t.entryDt IS NOT NULL")
     List<Token> findActive();
-
-    // 토큰 상태 값 일괄 변경 (활성화 → 대기)
-    @Modifying
-    @Query(value = "UPDATE token" +
-                   "   SET status = 'WAITING'" +
-                   "     , waiting_start_dt = :currentDt" +
-                   "     , entry_dt = null" +
-                   " WHERE status = 'ACTIVE'" +
-                   "   AND entry_dt > :expireDt", nativeQuery = true)
-    Integer bulkStatusToWaiting(@Param("currentDt") LocalDateTime currentDt, @Param("expireDt") LocalDateTime expireDt);
 }

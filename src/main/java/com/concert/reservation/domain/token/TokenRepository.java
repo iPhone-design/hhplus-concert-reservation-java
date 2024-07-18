@@ -11,7 +11,7 @@ public interface TokenRepository {
     TokenDomain findFirstWaiting();
     Integer findRankByCustomerId(Long customerId);
     Optional<TokenDomain> findByCustomerId(Long customerId);
+    List<TokenDomain> findAllActiveTokensOlderThanFourMinutes(LocalDateTime expireDt);
     List<TokenDomain> findActive();
-    Integer bulkStatusToWaiting(LocalDateTime currentDt, LocalDateTime expireDt);
     TokenDomain save(TokenDomain tokenDomain);
 }

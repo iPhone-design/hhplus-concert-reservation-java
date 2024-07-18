@@ -56,6 +56,20 @@ public class TokenRepositoryImpl implements TokenRepository {
     }
 
     /**
+     * 토큰 조회 (활성화가 된 지 4분이 지난 대상)
+     *
+     * @author  양종문
+     * @since   2024-07-15
+     * @return  TokenDomain
+     */
+    @Override
+    public List<TokenDomain> findAllActiveTokensOlderThanFourMinutes(LocalDateTime expireDt) {
+        return tokenJpaRepository.findAllActiveTokensOlderThanFourMinutes(expireDt).stream()
+                                                                                   .map(Token::toDomain)
+                                                                                   .collect(Collectors.toList());
+    }
+
+    /**
      * 활성화 토큰 조회
      *
      * @author  양종문
@@ -80,17 +94,5 @@ public class TokenRepositoryImpl implements TokenRepository {
     @Override
     public TokenDomain save(TokenDomain tokenDomain) {
         return tokenJpaRepository.save(Token.toEntity(tokenDomain)).toDomain();
-    }
-
-    /**
-     * 토큰 상태 값 일괄 변경 (활성화 → 대기)
-     *
-     * @author  양종문
-     * @since   2024-07-15
-     * @return  Integer
-     */
-    @Override
-    public Integer bulkStatusToWaiting(LocalDateTime currentDt, LocalDateTime expireDt) {
-        return tokenJpaRepository.bulkStatusToWaiting(currentDt, expireDt);
     }
 }

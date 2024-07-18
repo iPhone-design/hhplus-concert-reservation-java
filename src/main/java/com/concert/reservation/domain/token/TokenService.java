@@ -55,6 +55,17 @@ public class TokenService {
     }
 
     /**
+     * 토큰 조회 (활성화가 된 지 4분이 지난 대상)
+     *
+     * @author  양종문
+     * @since   2024-07-15
+     * @return  TokenDomain
+     */
+    public List<TokenDomain> findAllActiveTokensOlderThanFourMinutes() {
+        return tokenRepository.findAllActiveTokensOlderThanFourMinutes(LocalDateTime.now().minusMinutes(4));
+    }
+
+    /**
      * 활성화 토큰 수 체크
      * ※ 최대 활성화 토큰 100명까지 허용
      *
@@ -123,17 +134,6 @@ public class TokenService {
 
         // 저장
         tokenRepository.save(tokenDomain.get());
-    }
-
-    /**
-     * 토큰 상태 값 일괄 변경 (활성화 → 대기)
-     *
-     * @author  양종문
-     * @since   2024-07-15
-     */
-    @Transactional
-    public Integer bulkStatusToWaiting() {
-        return tokenRepository.bulkStatusToWaiting(LocalDateTime.now(), LocalDateTime.now().plusMinutes(4));
     }
 
     /**
