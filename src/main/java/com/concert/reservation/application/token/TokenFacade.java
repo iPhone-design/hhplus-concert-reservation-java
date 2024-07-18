@@ -27,6 +27,18 @@ public class TokenFacade {
     }
 
     /**
+     * 고객 토큰 유효성 체크
+     *
+     * @author  양종문
+     * @since   2024-07-19
+     * @param   customerId - 고객 ID
+     */
+    public void checkActiveStatus(Long customerId) {
+        // 토큰 활성화 상태 체크
+        tokenService.checkActiveStatus(customerId);
+    }
+
+    /**
      * 고객 토큰 조회 및 본인 순번이면 토큰 활성화 처리
      *
      * @author  양종문
