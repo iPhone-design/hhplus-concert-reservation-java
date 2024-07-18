@@ -1,7 +1,6 @@
 package com.concert.reservation.presentation.payment;
 
 import com.concert.reservation.application.payment.PaymentFacade;
-import com.concert.reservation.domain.payment.PaymentCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,6 @@ public class PaymentController {
      */
     @PostMapping("/pay")
     public PaymentResponse payment(@Valid @RequestBody PaymentRequest paymentRequest) {
-        return PaymentCommand.toResponse(paymentFacade.payment(paymentRequest.getSeatOptionId(), paymentRequest.getCustomerId(), paymentRequest.getConcertOptionId(), paymentRequest.getDate()));
+        return PaymentResponse.toResponse(paymentFacade.payment(paymentRequest.getCustomerId(), paymentRequest.getConcertOptionId(), paymentRequest.getSeatOptionId(), paymentRequest.getAmount()));
     }
 }

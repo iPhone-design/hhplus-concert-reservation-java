@@ -5,20 +5,25 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.sql.Timestamp;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReservationDomain {
-    private Long customerId;
-    private Long seatOptionId;
-    private Long concertOptionId;
-    private LocalDate date;
-
     private Long reservationId;
-    private String status;
-    private Timestamp reservationDt;
+    private Long concertOptionId;
+    private Long seatOptionId;
+    private Long customerId;
+    private ReservationStatus status;
+    private LocalDateTime reservationDt;
+
+    public void changeStatusToComplete() {
+        this.status = ReservationStatus.COMPLETE;
+    }
+
+    public void changeStatusToIncomplete() {
+        this.status = ReservationStatus.INCOMPLETE;
+    }
 }

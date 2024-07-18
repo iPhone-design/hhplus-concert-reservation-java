@@ -1,7 +1,6 @@
 package com.concert.reservation.presentation.token;
 
 import com.concert.reservation.application.token.TokenFacade;
-import com.concert.reservation.domain.token.TokenCommand;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -23,6 +22,19 @@ public class TokenController {
      */
     @PostMapping("/issue")
     public TokenResponse issueToken(@Valid @RequestBody TokenRequest tokenRequest) {
-        return TokenCommand.toResponse(tokenFacade.issueToken(tokenRequest.getCustomerId()));
+        return TokenResponse.toResponse(tokenFacade.issueToken(tokenRequest.getCustomerId()));
+    }
+
+    /**
+     * 고객 토큰 조회 API
+     *
+     * @author  양종문
+     * @since   2024-07-18
+     * @param   customerId - 고객 ID
+     * @return  tokenResponse
+     */
+    @GetMapping("/{customer-id}")
+    public TokenResponse findByCustomerId(@PathVariable(name = "customer-id") Long customerId) {
+        return TokenResponse.toResponse(tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId));
     }
 }

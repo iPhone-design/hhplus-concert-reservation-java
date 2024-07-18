@@ -6,8 +6,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDate;
-
 @Data
 @Builder
 @NoArgsConstructor
@@ -15,10 +13,10 @@ import java.time.LocalDate;
 public class PaymentRequest {
     @NotNull(message = "고객 ID는 필수 항목입니다.")
     private Long customerId;
-    @NotNull(message = "좌석 옵션 ID는 필수 항목입니다.")
-    private Long seatOptionId;
     @NotNull(message = "콘서트 옵션 ID는 필수 항목입니다.")
     private Long concertOptionId;
-    @NotNull(message = "날짜는 필수 항목입니다.")
-    private LocalDate date;
+    @NotNull(message = "좌석 옵션 ID는 필수 항목입니다.")
+    private Long seatOptionId;
+    @NotNull(message = "결제 금액은 필수 항목입니다.")
+    private Long amount;
 }

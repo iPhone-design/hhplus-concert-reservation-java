@@ -1,10 +1,10 @@
 package com.concert.reservation.application.concert;
 
-import com.concert.reservation.application.seat.SeatOptionService;
-import com.concert.reservation.domain.Concert.ConcertOptionCommand;
-import com.concert.reservation.domain.seat.SeatOptionCommand;
-import com.concert.reservation.presentation.concert.ConcertOptionResponse;
-import com.concert.reservation.presentation.concert.SeatOptionResponse;
+import com.concert.reservation.domain.seat.SeatOptionService;
+import com.concert.reservation.domain.concert.ConcertOptionDomain;
+import com.concert.reservation.domain.concert.ConcertOptionService;
+import com.concert.reservation.domain.seat.SeatOptionDomain;
+import com.concert.reservation.domain.token.TokenService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -17,16 +17,22 @@ public class ConcertFacade {
 
     private final ConcertOptionService concertOptionService;
     private final SeatOptionService seatOptionService;
+    private final TokenService tokenService;
 
     /**
      * 예약 가능 콘서트 조회
      *
      * @author  양종문
      * @since   2024-07-10
-     * @return  List<ConcertOptionResponse>
+     * @param   customerId - 고객 ID
+     * @return  List<ConcertOptionDomain>
      */
-    public List<ConcertOptionResponse> findAllAvailableConcertForReservation() {
-        return ConcertOptionCommand.toResponse(concertOptionService.findAllAvailableConcertForReservation());
+    public List<ConcertOptionDomain> findAllAvailableConcertForReservation(Long customerId) {
+        // 토큰 유효성 체크
+        tokenService.checkActiveStatus(customerId);
+
+        // 예약 가능 콘서트 조회
+        return concertOptionService.findAllAvailableConcertForReservation();
     }
 
     /**
@@ -34,11 +40,16 @@ public class ConcertFacade {
      *
      * @author  양종문
      * @since   2024-07-10
+     * @param   customerId - 고객 ID
      * @param   startDate - 시작일
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @return  List<SeatOptionResponse>
+     * @return  List<SeatOptionDomain>
      */
-    public List<SeatOptionResponse> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
-        return SeatOptionCommand.toResponse(seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId));
+    public List<SeatOptionDomain> findAllAvailableSeatForReservation(Long customerId, LocalDate startDate, Long concertOptionId) {
+        // 토큰 유효성 체크
+        tokenService.checkActiveStatus(customerId);
+
+        // 예약 가능 콘서트 좌석 조회
+        return seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
     }
 }

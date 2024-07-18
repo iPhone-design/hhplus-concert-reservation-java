@@ -1,13 +1,14 @@
 package com.concert.reservation.infrastructure.token;
 
-import com.concert.reservation.application.token.TokenRepository;
-import com.concert.reservation.domain.token.TokenCommand;
 import com.concert.reservation.domain.token.TokenDomain;
+import com.concert.reservation.domain.token.TokenRepository;
+import com.concert.reservation.domain.token.entity.Token;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -17,71 +18,73 @@ public class TokenRepositoryImpl implements TokenRepository {
     private final TokenJpaRepository tokenJpaRepository;
 
     /**
-     * 고객 토큰 조회
+     * 첫 번째 대기열 고객 상세조회
      *
      * @author  양종문
-     * @since   2024-07-09
-     * @param   customerId - 고객 ID
-     * @return  tokenDomain
-     */
-    @Override
-    public TokenDomain findByCustomerId(Long customerId) {
-        return TokenCommand.toDomain(tokenJpaRepository.findByCustomerId(customerId));
-    }
-
-    /**
-     * 첫 번째 대기중 토큰 조회
-     *
-     * @author  양종문
-     * @since   2024-07-09
-     * @return  tokenDomain
+     * @since   2024-07-18
+     * @return  TokenDomain
      */
     @Override
     public TokenDomain findFirstWaiting() {
-        return TokenCommand.toDomain(tokenJpaRepository.findFirstWaiting());
+        return tokenJpaRepository.findFirstWaiting().toDomain();
     }
 
     /**
-     * 활성화 토큰 수 조회
+     * 대기열 등수 조회
      *
      * @author  양종문
-     * @since   2024-07-11
+     * @since   2024-07-18
+     * @param   customerId - 고객 ID
      * @return  Integer
      */
     @Override
-    public Integer countActive() {
-        return tokenJpaRepository.countActive();
+    public Integer findRankByCustomerId(Long customerId) {
+        return tokenJpaRepository.findRankByCustomerId(customerId);
     }
 
     /**
-     * 대기중 토큰 수 조회
+     * 토큰 상세조회
      *
      * @author  양종문
-     * @since   2024-07-10
-     * @return  Integer
+     * @since   2024-07-09
+     * @param   customerId - ID
+     * @return  tokenDomain
      */
     @Override
-    public Integer countWaiting() {
-        return tokenJpaRepository.countWaiting();
+    public Optional<TokenDomain> findByCustomerId(Long customerId) {
+        return tokenJpaRepository.findByCustomerId(customerId).map(Token::toDomain);
     }
 
     /**
-     * 토큰 만료 대상 조회
+     * 토큰 조회 (활성화가 된 지 4분이 지난 대상)
      *
      * @author  양종문
-     * @since   2024-07-10
-     * @param   checkTime - 체크 시간 (현재시간 + 4분)
+     * @since   2024-07-15
+     * @return  TokenDomain
+     */
+    @Override
+    public List<TokenDomain> findAllActiveTokensOlderThanFourMinutes(LocalDateTime expireDt) {
+        return tokenJpaRepository.findAllActiveTokensOlderThanFourMinutes(expireDt).stream()
+                                                                                   .map(Token::toDomain)
+                                                                                   .collect(Collectors.toList());
+    }
+
+    /**
+     * 활성화 토큰 조회
+     *
+     * @author  양종문
+     * @since   2024-07-09
      * @return  List<TokenDomain>
      */
     @Override
-    public List<TokenDomain> findAllExpireTargetByCheckTime(LocalDateTime checkTime) {
-        return tokenJpaRepository.findAllExpireTargetByCheckTime(checkTime).stream()
-                                                                           .map(TokenCommand::toDomain)
-                                                                           .collect(Collectors.toList());
+    public List<TokenDomain> findActive() {
+        return tokenJpaRepository.findActive().stream()
+                                              .map(Token::toDomain)
+                                              .collect(Collectors.toList());
     }
 
     /**
-     * 고객 토큰 저장
+     * 토큰 저장
      *
      * @author  양종문
      * @since   2024-07-09
@@ -90,30 +93,6 @@ public class TokenRepositoryImpl implements TokenRepository {
      */
     @Override
     public TokenDomain save(TokenDomain tokenDomain) {
-        return TokenCommand.toDomain(tokenJpaRepository.save(TokenCommand.toEntity(tokenDomain)));
-    }
-
-    /**
-     * 고객 토큰 상태 수정
-     *
-     * @author  양종문
-     * @since   2024-07-11
-     * @param   tokenDomain - 토큰 도메인
-     */
-    @Override
-    public void modifyStatus(TokenDomain tokenDomain) {
-        tokenJpaRepository.updateStatus(tokenDomain.getTokenId(), tokenDomain.getStatus(), tokenDomain.getEntryDt());
-    }
-
-    /**
-     * 고객 토큰 삭제
-     *
-     * @author  양종문
-     * @since   2024-07-09
-     * @param   tokenId - 토큰 ID
-     */
-    @Override
-    public void deleteById(Long tokenId) {
-        tokenJpaRepository.deleteById(tokenId);
+        return tokenJpaRepository.save(Token.toEntity(tokenDomain)).toDomain();
     }
 }
