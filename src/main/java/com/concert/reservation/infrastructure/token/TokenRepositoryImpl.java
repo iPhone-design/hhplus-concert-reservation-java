@@ -30,6 +30,19 @@ public class TokenRepositoryImpl implements TokenRepository {
     }
 
     /**
+     * 대기열 등수 조회
+     *
+     * @author  양종문
+     * @since   2024-07-18
+     * @param   customerId - 고객 ID
+     * @return  Integer
+     */
+    @Override
+    public Integer findRankByCustomerId(Long customerId) {
+        return tokenJpaRepository.findRankByCustomerId(customerId);
+    }
+
+    /**
      * 토큰 상세조회
      *
      * @author  양종문

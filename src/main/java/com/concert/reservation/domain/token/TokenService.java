@@ -26,6 +26,23 @@ public class TokenService {
     }
 
     /**
+     * 대기열 등수를 포함한 고객 상세조회
+     *
+     * @author  양종문
+     * @since   2024-07-18
+     * @param   customerId - 고객 ID
+     * @return  Integer
+     */
+    public TokenDomain findByCustomerIdWithRank(Long customerId) {
+        // 토큰 조회
+        Optional<TokenDomain> tokenDomain = Optional.of(this.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다.")));
+        // 대기열 등수 조회
+        tokenDomain.get().setRank(tokenRepository.findRankByCustomerId(customerId));
+
+        return tokenDomain.get();
+    }
+
+    /**
      * 토큰 상세조회
      *
      * @author  양종문

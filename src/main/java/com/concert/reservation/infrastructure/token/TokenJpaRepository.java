@@ -15,24 +15,38 @@ import java.util.Optional;
 public interface TokenJpaRepository extends JpaRepository<Token, Long> {
     // 첫 번째 대기열 고객 상세조회
     @Query(value = """
-             SELECT a.token_id
-                  , a.customer_id
-                  , a.status
-                  , a.waiting_start_dt
-                  , a.entry_dt
-               FROM (
-                         SELECT token_id
-                              , customer_id
-                              , status
-                              , waiting_start_dt
-                              , entry_dt
-                              , ROW_NUMBER() OVER (ORDER BY waiting_start_dt) AS rank
-                           FROM token
-                          WHERE status = 'WAITING'
-                    ) a
-             WHERE a.rank = 1
-             """, nativeQuery = true)
+                     SELECT a.token_id
+                          , a.customer_id
+                          , a.status
+                          , a.waiting_start_dt
+                          , a.entry_dt
+                       FROM (
+                                 SELECT token_id
+                                      , customer_id
+                                      , status
+                                      , waiting_start_dt
+                                      , entry_dt
+                                      , ROW_NUMBER() OVER (ORDER BY waiting_start_dt) AS rank
+                                   FROM token
+                                  WHERE status = 'WAITING'
+                            ) a
+                     WHERE a.rank = 1
+                    """, nativeQuery = true)
     Token findFirstWaiting();
+    
+    // 대기열 등수 조회
+    @Query(value = """
+                    SELECT COUNT(*) + 1 AS rank
+                      FROM token
+                     WHERE status = 'WAITING'
+                       AND waiting_start_dt < (
+                                                   SELECT waiting_start_dt
+                                                     FROM token
+                                                    WHERE status = 'WAITING'
+                                                      AND customer_id = :customer_id
+                                              )
+                    """, nativeQuery = true)
+    Integer findRankByCustomerId(@Param("customer_id") Long customerId);
 
     // 토큰 상세조회
     Optional<Token> findByCustomerId(Long customerId);

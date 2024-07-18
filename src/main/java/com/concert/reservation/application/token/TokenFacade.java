@@ -51,8 +51,8 @@ public class TokenFacade {
             return tokenService.findByCustomerId(customerId).orElseThrow(() -> new IllegalArgumentException("토큰 상세 정보가 없습니다."));
         }
         else {
-            // TODO 등수를 포함하게 보완할 것
-            return tokenDomain;
+            // 대기열 등수를 포함한 고객 상세조회
+            return tokenService.findByCustomerIdWithRank(customerId);
         }
     }
 }
