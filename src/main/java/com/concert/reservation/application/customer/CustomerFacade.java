@@ -12,6 +12,18 @@ public class CustomerFacade {
     private final CustomerService customerService;
 
     /**
+     * 고객 생성 API
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     * @param   customerDomain - 고객 도메인
+     * @return  customerDomain
+     */
+    public CustomerDomain save(CustomerDomain customerDomain) {
+        return customerService.save(customerDomain);
+    }
+
+    /**
      * 고객 상세조회
      *
      * @author  양종문

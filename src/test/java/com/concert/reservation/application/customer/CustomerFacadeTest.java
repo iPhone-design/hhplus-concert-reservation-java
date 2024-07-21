@@ -2,57 +2,54 @@ package com.concert.reservation.application.customer;
 
 import com.concert.reservation.domain.customer.CustomerDomain;
 import com.concert.reservation.domain.customer.CustomerService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
 class CustomerFacadeTest {
-
-    @Mock
+    @Autowired
     private CustomerService customerService;
-
-    @InjectMocks
+    @Autowired
     private CustomerFacade customerFacade;
+
+    @BeforeEach
+    void setup() {
+        // given
+        customerService.deleteAll();
+
+        String customerName = "홍길동";
+        Long amount = 10000L;
+        customerService.save(CustomerDomain.builder().customerName(customerName).amount(amount).build());
+    }
 
     @Test
     @DisplayName("고객 상세조회")
     void findById() {
-        // given
         Long customerId = 1L;
-        CustomerDomain customerDomain = new CustomerDomain();
-        customerDomain.setCustomerId(customerId);
 
         // when
-        when(customerService.findById(customerId)).thenReturn(customerDomain);
-        CustomerDomain result = customerFacade.findById(customerId);
+        CustomerDomain customerDomain = customerFacade.findById(customerId);
 
         // then
-        assertEquals(customerDomain, result);
-        verify(customerService, times(1)).findById(customerId);
+        assertThat(customerId).isEqualTo(customerDomain.getCustomerId());
     }
 
     @Test
     @DisplayName("잔액 충전")
     void chargeAmount() {
-        // given
-        Long customerId = 1L;
-        Long amount = 1000L;
-        CustomerDomain customerDomain = new CustomerDomain();
-        customerDomain.setCustomerId(customerId);
-        customerDomain.setAmount(amount);
+        Long customerId = 2L;
+        Long amount = 10000L;
+        Long addAmount = 5000L;
 
-        // When
-        when(customerService.chargeAmount(customerId, amount)).thenReturn(customerDomain);
-        CustomerDomain result = customerFacade.chargeAmount(customerId, amount);
+        // when
+        CustomerDomain customerDomain = customerService.chargeAmount(customerId, addAmount);
 
         // then
-        assertEquals(customerDomain, result);
-        verify(customerService, times(1)).chargeAmount(customerId, amount);
+        assertThat(amount + addAmount).isEqualTo(customerDomain.getAmount());
     }
 }

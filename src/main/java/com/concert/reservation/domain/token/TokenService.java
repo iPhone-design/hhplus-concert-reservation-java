@@ -154,4 +154,14 @@ public class TokenService {
             throw new CustomException(HttpStatus.UNAUTHORIZED, "토큰이 활성화 상태가 아닙니다.");
         }
     }
+
+    /**
+     * 모든 토큰 삭제
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     */
+    public void deleteAll() {
+        tokenRepository.deleteAll();
+    }
 }

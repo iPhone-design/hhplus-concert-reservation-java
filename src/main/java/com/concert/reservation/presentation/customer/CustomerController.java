@@ -12,6 +12,19 @@ public class CustomerController {
     private final CustomerFacade customerFacade;
 
     /**
+     * 고객 생성 API
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     * @param   customerRequest - 고객 신청
+     * @return  customerResponse
+     */
+    @PostMapping("/create")
+    public CustomerResponse save(@RequestBody CustomerRequest customerRequest) {
+        return CustomerResponse.toResponse(customerFacade.save(CustomerRequest.toDomain(customerRequest)));
+    }
+
+    /**
      * 고객 상세조회 API
      *
      * @author  양종문

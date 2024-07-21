@@ -24,10 +24,9 @@ public class ConcertFacade {
      *
      * @author  양종문
      * @since   2024-07-10
-     * @param   customerId - 고객 ID
      * @return  List<ConcertOptionDomain>
      */
-    public List<ConcertOptionDomain> findAllAvailableConcertForReservation(Long customerId) {
+    public List<ConcertOptionDomain> findAllAvailableConcertForReservation() {
         // 예약 가능 콘서트 조회
         return concertOptionService.findAllAvailableConcertForReservation();
     }
@@ -37,12 +36,11 @@ public class ConcertFacade {
      *
      * @author  양종문
      * @since   2024-07-10
-     * @param   customerId - 고객 ID
      * @param   startDate - 시작일
      * @param   concertOptionId - 콘서트 옵션 ID
      * @return  List<SeatOptionDomain>
      */
-    public List<SeatOptionDomain> findAllAvailableSeatForReservation(Long customerId, LocalDate startDate, Long concertOptionId) {
+    public List<SeatOptionDomain> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
         // 예약 가능 콘서트 좌석 조회
         return seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
     }

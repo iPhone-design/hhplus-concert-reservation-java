@@ -1,96 +1,76 @@
 package com.concert.reservation.application.payment;
 
+import com.concert.reservation.application.customer.CustomerFacade;
+import com.concert.reservation.application.reservation.ReservationFacade;
 import com.concert.reservation.domain.customer.CustomerDomain;
 import com.concert.reservation.domain.customer.CustomerService;
+import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.payment.PaymentDomain;
-import com.concert.reservation.domain.payment.PaymentService;
-import com.concert.reservation.domain.payment.PaymentStatus;
-import com.concert.reservation.domain.reservation.ReservationDomain;
-import com.concert.reservation.domain.reservation.ReservationService;
-import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.TokenStatus;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import java.time.LocalDateTime;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class PaymentFacadeTest {
-
-    @Mock
+    @Autowired
     private TokenService tokenService;
-    @Mock
-    private ReservationService reservationService;
-    @Mock
+    @Autowired
     private CustomerService customerService;
-    @Mock
-    private PaymentService paymentService;
-
-    @InjectMocks
+    @Autowired
+    private CustomerFacade customerFacade;
+    @Autowired
+    private ReservationFacade reservationFacade;
+    @Autowired
     private PaymentFacade paymentFacade;
+
+    private static final Long customerId1 = 1L;
+    private static final Long customerId2 = 1L;
+    private static final Long concertOptionId = 2L;
+    private static final Long seatOptionId1 = 51L;
+    private static final Long seatOptionId2 = 52L;
+    private static final Long seatAmount = 100000L;
 
     @Test
     @DisplayName("결제 잔액이 충분한 경우")
-    void payment() {
+    void payment_whenAmountIsEnough() {
         // given
-        Long reservationId = 4L;
-        Long concertOptionId = 2L;
-        Long seatOptionId = 3L;
-        Long customerId = 1L;
-        Long amount = 50000L;
-        Long useAmount = 10000L;
-        Long resultAmount = amount - useAmount;
+        customerService.save(CustomerDomain.builder().customerName("홍길동").amount(15000L).build());
+        tokenService.issueToken(customerId1);
+        tokenService.changeStatus(customerId1, TokenStatus.ACTIVE);
+        reservationFacade.reservationConcert(customerId1, concertOptionId, seatOptionId1);
 
-        Long paymentId = 1L;
-
-        ReservationDomain reservationDomain = ReservationDomain.builder()
-                                                               .reservationId(reservationId)
-                                                               .concertOptionId(concertOptionId)
-                                                               .seatOptionId(seatOptionId)
-                                                               .customerId(customerId)
-                                                               .status(ReservationStatus.INCOMPLETE)
-                                                               .reservationDt(LocalDateTime.now())
-                                                               .build();
-
-        PaymentDomain paymentDomain = PaymentDomain.builder()
-                                                   .paymentId(paymentId)
-                                                   .reservationId(reservationDomain.getReservationId())
-                                                   .amount(amount)
-                                                   .status(PaymentStatus.COMPLETE)
-                                                   .paymentDt(LocalDateTime.now())
-                                                   .build();
-
-        CustomerDomain customerDomain = CustomerDomain.builder()
-                                                      .customerId(customerId)
-                                                      .customerName("테스트")
-                                                      .amount(amount - useAmount)
-                                                      .build();
+        Long amount = customerFacade.findById(customerId1).getAmount();
+        Long addMount = 100000L;
+        Long totalAmount = amount + addMount;
+        customerFacade.chargeAmount(customerId1, addMount);
 
         // when
-        doNothing().when(customerService).checkAmount(customerId, amount);
-        when(reservationService.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId)).thenReturn(reservationDomain);
-        when(paymentService.save(any(PaymentDomain.class))).thenReturn(paymentDomain);
-        when(customerService.useAmount(customerId, amount)).thenReturn(customerDomain);
-        when(reservationService.save(reservationDomain)).thenReturn(reservationDomain);
-        doNothing().when(tokenService).changeStatus(customerId, TokenStatus.EXPIRE);
-
-        PaymentDomain result = paymentFacade.payment(customerId, concertOptionId, seatOptionId, amount);
+        PaymentDomain paymentDomain = paymentFacade.payment(customerId1, concertOptionId, seatOptionId1, seatAmount);
+        CustomerDomain customerDomain = customerFacade.findById(customerId1);
 
         // then
-        assertEquals(paymentDomain, result);
-        verify(customerService, times(1)).checkAmount(customerId, amount);
-        verify(reservationService, times(1)).findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId);
-        verify(paymentService, times(1)).save(any(PaymentDomain.class));
-        verify(customerService, times(1)).useAmount(customerId, amount);
-        verify(reservationService, times(1)).save(reservationDomain);
-        verify(tokenService, times(1)).changeStatus(customerId, TokenStatus.EXPIRE);
+        assertThat(paymentDomain).isNotNull();
+        assertThat(customerDomain.getAmount()).isEqualTo(totalAmount - seatAmount);
+    }
+
+    @Test
+    @DisplayName("결제 잔액이 충분하지 않은 경우")
+    void payment_whenAmountIsNotEnough() {
+        // given
+        customerService.save(CustomerDomain.builder().customerName("길동무").amount(15000L).build());
+        tokenService.issueToken(customerId2);
+        tokenService.changeStatus(customerId2, TokenStatus.ACTIVE);
+        reservationFacade.reservationConcert(customerId2, concertOptionId, seatOptionId2);
+
+        // when-then
+        assertThatThrownBy(() -> {
+            paymentFacade.payment(customerId2, concertOptionId, seatOptionId2, seatAmount);
+        }).isInstanceOf(CustomException.class);
     }
 }

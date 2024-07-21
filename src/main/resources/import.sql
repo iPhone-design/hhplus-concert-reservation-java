@@ -122,9 +122,3 @@ INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (7, 2
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (8, 2, 50000, 'UNAVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (9, 2, 50000, 'AVAILABLE');
 INSERT INTO seat_option (seat_id, concert_option_id, price, status) VALUES (10, 2, 50000, 'AVAILABLE');
-
--- 고객 데이터
-INSERT INTO customer (customer_name, amount) VALUES ('홍길동', 10000);
-INSERT INTO customer (customer_name, amount) VALUES ('김아무개', 5000);
-INSERT INTO customer (customer_name, amount) VALUES ('사람인', 100000);
-INSERT INTO customer (customer_name, amount) VALUES ('포스트맨', 50000);

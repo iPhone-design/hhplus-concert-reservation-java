@@ -1,47 +1,46 @@
 package com.concert.reservation.application.token;
 
+import com.concert.reservation.application.customer.CustomerFacade;
+import com.concert.reservation.domain.customer.CustomerDomain;
 import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.token.TokenDomain;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.TokenStatus;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @SpringBootTest
 class TokenFacadeTest {
-
-    @Mock
+    @Autowired
     private TokenService tokenService;
-
-    @InjectMocks
+    @Autowired
     private TokenFacade tokenFacade;
+    @Autowired
+    private CustomerFacade customerFacade;
+
+    @BeforeEach
+    void setup () {
+        tokenService.deleteAll();
+        customerFacade.save(CustomerDomain.builder().customerName("김아무개").amount(1000L).build());
+    }
 
     @Test
     @DisplayName("고객 토큰 발급")
     void issueToken() {
         // given
         Long customerId = 1L;
-        TokenDomain tokenDomain = new TokenDomain();
-        tokenDomain.setCustomerId(customerId);
 
         // when
-        when(tokenService.issueToken(customerId)).thenReturn(tokenDomain);
-
-        TokenDomain result = tokenFacade.issueToken(customerId);
+        TokenDomain tokenDomain = tokenFacade.issueToken(customerId);
 
         // then
-        assertEquals(tokenDomain.getCustomerId(), result.getCustomerId());
-        verify(tokenService, times(1)).issueToken(customerId);
+        assertThat(customerId).isEqualTo(tokenDomain.getCustomerId());
     }
 
     @Test
@@ -49,10 +48,12 @@ class TokenFacadeTest {
     void checkActiveStatus() {
         // given
         Long customerId = 1L;
+        tokenFacade.issueToken(customerId);
 
         // when-then
-        tokenFacade.checkActiveStatus(customerId);
-        verify(tokenService, times(1)).checkActiveStatus(customerId);
+        assertThatThrownBy(() -> {
+            tokenFacade.checkActiveStatus(customerId);
+        }).isInstanceOf(CustomException.class);
     }
 
     @Test
@@ -60,73 +61,40 @@ class TokenFacadeTest {
     void findByCustomerIdAndThenChangeStatusToActive_whenTokenExistsAndIsFirstWaiting() {
         // given
         Long customerId = 1L;
-        TokenDomain tokenDomain = new TokenDomain();
-        tokenDomain.setCustomerId(customerId);
+        tokenFacade.issueToken(customerId);
 
         // when
-        when(tokenService.findByCustomerId(customerId)).thenReturn(Optional.of(tokenDomain));
-        doNothing().when(tokenService).checkActiveStatusCount();
-        when(tokenService.findFirstWaiting()).thenReturn(tokenDomain);
-        doNothing().when(tokenService).changeStatus(customerId, TokenStatus.ACTIVE);
-        when(tokenService.findByCustomerId(customerId)).thenReturn(Optional.of(tokenDomain));
-
         TokenDomain result = tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId);
 
         // then
-        assertEquals(tokenDomain.getStatus(), result.getStatus());
-        verify(tokenService, times(2)).findByCustomerId(customerId);
-        verify(tokenService, times(1)).checkActiveStatusCount();
-        verify(tokenService, times(1)).findFirstWaiting();
-        verify(tokenService, times(1)).changeStatus(customerId, TokenStatus.ACTIVE);
+        assertThat(TokenStatus.ACTIVE).isEqualTo(result.getStatus());
     }
 
     @Test
     @DisplayName("토큰이 존재하고 첫 번째 순서의 대기열이 아닌 경우")
     void findByCustomerIdAndThenChangeStatusToActive_whenTokenExistsAndIsNotFirstWaiting() {
         // given
-        Long customerId = 1L;
-        Long otherCustomerId = 2L;
-        TokenDomain tokenDomain1 = new TokenDomain();
-        tokenDomain1.setCustomerId(otherCustomerId);
-        TokenDomain tokenDomain2 = new TokenDomain();
-        tokenDomain2.setCustomerId(customerId);
+        Integer rank = 2;
+        Long customerId1 = 1L;
+        Long customerId2 = 2L;
+        customerFacade.save(CustomerDomain.builder().customerName("두번째").amount(1000L).build());
+        tokenFacade.issueToken(customerId1);
+        tokenFacade.issueToken(customerId2);
 
         // when
-        when(tokenService.findByCustomerId(customerId)).thenReturn(Optional.of(tokenDomain2));
-        doNothing().when(tokenService).checkActiveStatusCount();
-        when(tokenService.findFirstWaiting()).thenReturn(tokenDomain1);
-        when(tokenService.findByCustomerIdWithRank(customerId)).thenReturn(tokenDomain2);
-
-        TokenDomain result = tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId);
+        TokenDomain result = tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId2);
 
         // then
-        assertEquals(tokenDomain2, result);
-        verify(tokenService, times(1)).findByCustomerId(customerId);
-        verify(tokenService, times(1)).checkActiveStatusCount();
-        verify(tokenService, times(1)).findFirstWaiting();
-        verify(tokenService, times(1)).findByCustomerIdWithRank(customerId);
-        verify(tokenService, never()).changeStatus(anyLong(), any(TokenStatus.class));
+        assertThat(rank).isEqualTo(result.getRank());
     }
 
     @Test
     @DisplayName("토큰이 존재하지 않는 경우")
     void findByCustomerIdAndThenChangeStatusToActive_whenTokenDoesNotExist() {
         // given
-        Long customerId = 1L;
+        Long customerId = 3L;
 
-        // when
-        when(tokenService.findByCustomerId(customerId)).thenReturn(Optional.empty());
-
-        CustomException exception = assertThrows(CustomException.class, () -> {
-            tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId);
-        });
-
-        // then
-        assertEquals(HttpStatus.UNAUTHORIZED, exception.getStatus());
-        assertEquals("토큰 상세 정보가 없습니다.", exception.getDetail());
-        verify(tokenService, times(1)).findByCustomerId(customerId);
-        verify(tokenService, never()).checkActiveStatusCount();
-        verify(tokenService, never()).findFirstWaiting();
-        verify(tokenService, never()).changeStatus(anyLong(), any(TokenStatus.class));
+        // when - then
+        assertThatThrownBy(() -> tokenFacade.findByCustomerIdAndThenChangeStatusToActive(customerId)).isInstanceOf(CustomException.class);
     }
 }

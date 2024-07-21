@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface CustomerRepository {
     Optional<CustomerDomain> findById(Long customerId);
     CustomerDomain save(CustomerDomain customerDomain);
+    void deleteAll();
 }
