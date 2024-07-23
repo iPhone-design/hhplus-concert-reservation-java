@@ -22,6 +22,19 @@ public class ReservationRepositoryImpl implements ReservationRepository {
      * 예약 상세조회
      *
      * @author  양종문
+     * @since   2024-07-23
+     * @param   reservationId - 예약 ID
+     * @return  ReservationDomain
+     */
+    @Override
+    public ReservationDomain findByReservationId(Long reservationId) {
+        return reservationJpaRepository.findByReservationId(reservationId).orElseThrow(() -> new CustomException(HttpStatus.ACCEPTED, "예약 상세정보가 없습니다.")).toDomain();
+    }
+
+    /**
+     * 예약 상세조회
+     *
+     * @author  양종문
      * @since   2024-07-11
      * @param   concertOptionId - 예약 옵션 ID
      * @param   seatOptionId - 좌석 옵션 ID

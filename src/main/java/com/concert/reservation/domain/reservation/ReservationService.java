@@ -16,6 +16,18 @@ public class ReservationService {
      * 예약 상세조회
      *
      * @author  양종문
+     * @since   2024-07-23
+     * @param   reservationId - 예약 ID
+     * @return  ReservationDomain
+     */
+    public ReservationDomain findByReservationId(Long reservationId) {
+        return reservationRepository.findByReservationId(reservationId);
+    }
+
+    /**
+     * 예약 상세조회
+     *
+     * @author  양종문
      * @since   2024-07-11
      * @param   concertOptionId - 예약 옵션 ID
      * @param   seatOptionId - 좌석 옵션 ID
@@ -37,6 +49,31 @@ public class ReservationService {
      */
     public List<ReservationDomain> findAllIncompleteReservationsByCustomerIdAndReservationDt(Long customerId, LocalDateTime reservationDt) {
         return reservationRepository.findAllIncompleteReservationsByCustomerIdAndReservationDt(customerId, reservationDt);
+    }
+
+    /**
+     * 예약 상태 값 변경
+     *
+     * @author  양종문
+     * @since   2024-07-23
+     * @param   reservationId - 예약 Id
+     * @param   status - 상태
+     */
+    public void changeStatus(Long reservationId, ReservationStatus status) {
+        // 예약 조회
+        ReservationDomain reservationDomain = this.findByReservationId(reservationId);
+
+        // 대기
+        if (ReservationStatus.INCOMPLETE.equals(status)) {
+            reservationDomain.changeStatusToIncomplete();
+        }
+        // 활성화
+        else if (ReservationStatus.COMPLETE.equals(status)) {
+            reservationDomain.changeStatusToComplete();
+        }
+
+        // 저장
+        this.save(reservationDomain);
     }
 
     /**

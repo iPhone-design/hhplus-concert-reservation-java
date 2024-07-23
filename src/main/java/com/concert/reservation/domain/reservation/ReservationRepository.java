@@ -7,6 +7,7 @@ import java.util.List;
 
 @Component
 public interface ReservationRepository {
+    ReservationDomain findByReservationId(Long reservationId);
     ReservationDomain findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId);
     List<ReservationDomain> findAllIncompleteReservationsByCustomerIdAndReservationDt(Long customerId, LocalDateTime reservationDt);
     ReservationDomain save(ReservationDomain reservationDomain);
