@@ -70,6 +70,8 @@
         - ![image](https://github.com/user-attachments/assets/9710aa69-d192-4e7b-aefb-3acdd846495e)
 
 - **요약 : 비관적락은 적용 후 성공 Case까지 완료함. 낙관적락은 적용까지는 완료하였으나 retry 부분에 대해 추가 공부가 필요한 것 같다..**
+- **비관적락 통합 테스트**
+    - ![image](https://github.com/user-attachments/assets/fcdc6738-3977-4fee-99c5-5aa5eed76549)
 </details>
 
 
