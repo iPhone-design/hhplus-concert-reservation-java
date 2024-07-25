@@ -12,7 +12,6 @@ import java.util.Optional;
 public interface ReservationRepository {
     ReservationDomain findByReservationId(Long reservationId);
     ReservationDomain findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId);
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
     Optional<ReservationDomain> findByConcertOptionIdAndSeatOptionIdAndCustomerIdNotException(Long concertOptionId, Long seatOptionId, Long customerId);
     List<ReservationDomain> findAllIncompleteReservationsByCustomerIdAndReservationDt(Long customerId, LocalDateTime reservationDt);
     ReservationDomain save(ReservationDomain reservationDomain);
