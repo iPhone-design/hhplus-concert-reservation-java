@@ -2,6 +2,7 @@ package com.concert.reservation.domain.seat;
 
 import com.concert.reservation.domain.exception.CustomException;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -9,6 +10,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class SeatOptionService {
@@ -59,7 +61,7 @@ public class SeatOptionService {
     public void changeStatus(Long seatOptionId, Long concertOptionId, SeatOptionStatus status) {
         // 좌석 조회
         SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
-        
+
         // 가능
         if (SeatOptionStatus.AVAILABLE.equals(status)) {
             seatOptionDomain.changeStatusToAvailable();

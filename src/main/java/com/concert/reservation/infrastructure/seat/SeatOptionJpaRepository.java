@@ -19,7 +19,7 @@ public interface SeatOptionJpaRepository extends JpaRepository<SeatOption, Long>
                    "     , status" +
                    "  FROM seat_option" +
                    " WHERE seat_option_id = :seat_option_id" +
-                   "   AND concert_option_id = :concert_option_id", nativeQuery = true)
+                   "   AND concert_option_id = :concert_option_id FOR UPDATE", nativeQuery = true)
     SeatOption findSeat(@Param("seat_option_id") Long seatOptionId, @Param("concert_option_id") Long concertOptionId);
 
     // 예약 가능 좌석 조회

@@ -8,8 +8,10 @@ import com.concert.reservation.domain.seat.SeatOptionStatus;
 import com.concert.reservation.domain.token.TokenService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ReservationFacade {
@@ -30,6 +32,8 @@ public class ReservationFacade {
      */
     @Transactional
     public ReservationDomain reservationConcert(Long customerId, Long concertOptionId, Long seatOptionId) {
+        log.info("Thread : {} start", Thread.currentThread().getName());
+
         // 좌석 유효성 체크
         seatOptionService.checkAvailableStatus(seatOptionId, concertOptionId);
 
@@ -37,6 +41,12 @@ public class ReservationFacade {
         seatOptionService.changeStatus(seatOptionId, concertOptionId, SeatOptionStatus.UNAVAILABLE);
 
         // 예약 (미완료)
-        return reservationService.save(ReservationDomain.builder().customerId(customerId).concertOptionId(concertOptionId).seatOptionId(seatOptionId).status(ReservationStatus.INCOMPLETE).build());
+        ReservationDomain reservationDomain = reservationService.save(customerId, concertOptionId, seatOptionId, ReservationStatus.INCOMPLETE);
+
+        log.info("[" + Thread.currentThread().getName() + "] 가 예약 완료");
+
+        log.info("Thread : {} end", Thread.currentThread().getName());
+
+        return reservationDomain;
     }
 }
