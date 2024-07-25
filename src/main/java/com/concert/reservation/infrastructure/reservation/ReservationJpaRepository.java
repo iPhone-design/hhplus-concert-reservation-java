@@ -1,7 +1,9 @@
 package com.concert.reservation.infrastructure.reservation;
 
 import com.concert.reservation.domain.reservation.entity.Reservation;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
@@ -13,6 +15,7 @@ import java.util.Optional;
 @Repository
 public interface ReservationJpaRepository extends JpaRepository<Reservation, Long> {
     Optional<Reservation> findByReservationId(Long reservationId);
+    @Lock(LockModeType.PESSIMISTIC_READ)
     Optional<Reservation> findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId);
 
     // 특정 고객의 미완료 상태의 예약 조회
