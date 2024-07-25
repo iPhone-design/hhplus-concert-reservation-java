@@ -11,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class SeatOptionDomain {
     private Long seatOptionId;
+    private Long version;
     private Long seatId;
     private Long concertOptionId;
     private Long price;

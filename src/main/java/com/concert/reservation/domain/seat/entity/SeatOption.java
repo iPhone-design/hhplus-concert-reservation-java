@@ -19,6 +19,8 @@ public class SeatOption {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "seat_option_id")
     private Long seatOptionId;
+    @Version
+    private long version;
     @Column(name = "seat_id")
     private Long seatId;
     @Column(name = "concert_option_id")
@@ -32,6 +34,7 @@ public class SeatOption {
     public SeatOptionDomain toDomain() {
         return SeatOptionDomain.builder()
                                .seatOptionId(this.seatOptionId)
+                               .version(this.version)
                                .seatId(this.seatId)
                                .concertOptionId(this.concertOptionId)
                                .price(this.price)
