@@ -1,5 +1,7 @@
 package com.concert.reservation.domain.reservation;
 
+import jakarta.persistence.LockModeType;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
