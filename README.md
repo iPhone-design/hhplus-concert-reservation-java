@@ -7,6 +7,35 @@
 > ### [API 명세서](https://documenter.getpostman.com/view/15679108/2sA3dyhWDj)
 > ### [Swagger](https://github.com/user-attachments/assets/8638c1ac-4adf-42d8-bbec-c9fd32b3057c)
 
+<details>
+<summary><b>Junit 테스트 결과</b></summary>
+
+- 단위 테스트
+    - TokenServiceTest
+        - ![image](https://github.com/user-attachments/assets/649eaf38-7f5e-4a74-99e5-15765bcc58ec)
+    - SeatOptionServiceTest
+        - ![image](https://github.com/user-attachments/assets/d7a0ef8d-6d98-471f-9910-b4f0a19f9b65)
+    - ReservationServiceTest
+        - ![image](https://github.com/user-attachments/assets/d36052d0-e2fe-411f-914f-c6e7f987beba)
+    - PaymentServiceTest
+        - ![image](https://github.com/user-attachments/assets/c48a90ce-76b0-4298-8487-096ef2e77ede)
+    - ConcertOptionServiceTest
+        - ![image](https://github.com/user-attachments/assets/3bbf7ef4-7600-4da9-bbef-9c40b139199a)
+
+
+- 통합 테스트
+    - TokenFacadeTest
+        - ![image](https://github.com/user-attachments/assets/b270458b-d592-496f-a42b-72871a18ffab)
+    - ReservationFacadeTest
+        - ![image](https://github.com/user-attachments/assets/48ae86f0-557e-4338-b606-5b3af844ec16)
+    - PaymentFacadeTest
+        - ![image](https://github.com/user-attachments/assets/ac883506-e18e-4c44-bfa6-da6a318bedfe)
+    - CustomerFacadeTest
+        - ![image](https://github.com/user-attachments/assets/8bee0e77-45ef-47de-8b82-3298634aa6dc)
+    - ConcertFacadeTest
+        - ![image](https://github.com/user-attachments/assets/98ce654e-d5c8-4b3e-bff5-f04dd4b4069c)
+</details>
+
 
 ## Description
 
