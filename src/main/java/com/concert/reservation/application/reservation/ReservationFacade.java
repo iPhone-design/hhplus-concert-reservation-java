@@ -8,8 +8,10 @@ import com.concert.reservation.domain.seat.SeatOptionStatus;
 import com.concert.reservation.domain.token.TokenService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ReservationFacade {
@@ -29,14 +31,32 @@ public class ReservationFacade {
      * @return  reservationDomain
      */
     @Transactional
-    public ReservationDomain reservationConcert(Long customerId, Long concertOptionId, Long seatOptionId) {
-        // 좌석 유효성 체크
-        seatOptionService.checkAvailableStatus(seatOptionId, concertOptionId);
+    public ReservationDomain reservationConcert(Long customerId, Long concertOptionId, Long seatOptionId)  {
+        log.info("Thread : {} start", Thread.currentThread().getName());
 
-        // 좌석 상태 값 변경 (가능 → 불가능)
-        seatOptionService.changeStatus(seatOptionId, concertOptionId, SeatOptionStatus.UNAVAILABLE);
+        int retryCount = 0;
+        while(retryCount < 10) {
+            try {
+                log.info("retryCount : {}", retryCount);
+
+                // 좌석 유효성 체크
+                seatOptionService.checkAvailableStatus(seatOptionId, concertOptionId);
+
+                // 좌석 상태 값 변경 (가능 → 불가능)
+                seatOptionService.changeStatusWithNewTransaction(seatOptionId, concertOptionId, SeatOptionStatus.UNAVAILABLE);
+
+                log.info("[{}] 가 예약 완료", Thread.currentThread().getName());
+            }
+            catch (Exception e) {
+                log.error(String.valueOf(e));
+                retryCount++;
+            }
+            finally {
+                log.info("Thread : {} end", Thread.currentThread().getName());
+            }
+        }
 
         // 예약 (미완료)
-        return reservationService.save(ReservationDomain.builder().customerId(customerId).concertOptionId(concertOptionId).seatOptionId(seatOptionId).status(ReservationStatus.INCOMPLETE).build());
+        return reservationService.save(customerId, concertOptionId, seatOptionId, ReservationStatus.INCOMPLETE);
     }
 }

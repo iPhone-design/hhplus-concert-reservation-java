@@ -29,7 +29,7 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
      */
     @Override
     public Optional<SeatOptionDomain> findSeat(Long seatOptionId, Long concertOptionId) {
-        return Optional.of(seatOptionJpaRepository.findSeat(seatOptionId, concertOptionId).toDomain());
+        return Optional.of(seatOptionJpaRepository.findBySeatOptionIdAndConcertOptionId(seatOptionId, concertOptionId).toDomain());
     }
 
     /**
@@ -59,6 +59,6 @@ public class SeatOptionRepositoryImpl implements SeatOptionRepository {
      */
     @Override
     public SeatOptionDomain save(SeatOptionDomain seatOptionDomain) {
-        return seatOptionJpaRepository.save(SeatOption.toEntity(seatOptionDomain)).toDomain();
+        return seatOptionJpaRepository.saveAndFlush(SeatOption.toEntity(seatOptionDomain)).toDomain();
     }
 }
