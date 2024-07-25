@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -44,6 +45,21 @@ public class ReservationRepositoryImpl implements ReservationRepository {
     @Override
     public ReservationDomain findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId) {
         return reservationJpaRepository.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId).orElseThrow(() -> new CustomException(HttpStatus.ACCEPTED, "예약 상세정보가 없습니다.")).toDomain();
+    }
+
+    /**
+     * 예약 상세조회
+     *
+     * @author 양종문
+     * @since 2024-07-25
+     * @param concertOptionId - 예약 옵션 ID
+     * @param seatOptionId    - 좌석 옵션 ID
+     * @param customerId      - 고객 ID
+     * @return reservationDomain
+     */
+    @Override
+    public Optional<ReservationDomain> findByConcertOptionIdAndSeatOptionIdAndCustomerIdNotException(Long concertOptionId, Long seatOptionId, Long customerId) {
+        return reservationJpaRepository.findByConcertOptionIdAndSeatOptionIdAndCustomerId(concertOptionId, seatOptionId, customerId).map(Reservation::toDomain);
     }
 
     /**
