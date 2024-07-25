@@ -1,8 +1,6 @@
 package com.concert.reservation.application.reservation;
 
 import com.concert.reservation.domain.reservation.ReservationDomain;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,9 +20,6 @@ class ReservationFacadeTest {
 
     @Autowired
     private ReservationFacade reservationFacade;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     @Test
     @DisplayName("콘서트 좌석 예약 요청")
@@ -58,9 +53,6 @@ class ReservationFacadeTest {
         for (int idx = 0; idx < threadCount; idx++) {
             executorService.submit(() -> {
                 try {
-                    // 캐시 삭제
-                    entityManager.clear();
-
                     reservationFacade.reservationConcert(customerId, concertOptionId, seatOptionId);
                 }
                 finally {

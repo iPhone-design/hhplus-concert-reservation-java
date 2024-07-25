@@ -1,10 +1,14 @@
 package com.concert.reservation.domain.seat;
 
 import com.concert.reservation.domain.exception.CustomException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.TransactionCallback;
+import org.springframework.transaction.support.TransactionTemplate;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -16,6 +20,7 @@ import java.util.List;
 public class SeatOptionService {
 
     private final SeatOptionRepository seatOptionRepository;
+    private final TransactionTemplate transactionTemplate;
 
     /**
      * 좌석 상세조회
@@ -58,11 +63,10 @@ public class SeatOptionService {
      * @param   seatOptionId - 좌석 옵션 ID
      * @param   concertOptionId - 콘서트 옵션 ID
      */
+    @Transactional
     public SeatOptionDomain changeStatus(Long seatOptionId, Long concertOptionId, SeatOptionStatus status) {
         // 좌석 조회
         SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
-
-        log.info("seatOptionDomain : {}", seatOptionDomain.toString());
 
         // 가능
         if (SeatOptionStatus.AVAILABLE.equals(status)) {
@@ -75,6 +79,29 @@ public class SeatOptionService {
 
         // 저장
         return seatOptionRepository.save(seatOptionDomain);
+    }
+
+    /**
+     * 좌석 상태 값 변경 (트랜잭션)
+     *
+     * @author  양종문
+     * @since   2024-07-11
+     * @param   seatOptionId - 좌석 옵션 ID
+     * @param   concertOptionId - 콘서트 옵션 ID
+     */
+    public SeatOptionDomain changeStatusWithNewTransaction(Long seatOptionId, Long concertOptionId, SeatOptionStatus status) {
+        return transactionTemplate.execute(new TransactionCallback<SeatOptionDomain>() {
+            @Override
+            public SeatOptionDomain doInTransaction(TransactionStatus transactionStatus) {
+                try {
+                    return changeStatus(seatOptionId, concertOptionId, status);
+                }
+                catch (Exception e) {
+                    transactionStatus.setRollbackOnly();
+                    throw e;
+                }
+            }
+        });
     }
 
     /**

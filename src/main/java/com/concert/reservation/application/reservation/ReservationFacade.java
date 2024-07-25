@@ -6,8 +6,6 @@ import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.seat.SeatOptionService;
 import com.concert.reservation.domain.seat.SeatOptionStatus;
 import com.concert.reservation.domain.token.TokenService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,9 +19,6 @@ public class ReservationFacade {
     private final TokenService tokenService;
     private final SeatOptionService seatOptionService;
     private final ReservationService reservationService;
-
-    @PersistenceContext
-    private EntityManager entityManager;
 
     /**
      * 콘서트 좌석 예약 요청
@@ -39,25 +34,18 @@ public class ReservationFacade {
     public ReservationDomain reservationConcert(Long customerId, Long concertOptionId, Long seatOptionId)  {
         log.info("Thread : {} start", Thread.currentThread().getName());
 
-        ReservationDomain reservationDomain = null;
-
         int retryCount = 0;
         while(retryCount < 10) {
             try {
-                log.info("retryCount : " + retryCount);
+                log.info("retryCount : {}", retryCount);
 
                 // 좌석 유효성 체크
                 seatOptionService.checkAvailableStatus(seatOptionId, concertOptionId);
 
                 // 좌석 상태 값 변경 (가능 → 불가능)
-                seatOptionService.changeStatus(seatOptionId, concertOptionId, SeatOptionStatus.UNAVAILABLE);
+                seatOptionService.changeStatusWithNewTransaction(seatOptionId, concertOptionId, SeatOptionStatus.UNAVAILABLE);
 
-                // 예약 (미완료)
-                reservationDomain = reservationService.save(customerId, concertOptionId, seatOptionId, ReservationStatus.INCOMPLETE);
-                log.info("=======================================================================\n\n\n");
-                log.info("[" + Thread.currentThread().getName() + "] 가 예약 완료");
-                log.info("reservationDomain : {}", reservationDomain.toString());
-                log.info("\n\n\n=======================================================================");
+                log.info("[{}] 가 예약 완료", Thread.currentThread().getName());
             }
             catch (Exception e) {
                 log.error(String.valueOf(e));
@@ -68,6 +56,7 @@ public class ReservationFacade {
             }
         }
 
-        return reservationDomain;
+        // 예약 (미완료)
+        return reservationService.save(customerId, concertOptionId, seatOptionId, ReservationStatus.INCOMPLETE);
     }
 }
