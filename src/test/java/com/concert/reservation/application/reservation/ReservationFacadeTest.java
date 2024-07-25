@@ -62,6 +62,6 @@ class ReservationFacadeTest {
 
         latch.await();
 
-        log.info("End Time : {}", LocalDateTime.now() + "\n\n\n");
+        log.info("End Time : {}", LocalDateTime.now());
     }
 }
