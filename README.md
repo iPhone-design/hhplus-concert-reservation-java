@@ -39,28 +39,35 @@
 <details>
 <summary><b>Lock 테스트 결과</b></summary>
 
-- 비관적락
-    - 콘서트 좌석 예약 요청 (적용 전)
+- **`적용 전`**
+    - 콘서트 좌석 예약 요청
         - ![image](https://github.com/user-attachments/assets/1f4348bf-70dc-463a-b51c-a7c674950d1b)
+      
+    - 결제
+        - ![image](https://github.com/user-attachments/assets/ceba8a6c-863c-4e19-9a21-a52a2e98eef1)
 
-    - 콘서트 좌석 예약 요청 (적용 후)
+***
+
+- **`비관적락`**
+
+    - 콘서트 좌석 예약 요청
         - ![image](https://github.com/user-attachments/assets/cbe6117b-ab63-4f99-b4b3-75f38fd2a359)
      
     - 콘서트 좌석 예약 요청 테스트 코드
         - ![image](https://github.com/user-attachments/assets/7b181e5b-375a-4fc8-9991-ab875adf933c)
 
 
-    - 결제 (적용 전)
-        - ![image](https://github.com/user-attachments/assets/ceba8a6c-863c-4e19-9a21-a52a2e98eef1)
 
-    - 결제 (적용 후)
+    - 결제
         - ![image](https://github.com/user-attachments/assets/2c43129a-6717-4df6-beea-07a7eb3a3f4b)
 
     - 결제 테스트 코드
         - ![image](https://github.com/user-attachments/assets/9df23872-b259-4403-aa5f-093ddda2742d)
-     
-- 낙관적락 **`※ 낙관적락 적용 실패 ㅠㅜ`**
-    - 콘서트 좌석 예약 요청 (적용 후)
+
+***
+
+- **`낙관적락`**
+    - 콘서트 좌석 예약 요청
         - ![image](https://github.com/user-attachments/assets/9ca66541-c3f3-4740-8bc0-26c9063e17b2)
             - 낙관적락 오류는 발생하나 성공 Case가 없음
 
@@ -69,8 +76,10 @@
         - ![image](https://github.com/user-attachments/assets/518c28a2-2663-4672-86d4-18e7105640a8)
         - ![image](https://github.com/user-attachments/assets/9710aa69-d192-4e7b-aefb-3acdd846495e)
 
-- **요약 : 비관적락은 적용 후 성공 Case까지 완료함. 낙관적락은 적용까지는 완료하였으나 retry 부분에 대해 추가 공부가 필요한 것 같다..**
-- **비관적락 통합 테스트**
+***
+
+- **요약 : 비관적락은 적용 후 성공 Case까지 완료함. 낙관적락은 적용까지는 완료하였으나 retry 부분에 대해 추가 공부가 필요한 것 같다.. 그래서 본 로직에는 비관적락을 적용한 상태입니다.**
+    - 비관적락 통합 테스트
     - ![image](https://github.com/user-attachments/assets/fcdc6738-3977-4fee-99c5-5aa5eed76549)
 </details>
 
