@@ -1,5 +1,6 @@
 package com.concert.reservation.application.token;
 
+import com.concert.reservation.domain.customer.CustomerService;
 import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.token.TokenDomain;
 import com.concert.reservation.domain.token.TokenService;
@@ -14,6 +15,7 @@ import org.springframework.stereotype.Component;
 public class TokenFacade {
 
     private final TokenService tokenService;
+    private final CustomerService customerService;
 
     /**
      * 고객 토큰 발급
@@ -24,6 +26,9 @@ public class TokenFacade {
      * @return  tokenDomain
      */
     public TokenDomain issueToken(Long customerId) {
+        // 고객 상세조회
+        customerService.findById(customerId);
+
         // 토큰 발급
         return tokenService.issueToken(customerId);
     }

@@ -39,4 +39,15 @@ public class CustomerRepositoryImpl implements CustomerRepository {
     public CustomerDomain save(CustomerDomain customerDomain) {
         return customerJpaRepository.save(Customer.toEntity(customerDomain)).toDomain();
     }
+
+    /**
+     * 모든 고객 삭제
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     */
+    @Override
+    public void deleteAll() {
+        customerJpaRepository.deleteAll();
+    }
 }

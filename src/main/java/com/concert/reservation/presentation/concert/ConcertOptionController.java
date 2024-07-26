@@ -25,7 +25,7 @@ public class ConcertOptionController {
      */
     @GetMapping("/dates")
     public List<ConcertOptionResponse> findAllAvailableConcertForReservation(@Valid @RequestBody ConcertOptionRequest concertOptionRequest) {
-        return ConcertOptionResponse.toResponse(concertFacade.findAllAvailableConcertForReservation(concertOptionRequest.getCustomerId()));
+        return ConcertOptionResponse.toResponse(concertFacade.findAllAvailableConcertForReservation());
     }
 
     /**
@@ -40,6 +40,6 @@ public class ConcertOptionController {
      */
     @GetMapping("/{date}/{concert-option-id}/seats")
     public List<SeatOptionResponse> findAllAvailableSeatForReservation(@PathVariable("date") LocalDate startDate, @PathVariable("concert-option-id") Long concertOptionId, @Valid @RequestBody ConcertOptionRequest concertOptionRequest) {
-        return SeatOptionResponse.toResponse(concertFacade.findAllAvailableSeatForReservation(concertOptionRequest.getCustomerId(), startDate, concertOptionId));
+        return SeatOptionResponse.toResponse(concertFacade.findAllAvailableSeatForReservation(startDate, concertOptionId));
     }
 }

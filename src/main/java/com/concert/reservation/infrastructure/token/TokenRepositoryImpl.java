@@ -95,4 +95,15 @@ public class TokenRepositoryImpl implements TokenRepository {
     public TokenDomain save(TokenDomain tokenDomain) {
         return tokenJpaRepository.save(Token.toEntity(tokenDomain)).toDomain();
     }
+
+    /**
+     * 모든 토큰 삭제
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     */
+    @Override
+    public void deleteAll() {
+        tokenJpaRepository.deleteAll();
+    }
 }

@@ -14,4 +14,5 @@ public interface TokenRepository {
     List<TokenDomain> findAllActiveTokensOlderThanFourMinutes(LocalDateTime expireDt);
     List<TokenDomain> findActive();
     TokenDomain save(TokenDomain tokenDomain);
+    void deleteAll();
 }

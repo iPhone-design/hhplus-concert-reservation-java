@@ -6,6 +6,7 @@ import com.concert.reservation.domain.payment.PaymentService;
 import com.concert.reservation.domain.payment.PaymentStatus;
 import com.concert.reservation.domain.reservation.ReservationDomain;
 import com.concert.reservation.domain.reservation.ReservationService;
+import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.seat.SeatOptionService;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.TokenStatus;
@@ -52,8 +53,7 @@ public class PaymentFacade {
         customerService.useAmount(customerId, amount);
 
         // 예약 상태 값 변경 (미완료 → 완료)
-        reservationDomain.changeStatusToComplete();
-        reservationService.save(reservationDomain);
+        reservationService.changeStatus(reservationDomain.getReservationId(), ReservationStatus.COMPLETE);
 
         // 토큰 상태 값 변경 (활성화 → 만료)
         tokenService.changeStatus(customerId, TokenStatus.EXPIRE);

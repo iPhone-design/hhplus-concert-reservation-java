@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Repository
 public interface ReservationJpaRepository extends JpaRepository<Reservation, Long> {
+    Optional<Reservation> findByReservationId(Long reservationId);
     Optional<Reservation> findByConcertOptionIdAndSeatOptionIdAndCustomerId(Long concertOptionId, Long seatOptionId, Long customerId);
 
     // 특정 고객의 미완료 상태의 예약 조회

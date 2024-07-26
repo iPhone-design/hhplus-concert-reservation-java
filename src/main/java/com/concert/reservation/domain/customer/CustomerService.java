@@ -82,4 +82,26 @@ public class CustomerService {
             throw new CustomException(HttpStatus.ACCEPTED, "잔액이 부족합니다.");
         }
     }
+
+    /**
+     * 고객 저장
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     * @param   customerDomain - 고객 도메인
+     * @return  customerDomain
+     */
+    public CustomerDomain save(CustomerDomain customerDomain) {
+        return customerRepository.save(customerDomain);
+    }
+
+    /**
+     * 모든 고객 삭제
+     *
+     * @author  양종문
+     * @since   2024-07-21
+     */
+    public void deleteAll() {
+        customerRepository.deleteAll();
+    }
 }
