@@ -102,10 +102,10 @@
         - **로직 분리** : 토큰 만료 처리와 예약 미완료 좌석 활성화 처리를 각각 별도의 스케줄러로 분리하여 데이터베이스에 가해지는 부하를 줄입니다. 이 방법은 각 작업을 독립적으로 관리할 수 있게 하여 성능 최적화를 도와줍니다.
         - **캐시 활용** : Redis와 같은 캐시 솔루션을 활용하여 데이터베이스 조회 빈도를 줄입니다. 특히 자주 조회되는 데이터와 같이 변동이 적은 정보를 캐시에 저장하여 데이터베이스의 부하를 줄이고 쿼리 성능을 개선할 수 있습니다.
         - **쿼리 최적화** : 데이터베이스 쿼리를 최적화하여 불필요한 자원 소모를 줄입니다. 쿼리 성능을 향상시키기 위해 인덱스를 추가하거나 쿼리를 재작성하여 데이터베이스의 응답 속도를 개선할 수 있습니다.
-        - 쿼리
-            - ![image](https://github.com/user-attachments/assets/15eaf9ab-be1f-4de6-9167-f17ccb039b00)
-        - 로직
-            - ![image](https://github.com/user-attachments/assets/d80c468d-50d1-4427-a87d-75e6ac6b3b13)
+    - 쿼리
+        - ![image](https://github.com/user-attachments/assets/15eaf9ab-be1f-4de6-9167-f17ccb039b00)
+    - 로직
+        - ![image](https://github.com/user-attachments/assets/d80c468d-50d1-4427-a87d-75e6ac6b3b13)
 
 - **`TO-BE`**
     - 기존의 스케줄러는 토큰 만료와 예약 미완료 시 좌석 활성화를 하나의 로직으로 처리했습니다. 이로 인해 데이터베이스에 높은 부하가 발생하고, 쿼리에 대한 의존성이 커졌습니다. 이를 해결하기 위해 다음과 같이 조정했습니다.
@@ -123,9 +123,9 @@
 
         - 토큰 만료와 좌석 활성화 시키는 스케줄러 (Redis)
             - ![image](https://github.com/user-attachments/assets/297a73df-cba6-4790-bec8-4ec0b2d594c6)
-        - 로직
-            - ![image](https://github.com/user-attachments/assets/eac7aaee-dc0e-4f9d-b08e-567ecbd4adc5)
-            - ![image](https://github.com/user-attachments/assets/fe5102db-9825-41f3-8d10-f8a09faf6ec6)
+    - 로직
+        - ![image](https://github.com/user-attachments/assets/eac7aaee-dc0e-4f9d-b08e-567ecbd4adc5)
+        - ![image](https://github.com/user-attachments/assets/fe5102db-9825-41f3-8d10-f8a09faf6ec6)
 </details>
 
 ## Description
