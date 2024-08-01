@@ -103,7 +103,10 @@
         - **캐시 활용** : Redis와 같은 캐시 솔루션을 활용하여 데이터베이스 조회 빈도를 줄입니다. 특히 자주 조회되는 데이터와 같이 변동이 적은 정보를 캐시에 저장하여 데이터베이스의 부하를 줄이고 쿼리 성능을 개선할 수 있습니다.
         - **쿼리 최적화** : 데이터베이스 쿼리를 최적화하여 불필요한 자원 소모를 줄입니다. 쿼리 성능을 향상시키기 위해 인덱스를 추가하거나 쿼리를 재작성하여 데이터베이스의 응답 속도를 개선할 수 있습니다.
     - 쿼리
-        - ![image](https://github.com/user-attachments/assets/15eaf9ab-be1f-4de6-9167-f17ccb039b00)
+        - ![image](https://github.com/user-attachments/assets/3981ecc8-0b81-45f0-a95b-4fc9b57d2ae4)
+
+        - ![image](https://github.com/user-attachments/assets/aa80acd7-0490-48ed-aa7e-9b12c8802069)
+
     - 로직
         - ![image](https://github.com/user-attachments/assets/d80c468d-50d1-4427-a87d-75e6ac6b3b13)
 
