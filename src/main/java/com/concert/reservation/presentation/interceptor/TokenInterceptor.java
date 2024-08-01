@@ -19,7 +19,7 @@ public class TokenInterceptor implements HandlerInterceptor {
 
         if (url.contains("/concert") || url.contains("/payment")) {
             // 토큰 유효성 체크
-            tokenFacade.checkActiveStatus(Long.valueOf(request.getHeader("customerId")));
+            tokenFacade.checkActiveStatusFromRedis(request.getHeader("Authorization"));
         }
 
         return HandlerInterceptor.super.preHandle(request, response, handler);
