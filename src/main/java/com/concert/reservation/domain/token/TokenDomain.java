@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TokenDomain {
     private Long tokenId;
+    private String uuid;
     private Long customerId;
     private TokenStatus status;
     private LocalDateTime waitingStartDt;

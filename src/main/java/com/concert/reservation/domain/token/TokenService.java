@@ -1,20 +1,26 @@
 package com.concert.reservation.domain.token;
 
 import com.concert.reservation.domain.exception.CustomException;
+import com.concert.reservation.domain.token.entity.TokenRedis;
+import com.concert.reservation.infrastructure.waitingQueue.WaitingQueueRedisRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class TokenService {
 
     private final TokenRepository tokenRepository;
+    private final WaitingQueueRedisRepository waitingQueueRedisRepository;
 
     /**
      * 첫 번째 대기열 고객 상세조회
@@ -163,5 +169,153 @@ public class TokenService {
      */
     public void deleteAll() {
         tokenRepository.deleteAll();
+    }
+
+    /**
+     * 토큰 발급
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   customerId - 고객 ID
+     * @return  TokenRedis
+     */
+    public TokenRedis issueTokenToRedis(Long customerId) {
+        // Waiting 대기열 추가
+        String uuid = waitingQueueRedisRepository.addWaitingQueue(customerId);
+
+        return TokenRedis.builder().uuid(uuid).customerId(customerId).build();
+    }
+
+    /**
+     * 토큰 상세조회
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   uuid - uuid
+     * @return  TokenRedis
+     */
+    public TokenRedis findByUUIDFromRedis(String uuid) {
+        // Waiting 대기열 목록 범위 조회
+        Set<String> tokens = waitingQueueRedisRepository.getWaitingQueueRange(0, -1);
+        if (tokens.isEmpty()) throw new CustomException(HttpStatus.NOT_FOUND, "토큰 정보가 존재하지 않습니다.");
+
+        return tokens.stream().map(TokenRedis::toTokenRedis).filter(tokenRedis -> (uuid.equals(tokenRedis.getUuid()))).findFirst().orElseThrow(() -> new CustomException(HttpStatus.UNAUTHORIZED, "토큰 상세 정보가 없습니다."));
+    }
+
+    /**
+     * 토큰 상세조회
+     *
+     * @param customerId - 고객 ID
+     * @return TokenRedis
+     * @author 양종문
+     * @since 2024-08-01
+     */
+    public Optional<TokenRedis> findByCustomerIdFromRedis(Long customerId) {
+        // Waiting 대기열 목록 범위 조회
+        Set<String> tokens = waitingQueueRedisRepository.getWaitingQueueRange(0, -1);
+        if (!tokens.isEmpty()) return tokens.stream().map(TokenRedis::toTokenRedis).filter(tokenRedis -> (customerId.equals(tokenRedis.getCustomerId()))).findFirst();
+
+        return Optional.empty();
+    }
+
+    /**
+     * 대기열 토큰 목록 조회
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   start - 시작 값
+     * @param   end - 끝 값
+     * @return  List<TokenRedis>
+     */
+    public List<TokenRedis> getWaitingTokensFromRedis(Integer start, Integer end) {
+        // Waiting 대기열 목록 범위 조회
+        Set<String> tokens = waitingQueueRedisRepository.getWaitingQueueRange(start, end);
+        if (!tokens.isEmpty()) {
+            return tokens.stream().map(TokenRedis::toTokenRedis).toList();
+        }
+
+        return List.of();
+    }
+
+    /**
+     * 대기중 토큰 삭제
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   uuid - uuid
+     * @param   customerId - 고객 ID
+     * @return  Long
+     */
+    public Long deleteWaitingQueueByUUID(String uuid, Long customerId) {
+        return waitingQueueRedisRepository.removeWaitingQueueByUUID(uuid, customerId);
+    }
+
+    /**
+     * 활성화 토큰 조회
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @return  List<TokenRedis>
+     */
+    public List<TokenRedis> getActiveTokensFromRedis() {
+        // Redis 활성화 토큰 전체 조회
+        Set<String> tokens = waitingQueueRedisRepository.getActiveQueue();
+        if (!tokens.isEmpty()) {
+            return tokens.stream().map(TokenRedis::toTokenRedis).toList();
+        }
+
+        return List.of();
+    }
+
+    /**
+     * 토큰 활성화 상태 체크
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   uuid - uuid
+     */
+    public void checkActiveStatusFromRedis(String uuid) {
+        // 활성화 대기열 존재 여부 체크
+        Boolean isExist = waitingQueueRedisRepository.existActiveQueueByUUID(uuid);
+        if (!isExist) {
+            throw new CustomException(HttpStatus.UNAUTHORIZED, "토큰이 활성화 상태가 아닙니다.");
+        }
+    }
+
+    /**
+     * 토큰 활성화 상태 수 조회
+     *
+     * @author  양종문
+     * @since   2024-08-02
+     * @return  Long
+     */
+    public Long countActiveTokensFromRedis() {
+        return waitingQueueRedisRepository.countActiveTokens();
+    }
+
+    /**
+     * 활성화 토큰 추가
+     *
+     * @author 양종문
+     * @since 2024-08-02
+     * @param uuid       - uuid
+     * @param customerId - 고객 ID
+     */
+    public void addActiveQueue(String uuid, Long customerId) {
+        waitingQueueRedisRepository.addActiveQueue(uuid, customerId);
+    }
+
+    /**
+     * 활성화 토큰 삭제
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   uuid - uuid
+     * @param   customerId - 고객 ID
+     * @param   expireDt - 만료일시
+     * @return  Long
+     */
+    public Long deleteActiveQueueByUUID(String uuid, Long customerId, Long expireDt) {
+        return waitingQueueRedisRepository.removeActiveQueueByUUID(uuid, customerId, expireDt);
     }
 }

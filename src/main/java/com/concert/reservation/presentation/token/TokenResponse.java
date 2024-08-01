@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 public class TokenResponse {
     private Long tokenId;
+    private String uuid;
     private Long customerId;
     private TokenStatus status;
     private LocalDateTime waitingStartDt;
@@ -24,6 +25,7 @@ public class TokenResponse {
     public static TokenResponse toResponse(TokenDomain tokenDomain) {
         return TokenResponse.builder()
                 .tokenId(tokenDomain.getTokenId())
+                .uuid(tokenDomain.getUuid())
                 .customerId(tokenDomain.getCustomerId())
                 .status(tokenDomain.getStatus())
                 .waitingStartDt(tokenDomain.getWaitingStartDt())

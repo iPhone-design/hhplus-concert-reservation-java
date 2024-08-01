@@ -5,11 +5,16 @@ import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.token.TokenDomain;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.TokenStatus;
+import com.concert.reservation.domain.token.entity.TokenRedis;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class TokenFacade {
@@ -76,5 +81,57 @@ public class TokenFacade {
             // 대기열 등수를 포함한 고객 상세조회
             return tokenService.findByCustomerIdWithRank(customerId);
         }
+    }
+
+    /**
+     * 고객 토큰 조회
+     *
+     * @author  양종문
+     * @since   2024-08-01
+     * @param   uuid - uuid
+     * @return  tokenDomain
+     */
+    public TokenDomain findByUUIDFromRedis(String uuid) {
+        // 토큰 조회
+        TokenRedis tokenRedis = tokenService.findByUUIDFromRedis(uuid);
+
+        return TokenDomain.builder().uuid(tokenRedis.getUuid()).customerId(tokenRedis.getCustomerId()).build();
+    }
+
+    /**
+     * 고객 토큰 유효성 체크
+     *
+     * @author  양종문
+     * @since   2024-08-02
+     * @param   uuid - uuid
+     */
+    public void checkActiveStatusFromRedis(String uuid) {
+        // 토큰 활성화 상태 체크
+        tokenService.checkActiveStatusFromRedis(uuid);
+    }
+
+    /**
+     * 고객 토큰 발급
+     *
+     * @author  양종문
+     * @since   2024-08-02
+     * @param   customerId - 고객 ID
+     * @return  tokenDomain
+     */
+    @Transactional
+    public TokenDomain issueTokenToRedis(Long customerId) {
+        // 고객 조회
+        customerService.findById(customerId);
+
+        // 토큰 조회
+        Optional<TokenRedis> tokenRedis = tokenService.findByCustomerIdFromRedis(customerId);
+
+        // 기존 토큰 삭제
+        tokenRedis.ifPresent(redis -> tokenService.deleteWaitingQueueByUUID(redis.getUuid(), redis.getCustomerId()));
+
+        // 토큰 발급
+        TokenRedis issueToken = tokenService.issueTokenToRedis(customerId);
+
+        return TokenDomain.builder().uuid(issueToken.getUuid()).customerId(issueToken.getCustomerId()).build();
     }
 }
