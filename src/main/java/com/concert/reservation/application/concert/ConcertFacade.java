@@ -4,20 +4,22 @@ import com.concert.reservation.domain.concert.ConcertOptionDomain;
 import com.concert.reservation.domain.concert.ConcertOptionService;
 import com.concert.reservation.domain.seat.SeatOptionDomain;
 import com.concert.reservation.domain.seat.SeatOptionService;
-import com.concert.reservation.domain.token.TokenService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
+@Slf4j
 @Component
 @RequiredArgsConstructor
 public class ConcertFacade {
 
     private final ConcertOptionService concertOptionService;
     private final SeatOptionService seatOptionService;
-    private final TokenService tokenService;
 
     /**
      * 예약 가능 콘서트 조회
@@ -27,8 +29,22 @@ public class ConcertFacade {
      * @return  List<ConcertOptionDomain>
      */
     public List<ConcertOptionDomain> findAllAvailableConcertForReservation() {
+        LocalDateTime startDt = LocalDateTime.now();
+        log.info("Start findAllAvailableConcertForReservation");
+
         // 예약 가능 콘서트 조회
-        return concertOptionService.findAllAvailableConcertForReservation();
+        List<ConcertOptionDomain> concertOptionDomains = concertOptionService.getConcertOptionsFromRedis();
+        if (concertOptionDomains.isEmpty()) {
+            // 예약 가능 콘서트 조회 (Redis에 목록이 없는 경우 DB조회)
+            concertOptionDomains = concertOptionService.findAllAvailableConcertForReservation();
+        }
+
+        LocalDateTime endDt = LocalDateTime.now();
+
+        log.info("소요 시간 (밀리초) : {}", ChronoUnit.MILLIS.between(startDt, endDt));
+        log.info("End findAllAvailableConcertForReservation");
+
+        return concertOptionDomains;
     }
 
     /**
