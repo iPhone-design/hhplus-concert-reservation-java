@@ -8,11 +8,13 @@ import com.concert.reservation.domain.reservation.ReservationDomain;
 import com.concert.reservation.domain.reservation.ReservationService;
 import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.token.TokenService;
-import com.concert.reservation.domain.token.TokenStatus;
+import com.concert.reservation.domain.token.entity.TokenRedis;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Slf4j
 @Component
@@ -29,6 +31,7 @@ public class PaymentFacade {
      *
      * @author  양종문
      * @since   2024-07-11
+     * @history 2024-08-08 양종문 - 활성화 토큰 비활성화 처리 부분이 Redis 활성화 목록에서 삭제 처리가 되는 로직으로 변경
      * @param   customerId - 고객 ID
      * @param   concertOptionId - 콘서트 옵션 ID
      * @param   seatOptionId - 좌석 옵션 ID
@@ -49,8 +52,10 @@ public class PaymentFacade {
         // 이용자 금액 사용
         customerService.useAmount(customerId, amount);
 
-        // 토큰 상태 값 변경 (활성화 → 만료)
-        tokenService.changeStatus(customerId, TokenStatus.EXPIRE);
+        // 활성화 토큰 상세조회
+        Optional<TokenRedis> tokenRedis = tokenService.getActiveTokenByCustomerIdFromRedis(customerId);
+        // 활성화 토큰 삭제
+        tokenService.deleteActiveQueueByUUID(tokenRedis.get().getUuid(), tokenRedis.get().getCustomerId(), tokenRedis.get().getExpireDt());
 
         // 결제
         PaymentDomain paymentDomain = paymentService.save(PaymentDomain.builder().reservationId(reservationDomain.getReservationId()).amount(amount).status(PaymentStatus.COMPLETE).build());
