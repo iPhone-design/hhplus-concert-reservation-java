@@ -57,7 +57,15 @@ public class ConcertFacade {
      * @return  List<SeatOptionDomain>
      */
     public List<SeatOptionDomain> findAllAvailableSeatForReservation(LocalDate startDate, Long concertOptionId) {
+        LocalDateTime startDt = LocalDateTime.now();
+        log.info("Start findAllAvailableSeatForReservation");
+
         // 예약 가능 콘서트 좌석 조회
-        return seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
+        List<SeatOptionDomain> listSeatOptionDomain = seatOptionService.findAllAvailableSeatForReservation(startDate, concertOptionId);
+
+        log.info("소요 시간 (밀리초) : {}", ChronoUnit.MILLIS.between(startDt, LocalDateTime.now()));
+        log.info("End findAllAvailableSeatForReservation");
+
+        return listSeatOptionDomain;
     }
 }
