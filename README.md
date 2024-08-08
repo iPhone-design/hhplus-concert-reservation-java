@@ -131,6 +131,47 @@
         - ![image](https://github.com/user-attachments/assets/fe5102db-9825-41f3-8d10-f8a09faf6ec6)
 </details>
 
+<details>
+<summary><b>INDEX 적용</b></summary>
+
+- **`AS-IS`**
+    - `예약 가능 날짜`와 `예약 가능 좌석` 조회 부분에 인덱스를 적용했습니다.
+        - **예약 가능 날짜** : 예약 가능 날짜를 조회할 때, 대량의 콘서트 데이터 중에서 조회 당시의 날짜보다 큰 기준으로 조회하기 때문에 날짜에 대한 정보를 빠르게 필터 하기 위해 인덱스를 사용해야 한다고 생각합니다.
+            - 소요 시간
+                - ![image](https://github.com/user-attachments/assets/aa86a4e7-6be5-43b2-987d-a4d2d95a218a)
+
+        - **예약 가능 좌석** : 예약 가능 날짜를 조회할 때, 대량의 좌석 데이터 중에서 활성화 상태와 특정 날짜 기준으로 조회하기 때문에 상태, 날짜의 복합 인덱스를 사용해야 한다고 생각합니다.
+            - 소요 시간
+                - ![image](https://github.com/user-attachments/assets/26ceefae-8c95-4056-a86e-c0968c21e09f)
+
+- **`TO-BE`**
+    - **예약 가능 날짜**
+        - 인덱스
+            - 
+        - 속도
+            - ![image](https://github.com/user-attachments/assets/9c484c03-f0ef-483b-b70a-37e3f18f3412)
+              
+    - **예약 가능 좌석**
+        - 인덱스
+            - 
+        - 속도
+            - ![image](https://github.com/user-attachments/assets/c204bef7-c93f-492b-9c0f-52e4fed32536)
+      
+- **`결과`**
+    - 현재의 결과는 더미 데이터가 많지 않아 효과적이다 볼 수는 없지만 추후에 데이터가 많아질 수 록 성능이 더 욱 좋아질 것으로 예상합니다.
+        - 토큰 만료와 좌석 활성화 시키는 스케줄러 (DB)
+            - ![image](https://github.com/user-attachments/assets/46447b1a-f710-4962-92de-56c744a886f7)
+          
+        - 대기열 토큰을 활성화 시키는 스케줄러 (Redis)
+            - ![image](https://github.com/user-attachments/assets/94e18b42-2a6a-4360-813c-6439e400bd8b)
+
+        - 토큰 만료와 좌석 활성화 시키는 스케줄러 (Redis)
+            - ![image](https://github.com/user-attachments/assets/297a73df-cba6-4790-bec8-4ec0b2d594c6)
+    - 로직
+        - ![image](https://github.com/user-attachments/assets/eac7aaee-dc0e-4f9d-b08e-567ecbd4adc5)
+        - ![image](https://github.com/user-attachments/assets/fe5102db-9825-41f3-8d10-f8a09faf6ec6)
+</details>
+
 ## Description
 
 - **`콘서트 예약 서비스`** 를 구현해 봅니다.
