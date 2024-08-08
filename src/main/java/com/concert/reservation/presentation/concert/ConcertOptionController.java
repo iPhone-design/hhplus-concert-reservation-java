@@ -1,9 +1,11 @@
 package com.concert.reservation.presentation.concert;
 
 import com.concert.reservation.application.concert.ConcertFacade;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -20,11 +22,10 @@ public class ConcertOptionController {
      *
      * @author  양종문
      * @since   2024-07-10
-     * @param   concertOptionRequest - 콘서트 옵션 요청
      * @return  List<ConcertOptionResponse>
      */
     @GetMapping("/dates")
-    public List<ConcertOptionResponse> findAllAvailableConcertForReservation(@Valid @RequestBody ConcertOptionRequest concertOptionRequest) {
+    public List<ConcertOptionResponse> findAllAvailableConcertForReservation() {
         return ConcertOptionResponse.toResponse(concertFacade.findAllAvailableConcertForReservation());
     }
 
@@ -35,11 +36,10 @@ public class ConcertOptionController {
      * @since   2024-07-10
      * @param   startDate - 시작일
      * @param   concertOptionId - 콘서트 옵션 ID
-     * @param   concertOptionRequest - 콘서트 옵션 요청
      * @return  List<SeatOptionResponse>
      */
     @GetMapping("/{date}/{concert-option-id}/seats")
-    public List<SeatOptionResponse> findAllAvailableSeatForReservation(@PathVariable("date") LocalDate startDate, @PathVariable("concert-option-id") Long concertOptionId, @Valid @RequestBody ConcertOptionRequest concertOptionRequest) {
+    public List<SeatOptionResponse> findAllAvailableSeatForReservation(@PathVariable("date") LocalDate startDate, @PathVariable("concert-option-id") Long concertOptionId) {
         return SeatOptionResponse.toResponse(concertFacade.findAllAvailableSeatForReservation(startDate, concertOptionId));
     }
 }
