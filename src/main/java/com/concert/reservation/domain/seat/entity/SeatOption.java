@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "SEAT_OPTION")
+@Table(name = "SEAT_OPTION", indexes = {@Index(name = "index_seat_option", columnList = "status, concert_option_id")})
 @Getter
 @Builder
 @NoArgsConstructor
