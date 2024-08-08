@@ -187,14 +187,14 @@ public class TokenService {
     }
 
     /**
-     * 토큰 상세조회
+     * 대기열 토큰 상세조회
      *
      * @author  양종문
      * @since   2024-08-01
      * @param   uuid - uuid
      * @return  TokenRedis
      */
-    public TokenRedis findByUUIDFromRedis(String uuid) {
+    public TokenRedis getWaitingTokenByUUIDFromRedis(String uuid) {
         // Waiting 대기열 목록 범위 조회
         Set<String> tokens = waitingQueueRedisRepository.getWaitingQueueRange(0, -1);
         if (tokens.isEmpty()) throw new CustomException(HttpStatus.NOT_FOUND, "토큰 정보가 존재하지 않습니다.");
@@ -203,14 +203,14 @@ public class TokenService {
     }
 
     /**
-     * 토큰 상세조회
+     * 대기열 토큰 상세조회
      *
-     * @param customerId - 고객 ID
-     * @return TokenRedis
      * @author 양종문
-     * @since 2024-08-01
+     * @since  2024-08-01
+     * @param  customerId - 고객 ID
+     * @return TokenRedis
      */
-    public Optional<TokenRedis> findByCustomerIdFromRedis(Long customerId) {
+    public Optional<TokenRedis> getWaitingTokenByCustomerIdFromRedis(Long customerId) {
         // Waiting 대기열 목록 범위 조회
         Set<String> tokens = waitingQueueRedisRepository.getWaitingQueueRange(0, -1);
         if (!tokens.isEmpty()) return tokens.stream().map(TokenRedis::toTokenRedis).filter(tokenRedis -> (customerId.equals(tokenRedis.getCustomerId()))).findFirst();
@@ -265,6 +265,22 @@ public class TokenService {
         }
 
         return List.of();
+    }
+
+    /**
+     * 활성화 토큰 상세조회
+     *
+     * @author 양종문
+     * @since  2024-08-08
+     * @param  customerId - 고객 ID
+     * @return TokenRedis
+     */
+    public Optional<TokenRedis> getActiveTokenByCustomerIdFromRedis(Long customerId) {
+        // Active 대기열 목록 범위 조회
+        Set<String> tokens = waitingQueueRedisRepository.getActiveQueue();
+        if (tokens.isEmpty()) throw new CustomException(HttpStatus.NOT_FOUND, "토큰 정보가 존재하지 않습니다.");
+
+        return tokens.stream().map(TokenRedis::toTokenRedis).filter(tokenRedis -> (customerId.equals(tokenRedis.getCustomerId()))).findFirst();
     }
 
     /**

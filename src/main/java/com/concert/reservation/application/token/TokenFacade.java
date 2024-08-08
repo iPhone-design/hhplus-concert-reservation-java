@@ -93,7 +93,7 @@ public class TokenFacade {
      */
     public TokenDomain findByUUIDFromRedis(String uuid) {
         // 토큰 조회
-        TokenRedis tokenRedis = tokenService.findByUUIDFromRedis(uuid);
+        TokenRedis tokenRedis = tokenService.getWaitingTokenByUUIDFromRedis(uuid);
 
         return TokenDomain.builder().uuid(tokenRedis.getUuid()).customerId(tokenRedis.getCustomerId()).build();
     }
@@ -124,7 +124,7 @@ public class TokenFacade {
         customerService.findById(customerId);
 
         // 토큰 조회
-        Optional<TokenRedis> tokenRedis = tokenService.findByCustomerIdFromRedis(customerId);
+        Optional<TokenRedis> tokenRedis = tokenService.getWaitingTokenByCustomerIdFromRedis(customerId);
 
         // 기존 토큰 삭제
         tokenRedis.ifPresent(redis -> tokenService.deleteWaitingQueueByUUID(redis.getUuid(), redis.getCustomerId()));

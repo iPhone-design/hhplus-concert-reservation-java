@@ -95,7 +95,7 @@ public class WaitingQueueRedisRepository {
     }
 
     /**
-     * Active 토큰 목록 범위 조회
+     * Active 토큰 목록 조회
      *
      * @author  양종문
      * @since   2024-08-01
