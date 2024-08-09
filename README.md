@@ -133,33 +133,40 @@
 
 <details>
 <summary><b>INDEX 적용</b></summary>
-
+    
 - **`AS-IS`**
-    - `예약 가능 날짜`와 `예약 가능 좌석` 조회 부분에 인덱스를 적용했습니다.
-        - **예약 가능 날짜** : 예약 가능 날짜를 조회할 때, 대량의 콘서트 데이터 중에서 조회 당시의 날짜보다 큰 기준으로 조회하기 때문에 날짜에 대한 정보를 빠르게 필터 하기 위해 인덱스를 사용해야 한다고 생각합니다.
-            - 소요 시간
-                - ![image](https://github.com/user-attachments/assets/aa86a4e7-6be5-43b2-987d-a4d2d95a218a)
+    - **예약 가능 날짜**
+        - 실행계획
+            - ![image](https://github.com/user-attachments/assets/8d2a0d4f-6876-4bb1-a841-527ab539e61b)
+        - 소요시간
+            - ![image](https://github.com/user-attachments/assets/aa86a4e7-6be5-43b2-987d-a4d2d95a218a)
 
-        - **예약 가능 좌석** : 예약 가능 날짜를 조회할 때, 대량의 좌석 데이터 중에서 활성화 상태와 특정 날짜 기준으로 조회하기 때문에 상태, 날짜의 복합 인덱스를 사용해야 한다고 생각합니다.
-            - 소요 시간
-                - ![image](https://github.com/user-attachments/assets/26ceefae-8c95-4056-a86e-c0968c21e09f)
+    - **예약 가능 좌석**
+        - 실행계획
+            - ![image](https://github.com/user-attachments/assets/2e09a82b-729f-478c-bcd9-2aca00dd77d5)
+        - 소요시간
+            - ![image](https://github.com/user-attachments/assets/26ceefae-8c95-4056-a86e-c0968c21e09f)
 
 - **`TO-BE`**
-    - **예약 가능 날짜**
+    - **예약 가능 날짜** : 예약 가능 날짜를 조회할 때, 대량의 콘서트 데이터 중에서 날짜 기준으로 조회하기 때문에 날짜에 대한 정보를 빠르게 필터 하기 위해 인덱스를 사용해야 한다고 생각하여 적용하였습니다.
         - 인덱스
-            - [CONCERT_OPTION](https://github.com/iPhone-design/hhplus-concert-reservation-java/pull/33/commits/17c2d617a1845187204892a5d6a66992ed772949#diff-c2eee5d87622ec6e8f7e3cb88b21d71cbf68aeeef41db656dc8943cf01e82781)
-        - 속도
+            - [CONCERT_OPTION](https://github.com/iPhone-design/hhplus-concert-reservation-java/pull/33/commits/82f64bb4298cf7d10882d9e397a1a585c0053813)
+        - 실행계획
+            - ![image](https://github.com/user-attachments/assets/1ec77d86-a6e1-43cd-a4ca-7f49c5697b2e)
+        - 소요시간
             - ![image](https://github.com/user-attachments/assets/9c484c03-f0ef-483b-b70a-37e3f18f3412)
               
-    - **예약 가능 좌석**
+    - **예약 가능 좌석** : 예약 가능 날짜를 조회할 때, 대량의 좌석 데이터 중에서 활성화 상태와 특정 콘서트 옵션 ID 기준으로 조회하기 때문에 상태, 콘서트 옵션 ID의 복합 인덱스를 사용해야 한다고 생각하여 적용하였습니다.
         - 인덱스
             - [SEAT_OPTION](https://github.com/iPhone-design/hhplus-concert-reservation-java/pull/33/commits/17c2d617a1845187204892a5d6a66992ed772949#diff-39601111723397cde51fa9421ae3bcba523479b69d6ad24231bdf8df9ff638a6)
-        - 속도
+        - 실행계획
+            - ![image](https://github.com/user-attachments/assets/bdf147fd-f6f3-4c04-9347-5d99bb0e319b)
+        - 소요시간
             - ![image](https://github.com/user-attachments/assets/c204bef7-c93f-492b-9c0f-52e4fed32536)
       
 - **`결과`**
-    - 예약 가능 날짜 : **68.64%** 속도 개선
-    - 예약 가능 좌석 : **55.55%** 속도 개선
+    - 예약 가능 날짜 : **68.64%** 소요 시간 개선
+    - 예약 가능 좌석 : **55.55%** 소요 시간 개선
 </details>
 
 ## Description
