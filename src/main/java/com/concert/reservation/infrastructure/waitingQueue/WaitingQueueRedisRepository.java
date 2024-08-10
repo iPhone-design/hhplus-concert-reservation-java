@@ -81,7 +81,7 @@ public class WaitingQueueRedisRepository {
      * @since   2024-08-01
      */
     public Boolean existActiveQueueByUUID(String uuid) {
-        return redisTemplate.opsForSet().isMember(ACTIVE_KEY, uuid) != null;
+        return redisTemplate.opsForSet().isMember(ACTIVE_KEY, uuid);
     }
 
     /**
