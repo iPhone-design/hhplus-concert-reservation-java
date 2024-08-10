@@ -75,16 +75,6 @@ public class WaitingQueueRedisRepository {
     }
 
     /**
-     * Active 토큰 존재여부
-     *
-     * @author  양종문
-     * @since   2024-08-01
-     */
-    public Boolean existActiveQueueByUUID(String uuid) {
-        return redisTemplate.opsForSet().isMember(ACTIVE_KEY, uuid);
-    }
-
-    /**
      * Active 토큰 토큰 수 조회
      *
      * @author  양종문

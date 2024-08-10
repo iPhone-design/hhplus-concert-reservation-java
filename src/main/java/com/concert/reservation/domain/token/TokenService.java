@@ -284,6 +284,22 @@ public class TokenService {
     }
 
     /**
+     * 활성화 토큰 상세조회
+     *
+     * @author 양종문
+     * @since  2024-08-10
+     * @param  uuid - uuid
+     * @return TokenRedis
+     */
+    public Optional<TokenRedis> getActiveTokenByUUIDFromRedis(String uuid) {
+        // Active 대기열 목록 범위 조회
+        Set<String> tokens = waitingQueueRedisRepository.getActiveQueue();
+        if (tokens.isEmpty()) throw new CustomException(HttpStatus.NOT_FOUND, "토큰 정보가 존재하지 않습니다.");
+
+        return tokens.stream().map(TokenRedis::toTokenRedis).filter(tokenRedis -> (uuid.equals(tokenRedis.getUuid()))).findFirst();
+    }
+
+    /**
      * 토큰 활성화 상태 체크
      *
      * @author  양종문
@@ -291,9 +307,9 @@ public class TokenService {
      * @param   uuid - uuid
      */
     public void checkActiveStatusFromRedis(String uuid) {
-        // 활성화 대기열 존재 여부 체크
-        Boolean isExist = waitingQueueRedisRepository.existActiveQueueByUUID(uuid);
-        if (!isExist) {
+        Optional<TokenRedis> tokenRedis = this.getActiveTokenByUUIDFromRedis(uuid);
+
+        if (tokenRedis.isEmpty()) {
             throw new CustomException(HttpStatus.UNAUTHORIZED, "토큰이 활성화 상태가 아닙니다.");
         }
     }
