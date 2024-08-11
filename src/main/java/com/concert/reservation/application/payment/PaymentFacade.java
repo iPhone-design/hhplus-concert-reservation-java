@@ -9,6 +9,8 @@ import com.concert.reservation.domain.reservation.ReservationService;
 import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.entity.TokenRedis;
+import com.concert.reservation.interfaces.presentation.event.PaymentEvent;
+import com.concert.reservation.interfaces.presentation.event.PaymentEventPublisher;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class PaymentFacade {
     private final ReservationService reservationService;
     private final CustomerService customerService;
     private final PaymentService paymentService;
+    private final PaymentEventPublisher paymentEventPublisher;
 
     /**
      * 결제
@@ -32,6 +35,7 @@ public class PaymentFacade {
      * @author  양종문
      * @since   2024-07-11
      * @history 2024-08-08 양종문 - 활성화 토큰 비활성화 처리 부분이 Redis 활성화 목록에서 삭제 처리가 되는 로직으로 변경
+     *          2024-08-11 양종문 - 결제 완료 후 결제 성공 이벤트 발행 로직 추가 (외부 시스템)
      * @param   customerId - 고객 ID
      * @param   concertOptionId - 콘서트 옵션 ID
      * @param   seatOptionId - 좌석 옵션 ID
@@ -63,6 +67,9 @@ public class PaymentFacade {
         log.info("[{}] 가 결제 완료", Thread.currentThread().getName());
 
         log.info("Thread : {} end", Thread.currentThread().getName());
+        
+        // 결제 성공 이벤트 발행
+        paymentEventPublisher.paymentSuccessHandler(PaymentEvent.builder().paymentId(paymentDomain.getPaymentId()).reservationId(paymentDomain.getReservationId()).amount(paymentDomain.getAmount()).status(paymentDomain.getStatus()).paymentDt(paymentDomain.getPaymentDt()).build());
 
         return paymentDomain;
     }
