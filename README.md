@@ -169,6 +169,64 @@
     - 예약 가능 좌석 : **55.55%** 소요 시간 개선
 </details>
 
+<details>
+<summary><b>트랜잭션과 관심사 분리</b></summary>
+    
+- 분리할 필요가 있는 트랜잭션
+    - 결제
+        - 분리 필요성
+            - 포인트 차감 로직과 결제 처리 로직이 하나의 트랜잭션 내에 포함되어 있을 경우, 결제 처리 로직이 실패하면 전체 결제가 실패하는 문제가 발생할 수 있습니다. 특히, 결제 처리 로직이 외부 API와 연동되어 있다면, 외부 API의 문제로 인해 결제가 실패할 경우 결제 시스템 전체에 영향을 미칠 수 있는 심각한 문제가 발생할 수 있습니다.
+        - 로직
+            - **`AS-IS`**
+                - ```
+                  // 트랜잭션 시작
+                  예약 상태 값 변경
+                  이용자 금액 사용
+                  활성화 토큰 삭제
+                  결제
+                  // 트랜잭션 끝
+                  ```
+     
+                - ![image](https://github.com/user-attachments/assets/be4cbdea-977d-4df1-ac2f-66a9e2534b62)
+                  
+            - **`TO-BE`**
+                - ```
+                  // 트랜잭션 시작
+                  예약 상태 값 변경
+                  이용자 금액 사용
+                  활성화 토큰 삭제
+                  // 트랜잭션 끝
+                    
+                  결제
+                  ```
+                - ![image](https://github.com/user-attachments/assets/bfdeb191-6ad2-4135-bc9e-2ef1c998816c)
+                - ![image](https://github.com/user-attachments/assets/1daf7ec1-a899-4c47-a11f-a41dae9e209f)
+
+    - 예약
+        - 분리 필요성
+            - 예약 정보를 저장하는 로직이 실패할 경우, 자리 임시 배정 처리가 롤백되는 문제가 발생할 수 있습니다. 이로 인해 사용자가 선택한 자리가 해제되어 혼란이 생길 수 있습니다. 또한, 이후 예약 정보를 처리하는 서비스가 분리되면 이러한 문제는 더 심각해질 수 있으며, 시스템 전반에 걸쳐 일관성을 유지하기 어려워질 수 있습니다.
+        - 로직
+            - **`AS-IS`**
+                - ```
+                  // 트랜잭션 시작
+                  좌석 상태 값 변경
+                  예약
+                  // 트랜잭션 끝
+                  ```
+                - ![image](https://github.com/user-attachments/assets/1fc53a5c-dd94-42b9-a32b-2fb33b5124f8)
+
+            - **`TO-BE`**
+                - ```
+                  // 트랜잭션 시작
+                  좌석 상태 값 변경
+                  // 트랜잭션 끝
+    
+                  예약
+                  ```
+                - ![image](https://github.com/user-attachments/assets/96a534f4-bbf8-4b7d-9e55-f04a8bf09ecb)
+                - ![image](https://github.com/user-attachments/assets/ccfa3746-521c-4db1-ac4f-7908cea2f949)
+</details>
+
 ## Description
 
 - **`콘서트 예약 서비스`** 를 구현해 봅니다.
