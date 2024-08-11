@@ -47,6 +47,9 @@ public class ReservationFacade {
 
         log.info("Thread : {} end", Thread.currentThread().getName());
 
+        // 예약 성공 이벤트 발행
+        reservationService.success(reservationDomain.getReservationId(), reservationDomain.getConcertOptionId(), reservationDomain.getSeatOptionId(), reservationDomain.getCustomerId(), reservationDomain.getStatus(), reservationDomain.getReservationDt());
+
         return reservationDomain;
     }
 }
