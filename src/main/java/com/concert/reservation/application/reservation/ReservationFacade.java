@@ -1,6 +1,8 @@
 package com.concert.reservation.application.reservation;
 
 import com.concert.reservation.domain.reservation.ReservationDomain;
+import com.concert.reservation.domain.reservation.event.ReservationEvent;
+import com.concert.reservation.domain.reservation.event.ReservationEventPublisher;
 import com.concert.reservation.domain.reservation.ReservationService;
 import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.seat.SeatOptionService;
@@ -19,6 +21,7 @@ public class ReservationFacade {
     private final TokenService tokenService;
     private final SeatOptionService seatOptionService;
     private final ReservationService reservationService;
+	private final ReservationEventPublisher reservationEventPublisher;
 
     /**
      * 콘서트 좌석 예약 요청
@@ -48,7 +51,7 @@ public class ReservationFacade {
         log.info("Thread : {} end", Thread.currentThread().getName());
 
         // 예약 성공 이벤트 발행
-        reservationService.success(reservationDomain.getReservationId(), reservationDomain.getConcertOptionId(), reservationDomain.getSeatOptionId(), reservationDomain.getCustomerId(), reservationDomain.getStatus(), reservationDomain.getReservationDt());
+        reservationEventPublisher.success(ReservationEvent.builder().reservationId(reservationDomain.getReservationId()).concertOptionId(reservationDomain.getConcertOptionId()).seatOptionId(reservationDomain.getSeatOptionId()).customerId(reservationDomain.getCustomerId()).status(reservationDomain.getStatus()).reservationDt(reservationDomain.getReservationDt()).build());
 
         return reservationDomain;
     }

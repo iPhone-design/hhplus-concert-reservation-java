@@ -9,8 +9,8 @@ import com.concert.reservation.domain.reservation.ReservationService;
 import com.concert.reservation.domain.reservation.ReservationStatus;
 import com.concert.reservation.domain.token.TokenService;
 import com.concert.reservation.domain.token.entity.TokenRedis;
-import com.concert.reservation.interfaces.presentation.event.PaymentEvent;
-import com.concert.reservation.interfaces.presentation.event.PaymentEventPublisher;
+import com.concert.reservation.domain.payment.event.PaymentEvent;
+import com.concert.reservation.interfaces.event.PaymentEventListener;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,7 +27,7 @@ public class PaymentFacade {
     private final ReservationService reservationService;
     private final CustomerService customerService;
     private final PaymentService paymentService;
-    private final PaymentEventPublisher paymentEventPublisher;
+    private final PaymentEventListener paymentEventListener;
 
     /**
      * 결제
@@ -69,7 +69,7 @@ public class PaymentFacade {
         log.info("Thread : {} end", Thread.currentThread().getName());
         
         // 결제 성공 이벤트 발행
-        paymentEventPublisher.paymentSuccessHandler(PaymentEvent.builder().paymentId(paymentDomain.getPaymentId()).reservationId(paymentDomain.getReservationId()).amount(paymentDomain.getAmount()).status(paymentDomain.getStatus()).paymentDt(paymentDomain.getPaymentDt()).build());
+        paymentEventListener.paymentSuccessHandler(PaymentEvent.builder().paymentId(paymentDomain.getPaymentId()).reservationId(paymentDomain.getReservationId()).amount(paymentDomain.getAmount()).status(paymentDomain.getStatus()).paymentDt(paymentDomain.getPaymentDt()).build());
 
         return paymentDomain;
     }

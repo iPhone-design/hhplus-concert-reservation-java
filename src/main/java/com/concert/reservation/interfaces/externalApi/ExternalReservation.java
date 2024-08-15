@@ -1,6 +1,6 @@
 package com.concert.reservation.interfaces.externalApi;
 
-import com.concert.reservation.interfaces.presentation.event.ReservationEvent;
+import com.concert.reservation.domain.reservation.event.ReservationEvent;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

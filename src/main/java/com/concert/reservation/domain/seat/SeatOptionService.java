@@ -17,7 +17,7 @@ public class SeatOptionService {
 
     private final SeatOptionRepository seatOptionRepository;
 
-    /**
+	/**
      * 좌석 상세조회
      *
      * @author  양종문
@@ -85,7 +85,7 @@ public class SeatOptionService {
      */
     public void checkAvailableStatus(Long seatOptionId, Long concertOptionId) {
         // 좌석 조회
-        SeatOptionDomain seatOptionDomain = this.findSeat(seatOptionId, concertOptionId);
+        SeatOptionDomain seatOptionDomain = seatOptionRepository.findSeat(seatOptionId, concertOptionId).orElseThrow(() -> new CustomException(HttpStatus.ACCEPTED, "좌석 상세조회 정보가 없습니다."));
 
         if (!SeatOptionStatus.AVAILABLE.equals(seatOptionDomain.getStatus())) {
             throw new CustomException(HttpStatus.ACCEPTED, "불가능 상태의 좌석입니다.");
