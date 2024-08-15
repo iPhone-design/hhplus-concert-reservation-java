@@ -227,6 +227,29 @@
                 - ![image](https://github.com/user-attachments/assets/ccfa3746-521c-4db1-ac4f-7908cea2f949)
 </details>
 
+<details>
+<summary><b>Kafka 설정 및 연결 테스트</b></summary>
+    
+- **[Step17](https://github.com/iPhone-design/hhplus-concert-reservation-java/pull/35)**
+    
+- **[Kafka 설정](https://github.com/iPhone-design/hhplus-concert-reservation-java/pull/35/commits/24fc0026bdd511a0cbf04aa022d8bdd6afed8335)**
+
+- **`Kafka 메시지 발행 및 소비 테스트 결과`**
+    - ![image](https://github.com/user-attachments/assets/ae09ff84-3db4-4978-9144-c2b149083bb3)
+</details>
+
+<details>
+<summary><b>Kafka 재발행 테스트</b></summary>
+
+- **[Step18](https://github.com/iPhone-design/hhplus-concert-reservation-java/pull/36)**
+
+- **`Outbox 재발행 테스트 결과`**
+    - ![image](https://github.com/user-attachments/assets/ee5ec739-4603-4708-9b7d-3d67afebb4b4)
+    - ![image](https://github.com/user-attachments/assets/277c34a5-ce5b-4640-a529-e63cc7794fed)
+
+
+</details>
+
 ## Description
 
 - **`콘서트 예약 서비스`** 를 구현해 봅니다.
