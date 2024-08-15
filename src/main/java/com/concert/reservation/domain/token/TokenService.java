@@ -2,7 +2,7 @@ package com.concert.reservation.domain.token;
 
 import com.concert.reservation.domain.exception.CustomException;
 import com.concert.reservation.domain.token.entity.TokenRedis;
-import com.concert.reservation.infrastructure.waitingQueue.WaitingQueueRedisRepository;
+import com.concert.reservation.infrastructure.redis.waitingQueue.WaitingQueueRedisRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

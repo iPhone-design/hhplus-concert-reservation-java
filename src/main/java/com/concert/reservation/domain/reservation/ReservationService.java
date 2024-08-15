@@ -1,8 +1,6 @@
 package com.concert.reservation.domain.reservation;
 
 import com.concert.reservation.domain.exception.CustomException;
-import com.concert.reservation.interfaces.presentation.event.ReservationEvent;
-import com.concert.reservation.interfaces.presentation.event.ReservationEventPublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -16,7 +14,6 @@ import java.util.Optional;
 public class ReservationService {
 
     private final ReservationRepository reservationRepository;
-    private final ReservationEventPublisher reservationEventPublisher;
 
     /**
      * 예약 상세조회
@@ -111,15 +108,5 @@ public class ReservationService {
         if (reservationDomain.isPresent()) throw new CustomException(HttpStatus.ACCEPTED, "이미 예약이 존재합니다.");
 
         return reservationRepository.save(ReservationDomain.builder().customerId(customerId).concertOptionId(concertOptionId).seatOptionId(seatOptionId).status(status).build());
-    }
-
-    /**
-     * 예약 성공 이벤트 발행
-     *
-     * @author  양종문
-     * @since   2024-08-11
-     */
-    public void success(Long reservationId,  Long concertOptionId, Long seatOptionId, Long customerId, ReservationStatus status, LocalDateTime reservationDt) {
-        reservationEventPublisher.reservationSuccessHandler(ReservationEvent.builder().reservationId(reservationId).concertOptionId(concertOptionId).seatOptionId(seatOptionId).customerId(customerId).status(status).reservationDt(reservationDt).build());
     }
 }

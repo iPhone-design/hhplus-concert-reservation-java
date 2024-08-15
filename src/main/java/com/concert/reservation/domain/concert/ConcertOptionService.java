@@ -1,6 +1,6 @@
 package com.concert.reservation.domain.concert;
 
-import com.concert.reservation.infrastructure.concert.ConcertOptionRedisRepository;
+import com.concert.reservation.infrastructure.db.concert.ConcertOptionRedisRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

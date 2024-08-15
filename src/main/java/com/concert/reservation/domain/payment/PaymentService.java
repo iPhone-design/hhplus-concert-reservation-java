@@ -1,7 +1,7 @@
 package com.concert.reservation.domain.payment;
 
-import com.concert.reservation.interfaces.presentation.event.PaymentEvent;
-import com.concert.reservation.interfaces.presentation.event.PaymentEventPublisher;
+import com.concert.reservation.domain.payment.event.PaymentEvent;
+import com.concert.reservation.interfaces.event.PaymentEventListener;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class PaymentService {
 
     private final PaymentRepository paymentRepository;
-    private final PaymentEventPublisher paymentEventPublisher;
+    private final PaymentEventListener paymentEventListener;
 
     /**
      * 결제
@@ -33,6 +33,6 @@ public class PaymentService {
      * @since   2024-08-11
      */
     public void success(Long paymentId, Long reservationId, Long amount, PaymentStatus status, LocalDateTime paymentDt) {
-        paymentEventPublisher.paymentSuccessHandler(PaymentEvent.builder().paymentId(paymentId).reservationId(reservationId).amount(amount).status(status).paymentDt(paymentDt).build());
+        paymentEventListener.paymentSuccessHandler(PaymentEvent.builder().paymentId(paymentId).reservationId(reservationId).amount(amount).status(status).paymentDt(paymentDt).build());
     }
 }

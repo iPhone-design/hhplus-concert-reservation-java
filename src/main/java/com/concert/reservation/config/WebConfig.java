@@ -1,7 +1,7 @@
 package com.concert.reservation.config;
 
-import com.concert.reservation.interfaces.presentation.interceptor.LoggerInterceptor;
-import com.concert.reservation.interfaces.presentation.interceptor.TokenInterceptor;
+import com.concert.reservation.interfaces.interceptor.LoggerInterceptor;
+import com.concert.reservation.interfaces.interceptor.TokenInterceptor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
