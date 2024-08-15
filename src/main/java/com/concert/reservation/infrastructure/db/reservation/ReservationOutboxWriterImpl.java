@@ -26,7 +26,7 @@ public class ReservationOutboxWriterImpl implements ReservationOutboxWriter {
      * @return  List<Optional<ReservationOutBoxDomain>>
      */
     @Override
-    public List<ReservationOutBoxDomain> findAllByStatus(String status) {
+    public List<ReservationOutBoxDomain> findAllByStatus(ReservationOutboxStatus status) {
         return reservationOutboxJpaRepository.findAllByStatus(status).stream().map(ReservationOutboxEvent::toDomain).collect(Collectors.toList());
     }
 

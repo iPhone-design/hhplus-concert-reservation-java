@@ -38,4 +38,15 @@ public class ReservationEvent {
             throw new RuntimeException(e);
         }
     }
+
+    public ReservationEvent toReservationEvent(String jsonData) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            objectMapper.registerModule(new JavaTimeModule());
+            return objectMapper.readValue(jsonData, ReservationEvent.class);
+        }
+        catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

@@ -11,5 +11,5 @@ import java.util.Optional;
 @Repository
 public interface ReservationOutboxJpaRepository extends JpaRepository<ReservationOutboxEvent, Long>  {
     Optional<ReservationOutboxEvent> findByReservationIdAndStatus(Long reservationId, ReservationOutboxStatus status);
-    List<ReservationOutboxEvent> findAllByStatus(String status);
+    List<ReservationOutboxEvent> findAllByStatus(ReservationOutboxStatus status);
 }
