@@ -359,7 +359,7 @@
 			- **분석** : 피크 부하 상황에서도 응답 시간이 12.1ms로 매우 짧았습니다. 다만, 95번째 백분위수에서 응답 시간이 26.83ms로 증가하였으며, 이는 매우 높은 트래픽에서도 우수한 성능을 유지하고 있음을 나타냅니다.
 	- **콘서트 예약 API (POST /concert/reservation)**
 		- **Load Test 결과**
-			- TODO
+			- ![image](https://github.com/user-attachments/assets/f41e756d-b641-40f2-b874-efa6064b9705)
 			- **성공률** : TODO
 			- **처리량** : TODO
 			- **응답 시간**
@@ -369,7 +369,7 @@
 				- 95번째 백분위수 : TODO
 			- **분석** : TODO
 		- **Peak Test 결과**
-			- TODO
+			- ![image](https://github.com/user-attachments/assets/d45c71b2-472b-408f-b5bd-fd319af4cf5e)
 			- **성공률** : TODO
 			- **처리량** : TODO
 			- **응답 시간**
